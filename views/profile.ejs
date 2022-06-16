@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <i class="fas fa-key fa-6x"></i>
+    <h1 class="display-3">Here's your Kindred profile.</h1>
+    <p class="secret-text"><%= thisUser.profileName %></p>
+    <hr>
+    <p>show percentage of q's completed here...</p>
+    <a class="btn btn-light btn-lg" href="/questions-menu-old" role="button">Questions (old)</a>
+    <a class="btn btn-light btn-lg" href="/questions-menu" role="button">Questions</a>
+    <a class="btn btn-light btn-lg" href="/find-kindred" role="button">Find Kindred</a>
+    <a class="btn btn-light btn-lg" href="/recommendations" role="button">Recommendations</a>
+    <a class="btn btn-light btn-lg" href="/admin" role="button">Admin</a>
+    <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

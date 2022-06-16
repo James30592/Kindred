@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1>Recommendations</h1>
+
+  <div class="row">
+    <div class="col-sm-8">
+
+      <div class="card">
+        <div class="card-body">
+
+          <div class="recommendations-for">
+            <h2>Recommendations for:</h2>
+            <%- include('partials/categoryCheckboxes') %>
+            <hr>
+          </div>
+
+          <div class="based-on">
+            <h2>Based on:</h2>
+            <%- include('partials/categoryCheckboxesLimitSelects') %>
+            <hr>
+          </div>
+
+          <button type="button" class="get-recommendations btn btn-dark">Get Recommendations</button>
+          <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body recommendations-list">
+          <p>Estimated liking - Item   -    Category   -   Category Type  - No. of recommends</p>
+          <hr>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/recommendations.js"></script>
+
+<%- include('partials/footer') %>

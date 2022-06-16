@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1>Find Kindred</h1>
+
+  <div class="row">
+    <div class="col-sm-8">
+
+      <div class="card">
+        <div class="card-body">
+
+          <%- include('partials/categoryCheckboxesLimitSelects') %>
+
+          <hr>
+          <button type="button" class="find-kindred btn btn-dark">Find Kindred</button>
+          <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body kindred-list">
+          <p>Profile name   -    Location   -   Similarity score  -   Common answers</p>
+          <hr>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/find-kindred.js"></script>
+
+<%- include('partials/footer') %>

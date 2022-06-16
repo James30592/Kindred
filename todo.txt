@@ -1,0 +1,129 @@
+To do:
+
+use APIs for films, books etc.
+
+change class methods and fields to private where possible
+
+
+
+
+
+do different categories of question:
+
+personality, films, TV, books, music (artists), video games, hobbies, sports (watch and play?), places to visit on holiday? food? sense of humour
+
+do recommendation algorithm stuff
+
+
+
+
+
+
+user top10 lists for all interests (films, books etc.), option to mark a film as a top10 when rating it and then if this list gets full it asks you which one you want to replace for it
+
+do different types of question and data for answers - ie. not just multiple choice? - think about how to do similarity for answers that aren't on a simple scale
+
+do map of results for find kindred
+
+research psychology for doing the personality questions
+
+import feature for importing likes on films, tv, books etc.
+
+make it so can answer some questions and make a profile without yet creating an account, then prompt to create an account to save progress
+
+
+Personality		General
+			Scenarios
+			Logic
+			Sense of humour
+			etc…
+Interests		Films
+			TV
+			Books
+			Music (artists)
+			Video games
+			Hobbies
+			Sports (watch / play)
+
+
+on your profile, list favourites in each of the interests categories, life advice, opinions on current issues?
+
+perhaps have different colour to represent each category, and when filtering by category / categories the colour scheme of the map / links changes to match that of the selected categories.
+
+perhaps see a map view of all the other strongest links between other people in the world, get a sense of which countries have stuff in common, or how much most people have in common, if you're more individual or not... this could be good for sharing, people sharing chart that shows they are outside the bell curve for how they think / their tastes
+
+use local storage to store user's kindred lists and recommendations
+
+find a way for me to pinch real people's tastes in films etc to populate fake profiles
+
+use validation on any user submitted data to make sure it can't mess up anything on the server
+
+recommendations is working now, think about making it on the same page as findKindred in the end, since it's just an extension of that and is doing a similar find kindred thing first (although slightly different variant of findKindred)
+
+
+
+Other options for the recommendation algorithm:
+- change the threshold value. actually better to do a more complex way of getting the kindred list, like only using very similar users if possible, otherwise widening it a little maybe.
+- make it so its not a linear effect of compUser similarity difference on the weighted sim rating, maybe make it a different function
+- limit recommendations so they require x number of users to have answered this question for it to be a recommendation (eg. so if one very similar user rates an obscure film very highly but noone else has rated it, it could prevent this film from being shown so high up the recommend list).
+- in the getRecommendations() code, factor in not just the simScore of each compUser for the weighting of each question answer, but also the number of answers this user had in common. also for kindredList, maybe rather than first comparing on simScore and then on numCommonAnswers, it should be a formula that multiplies the two somehow.
+- currently am doing a positive / negative adjustment for each recommend item score based on whether the compUser rated things generally higher or lower than the main user. uses percDiff in the UserSimComp.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+answers for each user:
+
+[
+	{
+		id: api id for specific film,
+		title: name,
+		releaseYear, year,
+		posterTMDBFileName: fileName,
+		seen: true/false,
+		score: user rating
+	},
+	...
+]
+
+
+
+
+questions page:
+
+user needs to be able to search by name, then possibly some api related categories eg. genre, release year(s), actors etc.
+
+random button to give the user a random item from the api for the user to answer, previous button to go back to the last one. 
+
+button to see all current answers with option to then update each one  by clicking on it
+
+by popularity in TMDB?
+
+
+
+
+
+SEARCH	- 	search box for query	https://api.themoviedb.org/3/search/movie?api_key=84c6fe840210161c52e9a52c9cc129bb&query=prestige
+also search for people -	https://api.themoviedb.org/3/search/person?api_key=84c6fe840210161c52e9a52c9cc129bb&query=tom+cruise
+DISCOVER - 	https://api.themoviedb.org/3/discover/movie?api_key=84c6fe840210161c52e9a52c9cc129bb&sort_by=vote_count.desc&with_people=1032
+		https://api.themoviedb.org/3/discover/movie?api_key=84c6fe840210161c52e9a52c9cc129bb&sort_by=vote_count.desc&page=1
+GENRES - 	https://api.themoviedb.org/3/genre/movie/list?api_key=84c6fe840210161c52e9a52c9cc129bb
+images - 	https://image.tmdb.org/t/p/w185/yI6X2cCM5YPJtxMhUd3dPGqDAhw.jpg
+
+
+
+sort by  vote count
+

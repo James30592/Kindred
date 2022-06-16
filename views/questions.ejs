@@ -1,0 +1,49 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1>Questions</h1>
+
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          
+          <h2 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
+            data-cat="<%= categoryName %>">
+            <%= categoryTypeName %> - <%= categoryName %></h2>
+
+          <button>Show current answers</button>
+          
+          <hr>
+          <h3>Search for a film</h3>
+          <input type="text" name="search" placeholder="Enter film title...">
+          <hr>
+          <h3>Filter new Qs</h3>
+          <!-- checkbox for each genre (ticked by default) -->
+          <input type="date" name="filterDateFrom">
+          <input type="date" name="filterDateTo">
+          <!-- another search box for people that shows results then adds these 
+          people to filter list of include_people -->
+          <hr>
+
+
+
+          <div>
+            <button class="next-question-btn">Previous</button>
+            <div>
+              current film...
+            </div>
+            <button class="next-question-btn">Next</button>
+          </div>
+
+          <hr>
+          <a class="btn btn-light" href="/questions-menu" role="button">Back to questions menu</a>
+          <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>
