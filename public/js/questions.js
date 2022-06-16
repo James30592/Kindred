@@ -14,9 +14,13 @@ async function getNewQuestion() {
     fromDate
     toDate
     genres
+    people
   };
 
-
+  // change by getting rid of previous and next button, automatically generates 
+  // new question on answering current one.
+  // Add a "ask me again in x days?" button option?
+  
   const fetchResponse = await fetch(`/questions/${categoryTypeName}/${categoryName}`, {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
