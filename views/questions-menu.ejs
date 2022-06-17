@@ -12,7 +12,7 @@
               <h2><%= categoryType.name %></h2>
             <%  categoryType.categories.forEach(function(category){ %>
                 <a class="btn btn-light btn-lg"
-                href="/questions/<%= categoryType.name %>.<%= category.name %>
+                href="/questions/<%= categoryType.name %>/<%= category.name %>
                 " role="button"><%= category.name %></a>
             <%  }); %>
             <% }); %>

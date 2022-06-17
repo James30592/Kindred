@@ -240,10 +240,13 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
       const numQs = postObj.data.numQs;
       const filters = postObj.data.filters;
 
-      console.log("getting new questions");
-      const newQuestions = getNewQuestions(numQs, filters);
+      const newQuestions = await getNewQuestions(numQs, filters);
 
-      res.json(newQuestions);
+      const newQsObj = {
+        qs: newQuestions
+      };
+
+      res.json(newQsObj);
     };
   };
 });
@@ -256,7 +259,6 @@ async function getNewQuestions(numQs, filters) {
 
   const fetchResponse = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDBKey}&sort_by=vote_count.desc&page=${currPage}`);
   const movieResultsPage = await fetchResponse.json();
-
   const newQuestions = [];
 
   for (let movie of movieResultsPage.results) {

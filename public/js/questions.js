@@ -15,16 +15,16 @@ const ratingScore = document.querySelector(".rating-score");
 const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
-rateBtn.addEventListener("click", answerQuestion(true));
-notSeenItBtn.addEventListener("click", answerQuestion(false));
+rateBtn.addEventListener("click", answerQuestion);
+notSeenItBtn.addEventListener("click", answerQuestion);
 
 let questionsQueue = [];
 let currQuestion = null;
 
 let pageCounter = 1;
 
-window.onload = () => {
-  updateQuestionQueue();
+window.onload = async () => {
+  await updateQuestionQueue();
   showCurrentQuestion();
 };
 
@@ -52,7 +52,9 @@ function showCurrentQuestion() {
 
 
 // Submit answer information to the server, update the queue if necessary.
-function answerQuestion(userHasSeen) {
+function answerQuestion(event) {
+  const userHasSeen = event.currentTarget === rateBtn;
+  
   const currQuestion = questionsQueue[0];
 
   const answerInfo = {
@@ -86,9 +88,11 @@ function answerQuestion(userHasSeen) {
 
 
 // Adds more questions to the questions queue if necessary.
-function updateQuestionQueue() {
+async function updateQuestionQueue() {
   if (questionsQueue.length <= QUEUE_REFRESH_THRESHOLD) {
-    const newQuestions = getNewQuestions(QUEUE_DESIRED_SIZE - QUEUE_REFRESH_THRESHOLD);
+    const newQuestions = await getNewQuestions(QUEUE_DESIRED_SIZE - 
+      QUEUE_REFRESH_THRESHOLD);
+
     questionsQueue = questionsQueue.concat(newQuestions);
   };
 }
@@ -97,20 +101,18 @@ function updateQuestionQueue() {
 // Gets more items to the questions queue, when it's running low.
 async function getNewQuestions(numQuestions) {
   const filterInfo = {
-    fromDate: fromDateInput.value,
-    toDate: toDateInput.value
+    fromDate: fromDateInput?.value,
+    toDate: toDateInput?.value
     // genres
     // people
-  };
-
-  const newQuestionsInfo = {
-    numQs: numQuestions,
-    filters: filterInfo
   };
   
   const postObj = {
     type: "filters",
-    data: newQuestionsInfo
+    data: {
+      numQs: numQuestions,
+      filters: filterInfo
+    }
   };
 
   const fetchResponse = await fetch(`/questions/${categoryTypeName}/${categoryName}`, {
@@ -119,6 +121,5 @@ async function getNewQuestions(numQuestions) {
     body: JSON.stringify(postObj)
   });
   const newQuestions = await fetchResponse.json();
-
-  return newQuestions;
+  return newQuestions.qs;
 }
