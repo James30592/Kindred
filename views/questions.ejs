@@ -19,9 +19,10 @@
           <input type="text" name="search" placeholder="Enter film title...">
           <hr>
           <h3>Filter new Qs</h3>
-          <!-- checkbox for each genre (ticked by default) -->
-          <input type="date" name="filterDateFrom">
-          <input type="date" name="filterDateTo">
+          <!-- checkbox for each genre (ticked by default), expand and 
+          collapsible (actually buttons that highlight -->
+          <input type="date" name="filter-date-from">
+          <input type="date" name="filter-date-to">
           <!-- another search box for people that shows results then adds these 
           people to filter list of include_people -->
           <hr>
@@ -29,11 +30,19 @@
 
 
           <div>
-            <button class="next-question-btn">Previous</button>
             <div>
-              current film...
+              <p class="curr-question">Placeholder...</p>
             </div>
-            <button class="next-question-btn">Next</button>
+            <div>
+              <button><<</button>
+              <button><</button>
+              <span class="rating-score">5</span>
+              <button>></button>
+              <button>>></button>
+              <br>
+              <button class="not-seen-btn">Not seen it</button>
+              <button class="rate-btn">Rate it!</button>
+            </div>
           </div>
 
           <hr>

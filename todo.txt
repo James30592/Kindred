@@ -108,7 +108,7 @@ user needs to be able to search by name, then possibly some api related categori
 
 random button to give the user a random item from the api for the user to answer, previous button to go back to the last one. 
 
-button to see all current answers with option to then update each one  by clicking on it
+button to see all current answers with option to then update each one by clicking on it
 
 by popularity in TMDB?
 

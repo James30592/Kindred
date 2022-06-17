@@ -184,12 +184,16 @@ router.post('/login',
 
 
 
-router.get("/questions-menu", async function(req, res){
+
+
+router.get("/questions-menu", async function(req, res) {
   const allCategoryTypes = await models.CategoryType.find({}).exec();
   res.render("questions-menu", {allCategoryTypes: allCategoryTypes});
 });
 
-router.all("/questions/:categoryType.:category", async function(req, res){
+
+
+router.all("/questions/:categoryType/:category", async function(req, res) {
   const categoryTypeName = req.params.categoryType;
   const categoryName = req.params.category;
 
@@ -206,7 +210,7 @@ router.all("/questions/:categoryType.:category", async function(req, res){
 
   const userAnswers = userCategoryAnswersInfo.answers;
 
-  if (req.method === "GET"){
+  if (req.method === "GET") {
     res.render("questions", {
       categoryTypeName: categoryTypeName,
       categoryName: categoryName,
@@ -214,18 +218,56 @@ router.all("/questions/:categoryType.:category", async function(req, res){
     });
   }
 
-  else if (req.method === "POST"){
+  else if (req.method === "POST") {
+    const postObj = req.body;
 
+    // Update the database for this user with their new answer.
+    if (postObj.type === "answer") {
+      const newAnswer = postObj.data;
 
+      // add this new answer to the questions answer in db...
 
-    
-    questions.updateUserAnswers(req.body, userAnswers);
-    user.save(function(){
-      res.redirect("/questions-menu");
-    });
+      console.log("saving user answer");
 
+      // questions.updateUserAnswers(req.body, userAnswers);
+      // user.save(function() {
+      //   res.redirect("/questions-menu");
+      // });
+    }
+
+    // Get new questions for the questions queue.
+    else if (postObj.type = "filters") {
+      const numQs = postObj.data.numQs;
+      const filters = postObj.data.filters;
+
+      console.log("getting new questions");
+      const newQuestions = getNewQuestions(numQs, filters);
+
+      res.json(newQuestions);
+    };
   };
 });
 
 
-// TMDB api key - 84c6fe840210161c52e9a52c9cc129bb
+async function getNewQuestions(numQs, filters) {
+  const TMDBKey = "84c6fe840210161c52e9a52c9cc129bb";
+      
+  let currPage = 1;
+
+  const fetchResponse = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDBKey}&sort_by=vote_count.desc&page=${currPage}`);
+  const movieResultsPage = await fetchResponse.json();
+
+  const newQuestions = [];
+
+  for (let movie of movieResultsPage.results) {
+    const thisMovieInfo = {
+      id: movie.id,
+      title: movie.title,
+      releaseDate: movie.release_date,
+      posterPath: movie.poster_path
+    };
+    newQuestions.push(thisMovieInfo);
+  };
+
+  return newQuestions;
+}
