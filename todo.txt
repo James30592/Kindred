@@ -2,6 +2,11 @@ To do:
 
 use APIs for films, books etc.
 
+change mongoDB schemas to usse linking method as described here:
+https://learnmongodbthehardway.com/schema/schemabasics/#:~:text=retrieve%20the%20document.-,One%2DTo%2DMany%20(1%3AN),related%20to%20a%20single%20Blog.
+
+also add validation to mongoose schemas, eg. scores can only be between 1 and 10 etc.
+
 change class methods and fields to private where possible
 
 

@@ -6,6 +6,7 @@ import * as questions from "../lib/questions.mjs";
 import * as similarity from "../lib/similarity.mjs";
 import * as recommendations from "../lib/recommendations.mjs";
 import * as admin from "../lib/admin.mjs";
+import { currAnswerers } from '../lib/currentAnswerers.mjs';
 
 const express = require("express");
 const ejs = require("ejs");
@@ -67,6 +68,7 @@ router.all("/questions-old/:categoryType.:category", async function(req, res){
   // Initialise for current category, if not done previously for this user.
   userCategoryAnswersInfo = questions.initUserCategory(user,
     userCategoryAnswersInfo, categoryTypeName, categoryName);
+
   let userAnswers = userCategoryAnswersInfo.answers;
 
   if (req.method === "GET"){
@@ -193,22 +195,18 @@ router.get("/questions-menu", async function(req, res) {
 
 
 
+
+
 router.all("/questions/:categoryType/:category", async function(req, res) {
   const categoryTypeName = req.params.categoryType;
   const categoryName = req.params.category;
 
-  // Get this user in the database, to update their answer(s).
-  const user = await models.User.findOne({_id: req.user._id}).exec();
+  const currAnswerer = await currAnswerers.getCurrAnswerer(req.user._id, 
+    categoryTypeName, categoryName);
 
-  // Get user answers info for this category.
-  let userCategoryAnswersInfo = questions.getCategoryAnswersInfo(
-    user, categoryTypeName, categoryName);
+  const user = currAnswerer.user;
+  const userAnswers = currAnswerer.answers;
 
-  // Initialise for current category, if not done previously for this user.
-  userCategoryAnswersInfo = questions.initUserCategory(user,
-    userCategoryAnswersInfo, categoryTypeName, categoryName);
-
-  const userAnswers = userCategoryAnswersInfo.answers;
 
   if (req.method === "GET") {
     res.render("questions", {
@@ -217,6 +215,7 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
       userAnswers: userAnswers
     });
   }
+
 
   else if (req.method === "POST") {
     const postObj = req.body;
@@ -228,6 +227,7 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
       // add this new answer to the questions answer in db...
 
       console.log("saving user answer");
+      res.end();
 
       // questions.updateUserAnswers(req.body, userAnswers);
       // user.save(function() {
