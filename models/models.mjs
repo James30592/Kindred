@@ -28,6 +28,9 @@ const categoryTypeSchema = new mongoose.Schema({
 
 export const CategoryType = new mongoose.model("CategoryType", categoryTypeSchema);
 
+
+
+
 const answerDetailSchema = new mongoose.Schema({
   questionId: Number,
   answerId: Number,
@@ -43,6 +46,9 @@ const categoryTypeAnswersSchema = new mongoose.Schema({
   categoryType: String,
   categoriesAnswers: [answersSchema]
 }, {_id: false});
+
+
+
 
 const userSchema = new mongoose.Schema({
   email: {
