@@ -28,7 +28,7 @@ app.use(passport.session());
 
 app.use("/", router);
 
-mongoose.connect("mongodb://127.0.0.1:27017/kindred");
+mongoose.connect("mongodb://127.0.0.1:27017/kindred02");
 
 passport.use(models.User.createStrategy());
 passport.serializeUser(models.User.serializeUser());

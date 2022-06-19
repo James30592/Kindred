@@ -50,6 +50,9 @@ router.get("/logout", function(req, res){
   res.redirect("/");
 });
 
+
+
+
 router.get("/questions-menu-old", async function(req, res){
   const allCategoryTypes = await models.CategoryType.find({}).exec();
   res.render("questions-menu-old", {allCategoryTypes: allCategoryTypes});
@@ -85,6 +88,9 @@ router.all("/questions-old/:categoryType.:category", async function(req, res){
     });
   };
 });
+
+
+
 
 router.get("/find-kindred", async function(req, res){
   const allCategoryTypes = await models.CategoryType.find({}).exec();
@@ -127,9 +133,32 @@ router.post("/admin/:adminRequest", async function(req, res){
 router.post("/find-kindred", async function(req, res){
 
   const categoryInfo = req.body;
-  const allUsers = await models.User.find({}).exec();
 
   const thisKindredList = new similarity.KindredList(categoryInfo, 10);
+  
+  const allUsers = await models.User.find({}).exec();
+
+
+  const allCategoriesWithTypes = categoryInfo.getAllCategories();
+  
+  const findCriteria = {
+    $or: [
+      {
+        $and: [
+          {categoryType: categoryTypeName}, 
+          {category: categoryName}
+        ]
+      },
+      ...
+    ]
+  };
+
+  const allRelevantAnswers = await models.CategoryAnswersList.find(findCriteria
+    ).exec();
+
+
+
+
   thisKindredList.findKindred(req.user, allUsers);
 
   res.json(thisKindredList);

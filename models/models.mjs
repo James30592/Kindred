@@ -5,20 +5,10 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 
-const possAnswerSchema = new mongoose.Schema({
-  ansId: Number,
-  ansText: String
-}, {_id: false});
 
-const questionSchema = new mongoose.Schema({
-  _id: Number,
-  text: String,
-  possAnswers: [possAnswerSchema]
-});
-
+// Collection of category types and their sub-categories (embedded).
 const categorySchema = new mongoose.Schema({
-  name: String,
-  questions: [questionSchema]
+  name: String
 });
 
 const categoryTypeSchema = new mongoose.Schema({
@@ -30,26 +20,27 @@ export const CategoryType = new mongoose.model("CategoryType", categoryTypeSchem
 
 
 
-
-const answerDetailSchema = new mongoose.Schema({
-  questionId: Number,
-  answerId: Number,
-  answerPercentile: Number
+// Collection of questions for each category, linked to categoryType and 
+// category by id.
+const possAnswerSchema = new mongoose.Schema({
+  ansId: Number,
+  ansText: String
 }, {_id: false});
 
-const answersSchema = new mongoose.Schema({
+const questionSchema = new mongoose.Schema({
+  _id: Number,
+  categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
   category: String,
-  answers: [answerDetailSchema]
-}, {_id: false});
+  text: String,
+  possAnswers: [possAnswerSchema]
+});
 
-const categoryTypeAnswersSchema = new mongoose.Schema({
-  categoryType: String,
-  categoriesAnswers: [answersSchema]
-}, {_id: false});
-
+export const CategoryQuestionList = new mongoose.model("CategoryQuestionList", 
+questionSchema);
 
 
 
+// Collection of users.
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -63,10 +54,30 @@ const userSchema = new mongoose.Schema({
   location: {
     type: String,
     required: true
-  },
-  categoryTypesAnswers: [categoryTypeAnswersSchema]
+  }
 });
 
 userSchema.plugin(passportLocalMongoose, {usernameField: "email"});
 
 export const User = new mongoose.model("User", userSchema);
+
+
+
+// Collection of user answers for each category for each user, linked to user 
+// and categoryType through ids.
+const answerDetailSchema = new mongoose.Schema({
+  questionId: Number,
+  answerId: Number,
+  answerPercentile: Number
+}, {_id: false});
+
+const categoryAnswersSchema = new mongoose.Schema({
+  userId: { type: Schema.Types.ObjectId, ref: "User" },
+  categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
+  category: String,
+  categoryType: String,
+  answers: [answerDetailSchema]
+});
+
+export const CategoryAnswersList = new mongoose.model("CategoryAnswersList", 
+  categoryAnswersSchema);
