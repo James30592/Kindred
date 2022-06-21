@@ -1,8 +1,8 @@
 To do:
 
 
-continue line 67 in recommendations, trying to do a new way of getting userAnsweredQIds...
-also need to do _initRecForCatInfo in similarity
+fix getQuestions and getAnswers in dbHelpers...filter doesnt work that way...
+check rest of recommendations code...
 
 use APIs for films, books etc.
 

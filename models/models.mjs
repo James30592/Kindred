@@ -25,6 +25,7 @@ export const CategoryType = new mongoose.model("CategoryType", categoryTypeSchem
 const possAnswerSchema = new mongoose.Schema({
   ansId: Number,
   ansText: String
+  // ansPerc: Number     perhaps store this here, or some other type variable if a non-quantifiable question.
 }, {_id: false});
 
 const questionSchema = new mongoose.Schema({
@@ -37,10 +38,12 @@ const categoryQuestionListSchema = new mongoose.Schema({
   categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
   categoryType: String,
   category: String,
+  questionSource: String,
+  // recommendable: Boolean,
   questions: [questionSchema]
 });
 
-export const CategoryQuestionList = new mongoose.model("CategoryQuestionList", 
+export const CategoryQuestionsList = new mongoose.model("CategoryQuestionList", 
 categoryQuestionListSchema);
 
 
@@ -69,8 +72,8 @@ const answerDetailSchema = new mongoose.Schema({
 const categoryAnswersSchema = new mongoose.Schema({
   userId: { type: Schema.Types.ObjectId, ref: "User" },
   categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
-  category: String,
   categoryType: String,
+  category: String,
   answers: [answerDetailSchema]
 });
 

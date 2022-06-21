@@ -127,7 +127,7 @@ router.post("/admin/:adminRequest", async function(req, res){
     const numNewUsers = req.body.numNewUsers;
 
     const currDBCategories = await models.CategoryType.find({}).exec();
-    const currDBQuestions = await models.CategoryQuestionList.find({}).exec();
+    const currDBQuestions = await models.CategoryQuestionsList.find({}).exec();
     const batchUserMaker = new admin.BatchUserCreator(currDBCategories, currDBQuestions);
     const resultMsg = batchUserMaker.createUsers(numNewUsers);
 
@@ -151,15 +151,11 @@ router.post("/recommendations", async function(req, res){
   const resultCategoryInfo = allCategoryInfo.recommendationsFor;
   const basedOnCategoryInfo = allCategoryInfo.basedOn;
 
-  const allUsers = await models.User.find({}).exec();
-  const dbCatTypes = await models.CategoryType.find({}).exec();
-
   const thisRecommendationList = new recommendations.RecommendationList(req.user);
-
-  thisRecommendationList.initRecommendationList(allUsers, basedOnCategoryInfo,
+  await thisRecommendationList.initRecommendationList(basedOnCategoryInfo,
     resultCategoryInfo);
-    
-  thisRecommendationList.getRecommendations(dbCatTypes);
+
+  await thisRecommendationList.getRecommendations();
 
   res.json(thisRecommendationList);
 });

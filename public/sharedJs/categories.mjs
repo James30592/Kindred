@@ -19,7 +19,8 @@ export class CategoryInfo {
     };
   }
 
-  // 
+  // Creates a clone of this category info object and returns it, along with new 
+  // data for each category which is calculated using the higher order getDataFun and args.
   cloneWithData(getDataFunc, args) {
     const newCatInfo = new CategoryInfo();
 
@@ -35,7 +36,6 @@ export class CategoryInfo {
 
     return newCatInfo;
   }
-
 
   // Returns an array of objects where each object contains the
   // categoryTypeName and categoryName, for every unique category in this.
