@@ -8,7 +8,7 @@ const passportLocalMongoose = require("passport-local-mongoose");
 
 // Collection of category types and their sub-categories (embedded).
 const categorySchema = new mongoose.Schema({
-  name: String
+  name: {type: String, required: true, unique: true}
 });
 
 const categoryTypeSchema = new mongoose.Schema({
@@ -29,32 +29,27 @@ const possAnswerSchema = new mongoose.Schema({
 
 const questionSchema = new mongoose.Schema({
   _id: Number,
-  categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
-  category: String,
   text: String,
   possAnswers: [possAnswerSchema]
 });
 
+const categoryQuestionListSchema = new mongoose.Schema({
+  categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
+  categoryType: String,
+  category: String,
+  questions: [questionSchema]
+});
+
 export const CategoryQuestionList = new mongoose.model("CategoryQuestionList", 
-questionSchema);
+categoryQuestionListSchema);
 
 
 
 // Collection of users.
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  profileName: {
-    type: String,
-    required: true
-  },
-  location: {
-    type: String,
-    required: true
-  }
+  email: {type: String, required: true, unique: true},
+  profileName: {type: String, required: true},
+  location: {type: String, required: true}
 });
 
 userSchema.plugin(passportLocalMongoose, {usernameField: "email"});

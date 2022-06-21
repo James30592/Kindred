@@ -1,7 +1,7 @@
 // Class to store category type and category info in a tree structure of nested
 // objects for all categories present.
 export class CategoryInfo {
-  constructor(){
+  constructor() {
     this.catTypes = {};
   }
 
@@ -9,7 +9,7 @@ export class CategoryInfo {
   // neither of them depending on what already exists in this.
   // data should be an object and all the key: value pairs from data will be
   // added in to the CategoryInfo object at the correct place.
-  checkAndAddCategoryWithType(categoryTypeName, categoryName, data = null){
+  checkAndAddCategoryWithType(categoryTypeName, categoryName, data = null) {
     const catOrTypeExists = this._doesCategoryOrTypeExist(categoryTypeName, categoryName);
     if (catOrTypeExists === "nor"){
       this._addTypeAndCategory(categoryTypeName, categoryName, data);
@@ -18,6 +18,24 @@ export class CategoryInfo {
       this._addCategory(categoryTypeName, categoryName, data);
     };
   }
+
+  // 
+  cloneWithData(getDataFunc, args) {
+    const newCatInfo = new CategoryInfo();
+
+    const allCategoriesWithTypes = this.getAllCategories();
+
+    for (let categoryWithType in allCategoriesWithTypes) {
+      const catTypeName = categoryWithType.categoryType;
+      const categoryName = categoryWithType.category;
+      const data = getDataFunc(catTypeName, categoryName, args);
+
+      newCatInfo.checkAndAddCategoryWithType(catTypeName, categoryName, data);
+    };
+
+    return newCatInfo;
+  }
+
 
   // Returns an array of objects where each object contains the
   // categoryTypeName and categoryName, for every unique category in this.

@@ -1,5 +1,9 @@
 To do:
 
+
+continue line 67 in recommendations, trying to do a new way of getting userAnsweredQIds...
+also need to do _initRecForCatInfo in similarity
+
 use APIs for films, books etc.
 
 change mongoDB schemas to usse linking method as described here:

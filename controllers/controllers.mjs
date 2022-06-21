@@ -94,7 +94,11 @@ router.all("/questions-old/:categoryType.:category", async function(req, res){
 
 router.get("/find-kindred", async function(req, res){
   const allCategoryTypes = await models.CategoryType.find({}).exec();
-  const selectableCategories = similarity.getSelectableUserCategories(req.user);
+  const userCategoryAnswers = await models.CategoryAnswersList.find(
+    {userId: req.user._id}).exec();
+
+  const selectableCategories = similarity.getSelectableUserCategories(req.user, 
+    userCategoryAnswers);
 
   res.render("find-kindred", {
     allCategoryTypes: allCategoryTypes,
@@ -122,8 +126,9 @@ router.post("/admin/:adminRequest", async function(req, res){
   if (req.params.adminRequest === "createAutoUsers") {
     const numNewUsers = req.body.numNewUsers;
 
-    const currDBCategories = await models.CategoryType.find().exec();
-    const batchUserMaker = new admin.BatchUserCreator(currDBCategories);
+    const currDBCategories = await models.CategoryType.find({}).exec();
+    const currDBQuestions = await models.CategoryQuestionList.find({}).exec();
+    const batchUserMaker = new admin.BatchUserCreator(currDBCategories, currDBQuestions);
     const resultMsg = batchUserMaker.createUsers(numNewUsers);
 
     res.json(resultMsg);
@@ -131,35 +136,11 @@ router.post("/admin/:adminRequest", async function(req, res){
 });
 
 router.post("/find-kindred", async function(req, res){
-
   const categoryInfo = req.body;
 
-  const thisKindredList = new similarity.KindredList(categoryInfo, 10);
-  
-  const allUsers = await models.User.find({}).exec();
-
-
-  const allCategoriesWithTypes = categoryInfo.getAllCategories();
-  
-  const findCriteria = {
-    $or: [
-      {
-        $and: [
-          {categoryType: categoryTypeName}, 
-          {category: categoryName}
-        ]
-      },
-      ...
-    ]
-  };
-
-  const allRelevantAnswers = await models.CategoryAnswersList.find(findCriteria
-    ).exec();
-
-
-
-
-  thisKindredList.findKindred(req.user, allUsers);
+  const thisKindredList = new similarity.KindredList(req.user, 10);
+  await thisKindredList.initKindredList(categoryInfo);
+  thisKindredList.findKindred();
 
   res.json(thisKindredList);
 });
@@ -177,6 +158,7 @@ router.post("/recommendations", async function(req, res){
 
   thisRecommendationList.initRecommendationList(allUsers, basedOnCategoryInfo,
     resultCategoryInfo);
+    
   thisRecommendationList.getRecommendations(dbCatTypes);
 
   res.json(thisRecommendationList);
