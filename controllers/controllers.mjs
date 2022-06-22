@@ -155,7 +155,7 @@ router.post("/recommendations", async function(req, res){
   await thisRecommendationList.initRecommendationList(basedOnCategoryInfo,
     resultCategoryInfo);
 
-  await thisRecommendationList.getRecommendations();
+  thisRecommendationList.getRecommendations();
 
   res.json(thisRecommendationList);
 });
@@ -257,6 +257,8 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
     };
   };
 });
+
+
 
 
 async function getNewQuestions(numQs, filters) {
