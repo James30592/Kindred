@@ -6,6 +6,8 @@ const passportLocalMongoose = require("passport-local-mongoose");
 
 
 
+
+
 // Collection of category types and their sub-categories (embedded).
 const categorySchema = new mongoose.Schema({
   name: {type: String, required: true, unique: true}
@@ -20,31 +22,44 @@ export const CategoryType = new mongoose.model("CategoryType", categoryTypeSchem
 
 
 
-// Collection of questions for each category, linked to categoryType and 
-// category by id.
-const possAnswerSchema = new mongoose.Schema({
-  ansId: Number,
-  ansText: String
-  // ansPerc: Number     perhaps store this here, or some other type variable if a non-quantifiable question.
-}, {_id: false});
+
+
+// - removed for now to just do 0 - 10 numeric answers--------------------
+
+// // Collection of questions for each category, linked to categoryType and 
+// // category by id.
+// const possAnswerSchema = new mongoose.Schema({
+//   ansId: Number,
+//   ansText: String
+//   // ansPerc: Number     perhaps store this here, or some other type variable if a non-quantifiable question.
+// }, {_id: false});
 
 const questionSchema = new mongoose.Schema({
   _id: Number,
   text: String,
-  possAnswers: [possAnswerSchema]
+  // possAnswers: [possAnswerSchema]                  - removed for now to just do 0 - 10 numeric answers
 });
+
+const apiInfo = new mongoose.Schema({
+  _id: Number,
+  name: String
+})
 
 const categoryQuestionListSchema = new mongoose.Schema({
   categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
   categoryType: String,
   category: String,
-  questionSource: String,
   // recommendable: Boolean,
-  questions: [questionSchema]
+  isSourceAPI: Boolean,
+  apiInfo: apiInfo,
+  questions: [questionSchema],
+  // possAnswers: [{ type: Schema.Types.ObjectId, ref: "PossAnswer" }]      - default possAnswers for this category, removed for now
 });
 
 export const CategoryQuestionsList = new mongoose.model("CategoryQuestionList", 
 categoryQuestionListSchema);
+
+
 
 
 
@@ -61,11 +76,17 @@ export const User = new mongoose.model("User", userSchema);
 
 
 
+
+
 // Collection of user answers for each category for each user, linked to user 
 // and categoryType through ids.
 const answerDetailSchema = new mongoose.Schema({
   questionId: Number,
-  answerId: Number,
+  answerVal: {
+    type: Number,
+    min: [0, "Score must be at least 0."],
+    max: [10, "Score must be at most 10."]
+  },
   answerPercentile: Number
 }, {_id: false});
 

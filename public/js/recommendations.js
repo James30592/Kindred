@@ -1,19 +1,22 @@
-import { getSelectedCategoryInfo } from "../sharedJs/categories.mjs";
+import { CategoryCheckboxes } from "/modules/categoryInfo.mjs";
 
 const getRecommendationsBtn = document.querySelector(".get-recommendations");
 const recommendationsForDiv = document.querySelector(".recommendations-for");
 const basedOnDiv = document.querySelector(".based-on");
-const recommendationsForCheckboxes = recommendationsForDiv.querySelectorAll(".category-checkbox");
-const basedOnCheckboxes = basedOnDiv.querySelectorAll(".category-checkbox");
+const recForCheckboxesArr = recommendationsForDiv.querySelectorAll(".category-checkbox");
+const basedOnCheckboxesArr = basedOnDiv.querySelectorAll(".category-checkbox");
 
 getRecommendationsBtn.addEventListener("click", getRecommendations);
 
 
-async function getRecommendations() {
-  const recommendationsForCategoryInfo = getSelectedCategoryInfo(recommendationsForCheckboxes);
-  const basedOnCategoryInfo = getSelectedCategoryInfo(basedOnCheckboxes);
+async function getRecommendations() {  
+  const recForCategoryCheckboxes = new CategoryCheckboxes(recForCheckboxesArr);
+  const basedOnCategoryCheckboxes = new CategoryCheckboxes(basedOnCheckboxesArr);
+  const recForCategoryInfo = recForCategoryCheckboxes.getSelectedCategoryInfo();
+  const basedOnCategoryInfo = basedOnCategoryCheckboxes.getSelectedCategoryInfo();
+
   const allCategoryInfo = {
-    recommendationsFor: recommendationsForCategoryInfo,
+    recommendationsFor: recForCategoryInfo,
     basedOn: basedOnCategoryInfo
   };
 

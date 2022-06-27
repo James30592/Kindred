@@ -1,9 +1,7 @@
 // Class to store category type and category info in a tree structure of nested
 // objects for all categories present.
 export class CategoryInfo {
-  constructor() {
-    this.catTypes = {};
-  }
+  catTypes = {};
 
   // Given a category type and category, adds both, just the category, or
   // neither of them depending on what already exists in this.
@@ -89,22 +87,4 @@ export class CategoryInfo {
       this.catTypes[categoryTypeName].categories[categoryName][key] = data[key];
     };
   }
-}
-
-
-
-// Given an array of checkbox DOM objects, returns a CategoryInfo object
-// containing information on all selected checkboxes.
-export function getSelectedCategoryInfo(categoryCheckboxes){
-  let selectedCategoryInfo = new CategoryInfo();
-
-  categoryCheckboxes.forEach(function(checkbox){
-    if (checkbox.checked) {
-      const catTypeAndCat = checkbox.getAttribute("name").split(".");
-      selectedCategoryInfo.checkAndAddCategoryWithType(catTypeAndCat[0],
-        catTypeAndCat[1]);
-    };
-  });
-
-  return selectedCategoryInfo;
 }

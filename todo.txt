@@ -1,12 +1,10 @@
 To do:
 
-currently doing currentAnswerers code... then have got to do questions code and general check, import statements etc....
+questions code...
 
 use APIs for films, books etc.
 
 add validation to mongoose schemas, eg. scores can only be between 1 and 10 etc.
-
-change class methods and fields to private where possible
 
 
 

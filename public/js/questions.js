@@ -54,8 +54,22 @@ function showCurrentQuestion() {
 // Submit answer information to the server, update the queue if necessary.
 function answerQuestion(event) {
   const userHasSeen = event.currentTarget === rateBtn;
+  const currQuestion = questionsQueue.shift();
+  const thisScore = Number(ratingScore.innerText);
+
+  submitAnswer(currQuestion, userHasSeen, thisScore, categoryTypeName, categoryName);
   
-  const currQuestion = questionsQueue[0];
+  // Show the new first question in the queue, after shifting the array.
+  showCurrentQuestion();
+
+  // Add items to the questions queue if it's running low.
+  updateQuestionQueue();
+}
+
+
+// POST this answer info to the server.
+function submitAnswer(currQuestion, userHasSeen, thisScore, catTypeName, 
+  catName) {
 
   const answerInfo = {
     id: currQuestion.id,
@@ -63,7 +77,7 @@ function answerQuestion(event) {
     releaseDate: currQuestion.releaseDate,
     posterPath: currQuestion.posterPath,
     seen: userHasSeen,
-    score: Number(ratingScore.innerText)
+    score: thisScore
   };
   
   const postObj = {
@@ -71,19 +85,11 @@ function answerQuestion(event) {
     data: answerInfo
   };
 
-  // Post the answer info.
-  fetch(`/questions/${categoryTypeName}/${categoryName}`, {
+  fetch(`/questions/${catTypeName}/${catName}`, {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(postObj)
   });
-  
-  // Remove this answered question from the questions queue.
-  questionsQueue.shift();
-  showCurrentQuestion();
-
-  // Add items to the questions queue if it's running low.
-  updateQuestionQueue();
 }
 
 
@@ -120,6 +126,7 @@ async function getNewQuestions(numQuestions) {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(postObj)
   });
+
   const newQuestions = await fetchResponse.json();
-  return newQuestions.qs;
+  return newQuestions.results;
 }

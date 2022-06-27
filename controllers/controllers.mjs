@@ -6,7 +6,9 @@ import * as questions from "../lib/questions.mjs";
 import * as similarity from "../lib/similarity.mjs";
 import * as recommendations from "../lib/recommendations.mjs";
 import * as admin from "../lib/admin.mjs";
+import * as dbHelpers from "../lib/dbHelpers.mjs";
 import { currAnswerers } from '../lib/currentAnswerers.mjs';
+import { apiRefs } from '../lib/apiRefs.mjs';
 
 const express = require("express");
 const ejs = require("ejs");
@@ -52,7 +54,7 @@ router.get("/logout", function(req, res){
 
 
 
-
+// ---------------------REMOVE---------------------------------------------------
 router.get("/questions-menu-old", async function(req, res){
   const allCategoryTypes = await models.CategoryType.find({}).exec();
   res.render("questions-menu-old", {allCategoryTypes: allCategoryTypes});
@@ -88,6 +90,7 @@ router.all("/questions-old/:categoryType.:category", async function(req, res){
     });
   };
 });
+// ------------------------------------------------------------------------------
 
 
 
@@ -97,7 +100,7 @@ router.get("/find-kindred", async function(req, res){
   const userCategoryAnswers = await models.CategoryAnswersList.find(
     {userId: req.user._id}).exec();
 
-  const selectableCategories = similarity.getSelectableUserCategories(req.user, 
+  const selectableCategories = similarity.getSelectableUserCategories(
     userCategoryAnswers);
 
   res.render("find-kindred", {
@@ -106,18 +109,22 @@ router.get("/find-kindred", async function(req, res){
   });
 });
 
-router.get("/admin", async function(req, res){
-  res.render("admin");
-});
-
 router.get("/recommendations", async function(req, res){
   const allCategoryTypes = await models.CategoryType.find({}).exec();
-  const selectableCategories = similarity.getSelectableUserCategories(req.user);
+  const userCategoryAnswers = await models.CategoryAnswersList.find(
+    {userId: req.user._id}).exec();
+
+  const selectableCategories = similarity.getSelectableUserCategories(
+    userCategoryAnswers);
 
   res.render("recommendations", {
     allCategoryTypes: allCategoryTypes,
     selectableCategories: selectableCategories
   });
+});
+
+router.get("/admin", async function(req, res){
+  res.render("admin");
 });
 
 
@@ -128,7 +135,9 @@ router.post("/admin/:adminRequest", async function(req, res){
 
     const currDBCategories = await models.CategoryType.find({}).exec();
     const currDBQuestions = await models.CategoryQuestionsList.find({}).exec();
-    const batchUserMaker = new admin.BatchUserCreator(currDBCategories, currDBQuestions);
+    const batchUserMaker = new admin.BatchUserCreator(currDBCategories, 
+      currDBQuestions);
+
     const resultMsg = batchUserMaker.createUsers(numNewUsers);
 
     res.json(resultMsg);
@@ -211,12 +220,11 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
   const currAnswerer = await currAnswerers.getCurrAnswerer(req.user._id, 
     categoryTypeName, categoryName);
 
-  const user = currAnswerer.user;
-  const userAnswers = currAnswerer.answers;
+  const userAnswers = currAnswerer.users[req.user._id].answers;
 
 
   if (req.method === "GET") {
-    res.render("questions", {
+      res.render("questions", {
       categoryTypeName: categoryTypeName,
       categoryName: categoryName,
       userAnswers: userAnswers
@@ -247,13 +255,10 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
       const numQs = postObj.data.numQs;
       const filters = postObj.data.filters;
 
-      const newQuestions = await getNewQuestions(numQs, filters);
+      const newQs = new NewQuestions(categoryTypeName, categoryName);
+      newQs.getQuestions(numQs, filters, userAnswers);
 
-      const newQsObj = {
-        qs: newQuestions
-      };
-
-      res.json(newQsObj);
+      res.json(newQs);
     };
   };
 });
@@ -261,24 +266,101 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
 
 
-async function getNewQuestions(numQs, filters) {
-  const TMDBKey = "84c6fe840210161c52e9a52c9cc129bb";
-      
-  let currPage = 1;
 
-  const fetchResponse = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDBKey}&sort_by=vote_count.desc&page=${currPage}`);
-  const movieResultsPage = await fetchResponse.json();
-  const newQuestions = [];
+// For NewQuestions object, used to check and create list of next available (not 
+// already answered by the user) questions for a given category, from either API or DB.
+class NewQuestions {
+  categoryTypeName;
+  categoryName;
+  results = [];
 
-  for (let movie of movieResultsPage.results) {
-    const thisMovieInfo = {
-      id: movie.id,
-      title: movie.title,
-      releaseDate: movie.release_date,
-      posterPath: movie.poster_path
+  constructor(catTypeName, catName) {
+    this.categoryTypeName = catTypeName;
+    this.categoryName = catName;
+  }
+
+  // query either DB or api and get first numQs number of questions that are unanswered...
+  async getQuestions(numQs, filters, userAnswers) {
+    const categoryQsList = new dbHelpers.CategoryQuestionsList();
+    await categoryQsList.init(this.categoryTypeName, this.categoryName);
+    
+    // Check if questions for this category come from API or DB.
+    if (categoryQsList.item.isSourceAPI) {
+      // Source of questions is an API, get the API info from DB.
+      const sourceAPIDetails = categoryQsList.item.apiInfo;
+      const apiRefItem = apiRefs[sourceAPIDetails._id];
+  
+      let pageNum = 1;
+  
+      while (this.results.length < numQs) {
+        const pageResults = await NewQuestions.#fetchPage(apiRefItem.key + 
+          apiRefItem.path + apiRefItem.pageAppend + pageNum)
+
+        this.#testIfAnswered(pageResults, apiRefItem.idField, userAnswers, numQs);
+        pageNum++;
+      };
+    }
+  
+    else {
+      // Source of questions is DB, retrieve them.
+      this.#testIfAnswered(categoryQsList.item.questions, "_id", userAnswers, numQs);
+    }
+    
+    return this.results;
+  }
+
+  // Fetches a page worth of results from an API.
+  static async #fetchPage(path) {
+    const fetchResponse = await fetch(path);
+    const fetchResultsPage = await fetchResponse.json();
+    let results;
+
+    switch(true) {
+      case (categoryTypeName === "Interests" && categoryName === "Films") :
+        results = fetchResultsPage.results;
+        break;
+
+      default:
+        results = fetchResultsPage
     };
-    newQuestions.push(thisMovieInfo);
-  };
 
-  return newQuestions;
+    return results;
+  }
+
+  // Tests an array of potential new questions and if not already answered by 
+  // the user.
+  #testIfAnswered(potentialNewQs, idFieldName, userAnswers, numQs) {
+    for (let potentialNewQ of potentialNewQs) {
+      if (this.results.length >= numQs) break;
+
+      if (!(potentialNewQ[idFieldName] in userAnswers)) {
+        const newQObj = NewQuestions.#getNewQObj(potentialNewQ, 
+          this.categoryTypeName, this.categoryName);
+
+        this.results.push(newQObj);
+      };
+    };
+  }
+
+  // Creates question object, individualised for each category as necessary.
+  static #getNewQObj(newQ, catTypeName, catName) {
+    const newQObj = null;
+
+    switch(true) {
+
+      case (catTypeName === "Interests" && catName === "Films") :
+        newQObj = {
+          _id: newQ.id,
+          title: newQ.title,
+          releaseDate: newQ.release_ate,
+          posterPath: newQ.poster_path,
+        };
+        break;
+
+      default:
+        newQObj = newQ;
+    };
+    
+    return newQObj;
+  }
 }

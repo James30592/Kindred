@@ -1,13 +1,14 @@
-import { getSelectedCategoryInfo } from "../sharedJs/categories.mjs";
+import { CategoryCheckboxes } from "/modules/categoryInfo.mjs";
 
 const findKindredBtn = document.querySelector(".find-kindred");
-const categoryCheckboxes = document.querySelectorAll(".category-checkbox");
+const categoryCheckboxesArr = document.querySelectorAll(".category-checkbox");
 
 findKindredBtn.addEventListener("click", findKindred);
 
 
 async function findKindred(){
-  const selectedCategoryInfo = getSelectedCategoryInfo(categoryCheckboxes);
+  const categoryCheckboxes = new CategoryCheckboxes(categoryCheckboxesArr);
+  const selectedCategoryInfo = categoryCheckboxes.getSelectedCategoryInfo();
 
   const fetchResponse = await fetch("/find-kindred", {
     method: "POST",
