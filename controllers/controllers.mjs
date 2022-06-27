@@ -222,7 +222,6 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
   const userAnswers = currAnswerer.users[req.user._id].answers;
 
-
   if (req.method === "GET") {
       res.render("questions", {
       categoryTypeName: categoryTypeName,
@@ -231,23 +230,15 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
     });
   }
 
-
   else if (req.method === "POST") {
     const postObj = req.body;
 
     // Update the database for this user with their new answer.
     if (postObj.type === "answer") {
-      const newAnswer = postObj.data;
-
-      // add this new answer to the questions answer in db...
-
-      console.log("saving user answer");
+      userAnswers.push(postObj.data);
+      await currAnswerer.user.save();
+      currAnswerer.updateLastActionTime();
       res.end();
-
-      // questions.updateUserAnswers(req.body, userAnswers);
-      // user.save(function() {
-      //   res.redirect("/questions-menu");
-      // });
     }
 
     // Get new questions for the questions queue.
@@ -257,11 +248,14 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
       const newQs = new NewQuestions(categoryTypeName, categoryName);
       newQs.getQuestions(numQs, filters, userAnswers);
-
       res.json(newQs);
     };
   };
 });
+
+
+
+
 
 
 

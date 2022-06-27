@@ -43,10 +43,10 @@ const questionSchema = new mongoose.Schema({
 const apiInfo = new mongoose.Schema({
   _id: Number,
   name: String
-})
+});
 
 const categoryQuestionListSchema = new mongoose.Schema({
-  categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
+  categoryTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "CategoryType" },
   categoryType: String,
   category: String,
   // recommendable: Boolean,
@@ -82,6 +82,7 @@ export const User = new mongoose.model("User", userSchema);
 // and categoryType through ids.
 const answerDetailSchema = new mongoose.Schema({
   questionId: Number,
+  skip: Boolean,
   answerVal: {
     type: Number,
     min: [0, "Score must be at least 0."],
@@ -91,8 +92,8 @@ const answerDetailSchema = new mongoose.Schema({
 }, {_id: false});
 
 const categoryAnswersSchema = new mongoose.Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User" },
-  categoryTypeId: { type: Schema.Types.ObjectId, ref: "CategoryType" },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  categoryTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "CategoryType" },
   categoryType: String,
   category: String,
   answers: [answerDetailSchema]

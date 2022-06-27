@@ -2,7 +2,7 @@ const QUEUE_DESIRED_SIZE = 40;
 const QUEUE_REFRESH_THRESHOLD = 20;
 
 const rateBtn = document.querySelector(".rate-btn");
-const notSeenItBtn = document.querySelector(".not-seen-btn");
+const skipBtn = document.querySelector(".skip-btn");
 const mainHeader = document.querySelector(".main-header");
 
 // Filter info.
@@ -16,7 +16,11 @@ const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
 rateBtn.addEventListener("click", answerQuestion);
-notSeenItBtn.addEventListener("click", answerQuestion);
+skipBtn.addEventListener("click", answerQuestion);
+
+for (let changeScoreBtn of document.querySelectorAll(".change-score-btn")) {
+  changeScoreBtn.addEventListener("click", changeScore);
+};
 
 let questionsQueue = [];
 let currQuestion = null;
@@ -43,6 +47,20 @@ window.onload = async () => {
 // on changing any of the filter parameters, update the questionsQueue
 
 
+
+// Update the score on button presses.
+function changeScore(event) {
+  let changeAmount = 0.5;
+  if (event.currentTarget.classList.contains(".big-change-btn")) {
+    changeAmount = 1.0;
+  };
+  if (event.currentTarget.classList.contains(".down-btn")) {
+    changeAmount = -changeAmount;
+  };
+
+  ratingScore.innerText = ratingScore.innerText + changeAmount;
+}
+
 // 
 function showCurrentQuestion() {
   currQuestion = questionsQueue[0];
@@ -53,11 +71,11 @@ function showCurrentQuestion() {
 
 // Submit answer information to the server, update the queue if necessary.
 function answerQuestion(event) {
-  const userHasSeen = event.currentTarget === rateBtn;
+  const userSkipped = (event.currentTarget === skipBtn);
   const currQuestion = questionsQueue.shift();
-  const thisScore = Number(ratingScore.innerText);
+  const thisScore = (userSkipped ? null : Number(ratingScore.innerText));
 
-  submitAnswer(currQuestion, userHasSeen, thisScore, categoryTypeName, categoryName);
+  submitAnswer(currQuestion, userSkipped, thisScore, categoryTypeName, categoryName);
   
   // Show the new first question in the queue, after shifting the array.
   showCurrentQuestion();
@@ -68,22 +86,20 @@ function answerQuestion(event) {
 
 
 // POST this answer info to the server.
-function submitAnswer(currQuestion, userHasSeen, thisScore, catTypeName, 
+function submitAnswer(currQuestion, userSkipped, thisScore, catTypeName, 
   catName) {
 
   const answerInfo = {
-    id: currQuestion.id,
-    title: currQuestion.title,
-    releaseDate: currQuestion.releaseDate,
-    posterPath: currQuestion.posterPath,
-    seen: userHasSeen,
-    score: thisScore
+    questionId: currQuestion._id,
+    skip: userSkipped
+  };
+
+  if (!userSkipped) {
+    answerInfo.answerVal = thisScore;
+    answerInfo.answerPercentile = thisScore * 10
   };
   
-  const postObj = {
-    type: "answer",
-    data: answerInfo
-  };
+  const postObj = {type: "answer", data: answerInfo};
 
   fetch(`/questions/${catTypeName}/${catName}`, {
     method: "POST",
