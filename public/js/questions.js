@@ -8,6 +8,8 @@ const skipBtn = document.querySelector(".skip-btn");
 const changeScoreBtns = document.querySelectorAll(".change-score-btn");
 const currQuestionText = document.querySelector(".curr-question");
 const ratingScore = document.querySelector(".rating-score");
+const panelElems = {panelDiv, rateBtn, skipBtn, changeScoreBtns, 
+  currQuestionText, ratingScore};
 
 // Filter info.
 const fromDateInput = document.querySelector(".filter-date-from");
@@ -18,14 +20,16 @@ const mainHeader = document.querySelector(".main-header");
 const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
-// New UI panel object.
-const uiPanel = new QuestionsUiPanel(panelDiv, rateBtn, skipBtn, changeScoreBtns,
-  currQuestionText, ratingScore);
+// New questions queue object.
+const thisQueue = new QuestionsQueue(categoryTypeName, categoryName);
 
+// New UI panel object.
+const uiPanel = new QuestionsUiPanel(panelElems, thisQueue, categoryTypeName, 
+  categoryName);
+
+// Add event listeners to the panel buttons.
 uiPanel.init();
 
-// New queue object.
-const thisQueue = new QuestionsQueue(uiPanel, categoryTypeName, categoryName);
 
 
 
@@ -53,155 +57,175 @@ window.onload = async () => {
   thisQueue.showCurrentQuestion();
 };
 
+
+
+
+
 class QuestionsQueue {
   categoryTypeName;
   categoryName;
-  uiPanel;
   queue = [];
-  currQuestion = null;
   filters;
   endOfQSource = false;
 
-  constructor(uiPanel, categoryType, category) {
-    this.uiPanel = uiPanel;
+  constructor(categoryType, category) {
     this.categoryTypeName = categoryType;
     this.categoryName = category;
   }
 
-  init() {
+  // Gets the text to display of the current first item in the questions queue.
+  getCurrQText() {
+    let currQText;
+    let endOfQueue = false;
 
+    // Hide question answer panel if run out of questions and display a message.
+    if (this.queue.length === 0) {
+      currQText = "You have answered all questions in this category!";
+      endOfQueue = true;
+    }
+    else {
+      currQText = QuestionsQueue.#getQuestionText(this.categoryTypeName, 
+        this.categoryName, this.queue[0]);
+    };
+
+    return {endOfQueue, currQText};
+  }
+
+  // Get the string to show as the question text, depending on the category.
+  static #getQuestionText(catTypeName, catName, currQuestion) {
+    let displayText;
+  
+    switch(true) {
+  
+      case (catTypeName === "Interests" && catName === "Films") :
+        displayText = `${currQuestion.title} (${currQuestion.releaseDate})`;
+        break;
+  
+      default:
+        displayText = currQuestion.text;
+    };
+    
+    return displayText;
   }
 }
+
+
+
 
 
 class QuestionsUiPanel {
-  panelDiv; 
-  rateBtn; 
-  skipBtn; 
-  changeScoreBtns;
-  currQuestionText; 
-  ratingScore;
+  domElems;
+  questionsQueue;
+  categoryTypeName;
+  categoryName;
 
-  constructor(panelDiv, rateBtn, skipBtn, changeScoreBtns, currQuestionText, 
-    ratingScore) {
-
-    this.panelDiv = panelDiv;
-    this.rateBtn = rateBtn;
-    this.skipBtn = skipBtn;
-    this.changeScoreBtns = changeScoreBtns;
-    this.currQuestionText = currQuestionText;
-    this.ratingScore = ratingScore;
+  constructor(panelElems, questionsQueue, categoryTypeName, categoryName) {
+    this.domElems = panelElems;
+    this.questionsQueue = questionsQueue;
+    this.categoryTypeName = categoryTypeName;
+    this.categoryName = categoryName;
   }
+
 
   // Add event listeners to the buttons.
   init() {
-    this.rateBtn.addEventListener("click", this.answerQuestion);
-    this.skipBtn.addEventListener("click", this.answerQuestion);
+    this.rateBtn.addEventListener("click", () => {this.answerQuestion});
+    this.skipBtn.addEventListener("click", () => {this.answerQuestion});
     for (let changeScoreBtn of this.changeScoreBtns) {
-      changeScoreBtn.addEventListener("click", this.changeScore);
+      changeScoreBtn.addEventListener("click", () => {this.changeScore});
     };
   }
   
+
+  // Update the score on button presses.
+  changeScore(event) {
+    let changeAmount = 0.5;
+    if (event.currentTarget.classList.contains("big-change-btn")) {
+      changeAmount = 1.0;
+    };
+    if (event.currentTarget.classList.contains("down-btn")) {
+      changeAmount = -changeAmount;
+    };
   
-}
-
-
-
-
-// Update the score on button presses.
-function changeScore(event) {
-  let changeAmount = 0.5;
-  if (event.currentTarget.classList.contains("big-change-btn")) {
-    changeAmount = 1.0;
-  };
-  if (event.currentTarget.classList.contains("down-btn")) {
-    changeAmount = -changeAmount;
-  };
-
-  ratingScore.innerText = Number(ratingScore.innerText) + changeAmount;
-}
-
-// Update webpage to show current question at front of queue.
-function showCurrentQuestion() {
-  currQuestion = questionsQueue[0];
-
-  // Hide question answer panel if run out of questions and display a message.
-  if (questionsQueue.length === 0) {
-    currQuestionText.innerText = "You have answered all questions in this category!";
-
-    panelDiv.style.visibility = "hidden";
-    // ratePanel.style.display = "none";
+    ratingScore.innerText = Number(ratingScore.innerText) + changeAmount;
   }
-  else {
-    currQuestionText.innerText = getQuestionText(categoryTypeName, categoryName, 
-      currQuestion);
-  };
 
-  ratingScore.innerText = 5;
-}
 
-// Get the string to show as the question text, depending on the category.
-function getQuestionText(catTypeName, catName, currQuestion) {
-  let displayText;
+  // Submit answer information to the server, update the queue if necessary.
+  answerQuestion(event) {
+    const userSkipped = (event.currentTarget === skipBtn);
+    const currQuestion = this.questionsQueue.queue.shift();
+    const thisScore = (userSkipped ? null : Number(this.ratingScore.innerText));
 
-  switch(true) {
+    const answerObj = QuestionsUiPanel.#getAnswerObj(currQuestion, userSkipped, 
+      thisScore);
 
-    case (catTypeName === "Interests" && catName === "Films") :
-      displayText = `${currQuestion.title} (${currQuestion.releaseDate})`;
-      break;
+    // POSTS this new answer to the server for adding to DB.
+    this.#submitAnswer(answerObj);
+    
+    // Updates the displayed question with the new first queue item.
+    this.#updateDisplayedQ();
 
-    default:
-      displayText = currQuestion.text;
-  };
+    // Add items to the questions queue if it's running low and there are 
+    // unanswered questions remaining in the source.
+    if (!endOfQSource) {
+      updateQuestionQueue();
+    };
+  }
   
-  return displayText;
-}
 
-// Submit answer information to the server, update the queue if necessary.
-function answerQuestion(event) {
-  const userSkipped = (event.currentTarget === skipBtn);
-  const currQuestion = questionsQueue.shift();
-  const thisScore = (userSkipped ? null : Number(ratingScore.innerText));
+  // Updates the displayed question with the new first queue item.
+  #updateDisplayedQ() {
+    const newQInfo = this.questionsQueue.getCurrQText();
+    const newQText = newQInfo.currQText;
 
-  submitAnswer(currQuestion, userSkipped, thisScore, categoryTypeName, categoryName);
+    if (newQInfo.endOfQueue) {
+      this.domElems.panelDiv.style.visibility = "hidden";
+    };
+    this.domElems.currQuestionText.innerText = newQText;
+    this.domElems.ratingScore.innerText = 5;
+  }
+
+
+  // Gets current answer to current question as an object for DB.
+  static #getAnswerObj(currQuestion, userSkipped, thisScore) {
+    const answerInfo = {
+      questionId: currQuestion._id,
+      skip: userSkipped
+    };
   
-  // Show the new first question in the queue, after shifting the array.
-  showCurrentQuestion();
+    if (!userSkipped) {
+      answerInfo.answerVal = thisScore;
+      answerInfo.answerPercentile = thisScore * 10
+    };
 
-  // Add items to the questions queue if it's running low and there are 
-  // unanswered questions remaining in the source.
-  if (!endOfQSource) {
-    updateQuestionQueue();
-  };
-}
+    return answerInfo;
+  }
 
 
-// POST this answer info to the server.
-function submitAnswer(currQuestion, userSkipped, thisScore, catTypeName, 
-  catName) {
-
-  const answerInfo = {
-    questionId: currQuestion._id,
-    skip: userSkipped
-  };
-
-  if (!userSkipped) {
-    answerInfo.answerVal = thisScore;
-    answerInfo.answerPercentile = thisScore * 10
-  };
+  // POST this answer info to the server.
+  #submitAnswer(answerObj) {   
+    const postObj = {
+      type: "answer", 
+      data: answerObj
+    };
   
-  const postObj = {
-    type: "answer", 
-    data: answerInfo, 
-    apiMaxPage: currQuestion.apiPageNum
-  };
+    fetch(`/questions/${this.categoryTypeName}/${this.categoryName}`, {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(postObj)
+    });
+  }
 
-  fetch(`/questions/${catTypeName}/${catName}`, {
-    method: "POST",
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(postObj)
-  });
+
+
+
 }
+
+
+
+
+
 
 
 // Adds more questions to the questions queue if necessary.
