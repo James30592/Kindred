@@ -220,13 +220,13 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
   const currAnswerer = await currAnswerers.getCurrAnswerer(req.user._id, 
     categoryTypeName, categoryName);
 
-  const userAnswersList = currAnswerer.answersList.answers;
+  const userAnswers = currAnswerer.answersList.answers;
 
   if (req.method === "GET") {
     res.render("questions", {
       categoryTypeName: categoryTypeName,
       categoryName: categoryName,
-      userAnswers: userAnswersList
+      userAnswers: userAnswers
     });
   }
 
@@ -235,26 +235,18 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
     // Update the database for this user with their new answer.
     if (postObj.type === "answer") {
-      userAnswersList.push(postObj.data);
-      // Can I change line below to currMaxAPIPage assignment?........
-      currAnswerer.answersList.currAPIPage = postObj.apiMaxPage;
+      userAnswers.push(postObj.data);
       await currAnswerer.answersList.save();
-
       currAnswerer.updateLastActionTime();
       res.end();
     }
 
     // Get new questions for the questions queue.
     else if (postObj.type = "updateQueue") {
-      const numQs = postObj.data.numQs;
-      const filters = postObj.data.filters;
+      const newQs = new NewQuestions(categoryTypeName, categoryName, 
+        postObj.data);
 
-      const newQs = new NewQuestions(categoryTypeName, categoryName);
-      await newQs.getQuestions(numQs, filters, currAnswerer);
-
-      const lastNewQ = newQs.results.at(-1);
-      currAnswerer.updateQueueEnd(lastNewQ?.apiPageNum, lastNewQ?._id);
-
+      await newQs.getQuestions(userAnswers);
       res.json(newQs);
     };
   };
@@ -274,21 +266,25 @@ class NewQuestions {
   categoryTypeName;
   categoryName;
   results = [];
-  // If question source list (whether DB or API) has been exhausted.
   endOfQSource = true;
+  numQs;
+  filters;
+  isNewQueue;
+  maxQueueApiPage;
 
-  constructor(catTypeName, catName) {
+  constructor(catTypeName, catName, queueReqInfo) {
     this.categoryTypeName = catTypeName;
     this.categoryName = catName;
+    this.numQs = queueReqInfo.numQs;
+    this.filters = queueReqInfo.filters;
+    this.isNewQueue = queueReqInfo.isNewQueue;
+    this.currQueueIds = queueReqInfo.currQueueIds;
+    this.maxQueueApiPage = queueReqInfo.maxQueueApiPage;
   }
 
-  // query either DB or api and get first numQs number of questions that are unanswered...
-  async getQuestions(numQs, filters, currAnswerer) {
-    const userAnswers = currAnswerer.answersList.answers;
-    const currMaxAPIPageNum = currAnswerer.answersList.currAPIPage;
-    const lastQueueItemAPIPage = currAnswerer.endQueueAPIPage;
-    const lastQueueItemID = currAnswerer.endQueueId;
-
+  // Query either DB or API and get first numQs number of questions that are 
+  // unanswered and not already in the queue.
+  async getQuestions(userAnswers) {
     const categoryQsList = new dbHelpers.CategoryQuestionsList();
     await categoryQsList.init(this.categoryTypeName, this.categoryName);
     
@@ -298,16 +294,19 @@ class NewQuestions {
       const sourceAPIDetails = categoryQsList.item.apiInfo;
       const apiRefItem = apiRefs[sourceAPIDetails._id];
 
-      let pageNum = lastQueueItemAPIPage ?? currMaxAPIPageNum;
+      // If extending a queue then only start fetching from the API from the 
+      // current max page of the search based on the current questions queue.
+      let pageNum = this.isNewQueue ? 1 : this.maxQueueApiPage;
   
-      while (this.results.length < numQs) {
-        const pageResults = await this.#fetchPage(apiRefItem.path + 
-          apiRefItem.key + apiRefItem.pageAppend + pageNum)
-        
-        const prevQueueEndId = (pageNum === lastQueueItemAPIPage) ? lastQueueItemID : null;
+      while (this.results.length < this.numQs) {
+        const apiPath = apiRefItem.path + apiRefItem.key + 
+          apiRefItem.pageAppend + pageNum;
 
-        this.#buildResults(pageResults, apiRefItem.idField, userAnswers, numQs, 
-          pageNum, prevQueueEndId);
+        const pageResults = await this.#fetchPage(apiPath);
+
+        // Test new questions from source to see if new and add to results.
+        this.#buildResults(pageResults, apiRefItem.idField, userAnswers, 
+          pageNum);
 
         pageNum++;
       };
@@ -315,7 +314,7 @@ class NewQuestions {
   
     else {
       // Source of questions is DB, retrieve them.
-      this.#buildResults(categoryQsList.item.questions, "_id", userAnswers, numQs);
+      this.#buildResults(categoryQsList.item.questions, "_id", userAnswers);
     }
 
     return this.results;
@@ -340,35 +339,25 @@ class NewQuestions {
   }
 
   // Tests an array of potential new questions and if not already answered by 
-  // the user.
-  #buildResults(potentialNewQs, idFieldName, userAnswers, numQs, 
-    apiPageNum = null, prevQueueEndId = null) {
-
-    const alreadyInQueue = Boolean(prevQueueEndId);
+  // the user or in the queue, adds them to this results.
+  #buildResults(potentialNewQs, idFieldName, userAnswers, apiPageNum = null) {
 
     const userAnsweredQIds = userAnswers.map(ans => ans.questionId);
 
     for (let potentialNewQ of potentialNewQs) {
-      // Check if found the item at the end of the current queue. If so, start 
-      // adding the items after this.
-      if (potentialNewQ[idFieldName] === prevQueueEndId) {
-        alreadyInQueue = false;
-        continue;
-      };
-      
-      // If not yet found the end of the current queue, keep iterating.
-      if (alreadyInQueue) {
-        continue;
-      };
-
       // Have got enough new questions for the queue already.
-      if (this.results.length >= numQs) {
+      if (this.results.length >= this.numQs) {
         this.endOfQSource = false;
         break;
       };
 
-      // Check if the user has already answered this question.
-      if (!userAnsweredQIds.includes(potentialNewQ[idFieldName])) {
+      const potentialNewQId = potentialNewQ[idFieldName];
+
+      // Check that this question is not already in the queue and that the user 
+      // has not already answered it.
+      if ((!this.currQueueQIds.includes(potentialNewQId)) && 
+          (!userAnsweredQIds.includes(potentialNewQId))) {
+
         const newQObj = NewQuestions.#getNewQObj(potentialNewQ, 
           this.categoryTypeName, this.categoryName, apiPageNum);
 
