@@ -5,9 +5,9 @@ const QUEUE_REFRESH_THRESHOLD = 20;
 const panelDiv = document.querySelector(".rate-panel");
 const rateBtn = document.querySelector(".rate-btn");
 const skipBtn = document.querySelector(".skip-btn");
+const changeScoreBtns = document.querySelectorAll(".change-score-btn");
 const currQuestionText = document.querySelector(".curr-question");
 const ratingScore = document.querySelector(".rating-score");
-const uiPanel = {panelDiv, rateBtn, skipBtn, currQuestionText, ratingScore};
 
 // Filter info.
 const fromDateInput = document.querySelector(".filter-date-from");
@@ -18,13 +18,18 @@ const mainHeader = document.querySelector(".main-header");
 const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
-rateBtn.addEventListener("click", answerQuestion);
-skipBtn.addEventListener("click", answerQuestion);
+// New UI panel object.
+const uiPanel = new QuestionsUiPanel(panelDiv, rateBtn, skipBtn, changeScoreBtns,
+  currQuestionText, ratingScore);
 
-for (let changeScoreBtn of document.querySelectorAll(".change-score-btn")) {
-  changeScoreBtn.addEventListener("click", changeScore);
-};
+uiPanel.init();
 
+// New queue object.
+const thisQueue = new QuestionsQueue(uiPanel, categoryTypeName, categoryName);
+
+
+
+// -----------------------------------------------------------------------------------
 let questionsQueue = [];
 let currQuestion = null;
 // Store if user has exhausted all questions in source for this category.
@@ -40,10 +45,13 @@ window.onload = async () => {
 // if questions queue runs out (eg. filtered by obscure actor and rated all 
 // their films) then display message "you have rated all films meeting these 
 // criteria, expand filter criteria".
+// -----------------------------------------------------------------------------------
 
 
-
-const thisQueue = new QuestionsQueue(uiPanel, categoryTypeName, categoryName);
+window.onload = async () => {
+  await thisQueue.updateQuestionQueue();
+  thisQueue.showCurrentQuestion();
+};
 
 class QuestionsQueue {
   categoryTypeName;
@@ -52,13 +60,49 @@ class QuestionsQueue {
   queue = [];
   currQuestion = null;
   filters;
-  endOfQSource;
+  endOfQSource = false;
 
   constructor(uiPanel, categoryType, category) {
     this.uiPanel = uiPanel;
     this.categoryTypeName = categoryType;
     this.categoryName = category;
   }
+
+  init() {
+
+  }
+}
+
+
+class QuestionsUiPanel {
+  panelDiv; 
+  rateBtn; 
+  skipBtn; 
+  changeScoreBtns;
+  currQuestionText; 
+  ratingScore;
+
+  constructor(panelDiv, rateBtn, skipBtn, changeScoreBtns, currQuestionText, 
+    ratingScore) {
+
+    this.panelDiv = panelDiv;
+    this.rateBtn = rateBtn;
+    this.skipBtn = skipBtn;
+    this.changeScoreBtns = changeScoreBtns;
+    this.currQuestionText = currQuestionText;
+    this.ratingScore = ratingScore;
+  }
+
+  // Add event listeners to the buttons.
+  init() {
+    this.rateBtn.addEventListener("click", this.answerQuestion);
+    this.skipBtn.addEventListener("click", this.answerQuestion);
+    for (let changeScoreBtn of this.changeScoreBtns) {
+      changeScoreBtn.addEventListener("click", this.changeScore);
+    };
+  }
+  
+  
 }
 
 
