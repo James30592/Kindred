@@ -1,17 +1,20 @@
 const QUEUE_DESIRED_SIZE = 40;
 const QUEUE_REFRESH_THRESHOLD = 20;
 
+// Questions panel elements.
+const panelDiv = document.querySelector(".rate-panel");
 const rateBtn = document.querySelector(".rate-btn");
 const skipBtn = document.querySelector(".skip-btn");
-const mainHeader = document.querySelector(".main-header");
+const currQuestionText = document.querySelector(".curr-question");
+const ratingScore = document.querySelector(".rating-score");
+const uiPanel = {panelDiv, rateBtn, skipBtn, currQuestionText, ratingScore};
 
 // Filter info.
 const fromDateInput = document.querySelector(".filter-date-from");
 const toDateInput = document.querySelector(".filter-date-to");
 
-const currQuestionText = document.querySelector(".curr-question");
-const ratingScore = document.querySelector(".rating-score");
-
+// Current category info.
+const mainHeader = document.querySelector(".main-header");
 const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
@@ -24,17 +27,13 @@ for (let changeScoreBtn of document.querySelectorAll(".change-score-btn")) {
 
 let questionsQueue = [];
 let currQuestion = null;
-
-let pageCounter = 1;
+// Store if user has exhausted all questions in source for this category.
+let endOfQSource = false;
 
 window.onload = async () => {
   await updateQuestionQueue();
   showCurrentQuestion();
 };
-
-// fetch a page of discover movie results using TMDB api, go through each one 
-// and check if user answered yet using the id, for any that user hasn't answered, 
-// add them to the queue. keep doing this for pages of results until queue has size 20.
 
 // searching for particular film just adds it to the front of the questionsQueue once selected.
 
@@ -43,31 +42,76 @@ window.onload = async () => {
 // criteria, expand filter criteria".
 
 
-// current film shows questionsQueue[0]
-// on changing any of the filter parameters, update the questionsQueue
+
+const thisQueue = new QuestionsQueue(uiPanel, categoryTypeName, categoryName);
+
+class QuestionsQueue {
+  categoryTypeName;
+  categoryName;
+  uiPanel;
+  queue = [];
+  currQuestion = null;
+  filters;
+  endOfQSource;
+
+  constructor(uiPanel, categoryType, category) {
+    this.uiPanel = uiPanel;
+    this.categoryTypeName = categoryType;
+    this.categoryName = category;
+  }
+}
+
 
 
 
 // Update the score on button presses.
 function changeScore(event) {
   let changeAmount = 0.5;
-  if (event.currentTarget.classList.contains(".big-change-btn")) {
+  if (event.currentTarget.classList.contains("big-change-btn")) {
     changeAmount = 1.0;
   };
-  if (event.currentTarget.classList.contains(".down-btn")) {
+  if (event.currentTarget.classList.contains("down-btn")) {
     changeAmount = -changeAmount;
   };
 
-  ratingScore.innerText = ratingScore.innerText + changeAmount;
+  ratingScore.innerText = Number(ratingScore.innerText) + changeAmount;
 }
 
-// 
+// Update webpage to show current question at front of queue.
 function showCurrentQuestion() {
   currQuestion = questionsQueue[0];
-  currQuestionText.innerText = `${currQuestion.title} (${currQuestion.releaseDate})`
+
+  // Hide question answer panel if run out of questions and display a message.
+  if (questionsQueue.length === 0) {
+    currQuestionText.innerText = "You have answered all questions in this category!";
+
+    panelDiv.style.visibility = "hidden";
+    // ratePanel.style.display = "none";
+  }
+  else {
+    currQuestionText.innerText = getQuestionText(categoryTypeName, categoryName, 
+      currQuestion);
+  };
+
   ratingScore.innerText = 5;
 }
 
+// Get the string to show as the question text, depending on the category.
+function getQuestionText(catTypeName, catName, currQuestion) {
+  let displayText;
+
+  switch(true) {
+
+    case (catTypeName === "Interests" && catName === "Films") :
+      displayText = `${currQuestion.title} (${currQuestion.releaseDate})`;
+      break;
+
+    default:
+      displayText = currQuestion.text;
+  };
+  
+  return displayText;
+}
 
 // Submit answer information to the server, update the queue if necessary.
 function answerQuestion(event) {
@@ -80,8 +124,11 @@ function answerQuestion(event) {
   // Show the new first question in the queue, after shifting the array.
   showCurrentQuestion();
 
-  // Add items to the questions queue if it's running low.
-  updateQuestionQueue();
+  // Add items to the questions queue if it's running low and there are 
+  // unanswered questions remaining in the source.
+  if (!endOfQSource) {
+    updateQuestionQueue();
+  };
 }
 
 
@@ -99,7 +146,11 @@ function submitAnswer(currQuestion, userSkipped, thisScore, catTypeName,
     answerInfo.answerPercentile = thisScore * 10
   };
   
-  const postObj = {type: "answer", data: answerInfo};
+  const postObj = {
+    type: "answer", 
+    data: answerInfo, 
+    apiMaxPage: currQuestion.apiPageNum
+  };
 
   fetch(`/questions/${catTypeName}/${catName}`, {
     method: "POST",
@@ -112,9 +163,12 @@ function submitAnswer(currQuestion, userSkipped, thisScore, catTypeName,
 // Adds more questions to the questions queue if necessary.
 async function updateQuestionQueue() {
   if (questionsQueue.length <= QUEUE_REFRESH_THRESHOLD) {
-    const newQuestions = await getNewQuestions(QUEUE_DESIRED_SIZE - 
-      QUEUE_REFRESH_THRESHOLD);
+    debugger;
+    const newQuestionsObj = await getNewQuestions(QUEUE_DESIRED_SIZE - 
+      questionsQueue.length);
 
+    const newQuestions = newQuestionsObj.results;
+    endOfQSource = newQuestionsObj.endOfQSource;
     questionsQueue = questionsQueue.concat(newQuestions);
   };
 }
@@ -130,9 +184,10 @@ async function getNewQuestions(numQuestions) {
   };
   
   const postObj = {
-    type: "filters",
+    type: "updateQueue",
     data: {
       numQs: numQuestions,
+      // filtersChanged: false,    flag for if any filters have changed that will affect the queue.
       filters: filterInfo
     }
   };
@@ -144,5 +199,5 @@ async function getNewQuestions(numQuestions) {
   });
 
   const newQuestions = await fetchResponse.json();
-  return newQuestions.results;
+  return newQuestions;
 }

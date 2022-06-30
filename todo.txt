@@ -86,33 +86,11 @@ Other options for the recommendation algorithm:
 
 
 
-
-answers for each user:
-
-[
-	{
-		id: api id for specific film,
-		title: name,
-		releaseYear, year,
-		posterTMDBFileName: fileName,
-		seen: true/false,
-		score: user rating
-	},
-	...
-]
-
-
-
-
 questions page:
 
 user needs to be able to search by name, then possibly some api related categories eg. genre, release year(s), actors etc.
 
-random button to give the user a random item from the api for the user to answer, previous button to go back to the last one. 
-
 button to see all current answers with option to then update each one by clicking on it
-
-by popularity in TMDB?
 
 
 
@@ -124,8 +102,4 @@ DISCOVER - 	https://api.themoviedb.org/3/discover/movie?api_key=84c6fe840210161c
 		https://api.themoviedb.org/3/discover/movie?api_key=84c6fe840210161c52e9a52c9cc129bb&sort_by=vote_count.desc&page=1
 GENRES - 	https://api.themoviedb.org/3/genre/movie/list?api_key=84c6fe840210161c52e9a52c9cc129bb
 images - 	https://image.tmdb.org/t/p/w185/yI6X2cCM5YPJtxMhUd3dPGqDAhw.jpg
-
-
-
-sort by  vote count
 

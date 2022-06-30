@@ -14,7 +14,7 @@ const categorySchema = new mongoose.Schema({
 });
 
 const categoryTypeSchema = new mongoose.Schema({
-  name: String,
+  name: {type: String, required: true, unique: true},
   categories: [categorySchema]
 });
 
@@ -41,23 +41,23 @@ const questionSchema = new mongoose.Schema({
 });
 
 const apiInfo = new mongoose.Schema({
-  _id: Number,
+  _id: {type: Number, required: true},
   name: String
 });
 
-const categoryQuestionListSchema = new mongoose.Schema({
-  categoryTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "CategoryType" },
-  categoryType: String,
-  category: String,
+const categoryQuestionsListSchema = new mongoose.Schema({
+  categoryTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "CategoryType", required: true },
+  categoryType: { type: String, required: true},
+  category: { type: String, required: true},
   // recommendable: Boolean,
-  isSourceAPI: Boolean,
+  isSourceAPI: { type: Boolean, required: true },
   apiInfo: apiInfo,
-  questions: [questionSchema],
+  questions: [questionSchema]
   // possAnswers: [{ type: Schema.Types.ObjectId, ref: "PossAnswer" }]      - default possAnswers for this category, removed for now
 });
 
-export const CategoryQuestionsList = new mongoose.model("CategoryQuestionList", 
-categoryQuestionListSchema);
+export const CategoryQuestionsList = new mongoose.model("CategoryQuestionsList", 
+categoryQuestionsListSchema);
 
 
 
@@ -81,8 +81,8 @@ export const User = new mongoose.model("User", userSchema);
 // Collection of user answers for each category for each user, linked to user 
 // and categoryType through ids.
 const answerDetailSchema = new mongoose.Schema({
-  questionId: Number,
-  skip: Boolean,
+  questionId: {type: Number, required: true},
+  skip: {type: Boolean, required: true},
   answerVal: {
     type: Number,
     min: [0, "Score must be at least 0."],
@@ -91,13 +91,14 @@ const answerDetailSchema = new mongoose.Schema({
   answerPercentile: Number
 }, {_id: false});
 
-const categoryAnswersSchema = new mongoose.Schema({
+const categoryAnswersListSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  categoryTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "CategoryType" },
-  categoryType: String,
-  category: String,
+  categoryTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "CategoryType", required: true},
+  categoryType: {type: String, required: true},
+  category: {type: String, required: true},
+  currAPIPage: Number,
   answers: [answerDetailSchema]
 });
 
 export const CategoryAnswersList = new mongoose.model("CategoryAnswersList", 
-  categoryAnswersSchema);
+categoryAnswersListSchema);

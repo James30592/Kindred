@@ -205,7 +205,7 @@ router.post('/login',
 
 
 router.get("/questions-menu", async function(req, res) {
-  const allCategoryTypes = await models.CategoryType.find({}).exec();
+  const allCategoryTypes = await models.CategoryType.find().exec();
   res.render("questions-menu", {allCategoryTypes: allCategoryTypes});
 });
 
@@ -220,13 +220,13 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
   const currAnswerer = await currAnswerers.getCurrAnswerer(req.user._id, 
     categoryTypeName, categoryName);
 
-  const userAnswers = currAnswerer.users[req.user._id].answers;
+  const userAnswersList = currAnswerer.answersList.answers;
 
   if (req.method === "GET") {
-      res.render("questions", {
+    res.render("questions", {
       categoryTypeName: categoryTypeName,
       categoryName: categoryName,
-      userAnswers: userAnswers
+      userAnswers: userAnswersList
     });
   }
 
@@ -235,19 +235,26 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
     // Update the database for this user with their new answer.
     if (postObj.type === "answer") {
-      userAnswers.push(postObj.data);
-      await currAnswerer.user.save();
+      userAnswersList.push(postObj.data);
+      // Can I change line below to currMaxAPIPage assignment?........
+      currAnswerer.answersList.currAPIPage = postObj.apiMaxPage;
+      await currAnswerer.answersList.save();
+
       currAnswerer.updateLastActionTime();
       res.end();
     }
 
     // Get new questions for the questions queue.
-    else if (postObj.type = "filters") {
+    else if (postObj.type = "updateQueue") {
       const numQs = postObj.data.numQs;
       const filters = postObj.data.filters;
 
       const newQs = new NewQuestions(categoryTypeName, categoryName);
-      newQs.getQuestions(numQs, filters, userAnswers);
+      await newQs.getQuestions(numQs, filters, currAnswerer);
+
+      const lastNewQ = newQs.results.at(-1);
+      currAnswerer.updateQueueEnd(lastNewQ?.apiPageNum, lastNewQ?._id);
+
       res.json(newQs);
     };
   };
@@ -267,6 +274,8 @@ class NewQuestions {
   categoryTypeName;
   categoryName;
   results = [];
+  // If question source list (whether DB or API) has been exhausted.
+  endOfQSource = true;
 
   constructor(catTypeName, catName) {
     this.categoryTypeName = catTypeName;
@@ -274,7 +283,12 @@ class NewQuestions {
   }
 
   // query either DB or api and get first numQs number of questions that are unanswered...
-  async getQuestions(numQs, filters, userAnswers) {
+  async getQuestions(numQs, filters, currAnswerer) {
+    const userAnswers = currAnswerer.answersList.answers;
+    const currMaxAPIPageNum = currAnswerer.answersList.currAPIPage;
+    const lastQueueItemAPIPage = currAnswerer.endQueueAPIPage;
+    const lastQueueItemID = currAnswerer.endQueueId;
+
     const categoryQsList = new dbHelpers.CategoryQuestionsList();
     await categoryQsList.init(this.categoryTypeName, this.categoryName);
     
@@ -283,34 +297,38 @@ class NewQuestions {
       // Source of questions is an API, get the API info from DB.
       const sourceAPIDetails = categoryQsList.item.apiInfo;
       const apiRefItem = apiRefs[sourceAPIDetails._id];
-  
-      let pageNum = 1;
+
+      let pageNum = lastQueueItemAPIPage ?? currMaxAPIPageNum;
   
       while (this.results.length < numQs) {
-        const pageResults = await NewQuestions.#fetchPage(apiRefItem.key + 
-          apiRefItem.path + apiRefItem.pageAppend + pageNum)
+        const pageResults = await this.#fetchPage(apiRefItem.path + 
+          apiRefItem.key + apiRefItem.pageAppend + pageNum)
+        
+        const prevQueueEndId = (pageNum === lastQueueItemAPIPage) ? lastQueueItemID : null;
 
-        this.#testIfAnswered(pageResults, apiRefItem.idField, userAnswers, numQs);
+        this.#buildResults(pageResults, apiRefItem.idField, userAnswers, numQs, 
+          pageNum, prevQueueEndId);
+
         pageNum++;
       };
     }
   
     else {
       // Source of questions is DB, retrieve them.
-      this.#testIfAnswered(categoryQsList.item.questions, "_id", userAnswers, numQs);
+      this.#buildResults(categoryQsList.item.questions, "_id", userAnswers, numQs);
     }
-    
+
     return this.results;
   }
 
   // Fetches a page worth of results from an API.
-  static async #fetchPage(path) {
+  async #fetchPage(path) {
     const fetchResponse = await fetch(path);
     const fetchResultsPage = await fetchResponse.json();
     let results;
 
     switch(true) {
-      case (categoryTypeName === "Interests" && categoryName === "Films") :
+      case (this.categoryTypeName === "Interests" && this.categoryName === "Films") :
         results = fetchResultsPage.results;
         break;
 
@@ -323,13 +341,36 @@ class NewQuestions {
 
   // Tests an array of potential new questions and if not already answered by 
   // the user.
-  #testIfAnswered(potentialNewQs, idFieldName, userAnswers, numQs) {
-    for (let potentialNewQ of potentialNewQs) {
-      if (this.results.length >= numQs) break;
+  #buildResults(potentialNewQs, idFieldName, userAnswers, numQs, 
+    apiPageNum = null, prevQueueEndId = null) {
 
-      if (!(potentialNewQ[idFieldName] in userAnswers)) {
+    const alreadyInQueue = Boolean(prevQueueEndId);
+
+    const userAnsweredQIds = userAnswers.map(ans => ans.questionId);
+
+    for (let potentialNewQ of potentialNewQs) {
+      // Check if found the item at the end of the current queue. If so, start 
+      // adding the items after this.
+      if (potentialNewQ[idFieldName] === prevQueueEndId) {
+        alreadyInQueue = false;
+        continue;
+      };
+      
+      // If not yet found the end of the current queue, keep iterating.
+      if (alreadyInQueue) {
+        continue;
+      };
+
+      // Have got enough new questions for the queue already.
+      if (this.results.length >= numQs) {
+        this.endOfQSource = false;
+        break;
+      };
+
+      // Check if the user has already answered this question.
+      if (!userAnsweredQIds.includes(potentialNewQ[idFieldName])) {
         const newQObj = NewQuestions.#getNewQObj(potentialNewQ, 
-          this.categoryTypeName, this.categoryName);
+          this.categoryTypeName, this.categoryName, apiPageNum);
 
         this.results.push(newQObj);
       };
@@ -337,22 +378,24 @@ class NewQuestions {
   }
 
   // Creates question object, individualised for each category as necessary.
-  static #getNewQObj(newQ, catTypeName, catName) {
-    const newQObj = null;
+  static #getNewQObj(newQ, catTypeName, catName, apiPageNum) {
+    const newQObj = {};
 
+    // Think change all this to using classes for different types of question 
+    // eg. for films etc. all taking newQ as input to constructor.......................
     switch(true) {
 
       case (catTypeName === "Interests" && catName === "Films") :
-        newQObj = {
-          _id: newQ.id,
-          title: newQ.title,
-          releaseDate: newQ.release_ate,
-          posterPath: newQ.poster_path,
-        };
+        newQObj._id = newQ.id;
+        newQObj.title = newQ.title;
+        newQObj.releaseDate = newQ.release_date;
+        newQObj.posterPath = newQ.poster_path;
+        newQObj.apiPageNum = apiPageNum;
         break;
 
       default:
-        newQObj = newQ;
+        newQObj._id = newQ._id;
+        newQObj.text = newQ.text;
     };
     
     return newQObj;
