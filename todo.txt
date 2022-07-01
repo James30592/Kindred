@@ -16,11 +16,6 @@ personality, films, TV, books, music (artists), video games, hobbies, sports (wa
 
 do recommendation algorithm stuff
 
-
-
-
-
-
 user top10 lists for all interests (films, books etc.), option to mark a film as a top10 when rating it and then if this list gets full it asks you which one you want to replace for it
 
 do different types of question and data for answers - ie. not just multiple choice? - think about how to do similarity for answers that aren't on a simple scale
@@ -60,9 +55,15 @@ find a way for me to pinch real people's tastes in films etc to populate fake pr
 
 use validation on any user submitted data to make sure it can't mess up anything on the server
 
+
+
+
+
+
+
+Recommendations:
+
 recommendations is working now, think about making it on the same page as findKindred in the end, since it's just an extension of that and is doing a similar find kindred thing first (although slightly different variant of findKindred)
-
-
 
 Other options for the recommendation algorithm:
 - change the threshold value. actually better to do a more complex way of getting the kindred list, like only using very similar users if possible, otherwise widening it a little maybe.
@@ -81,18 +82,7 @@ Other options for the recommendation algorithm:
 
 
 
-
-
-
-
-
-questions page:
-
-user needs to be able to search by name, then possibly some api related categories eg. genre, release year(s), actors etc.
-
-button to see all current answers with option to then update each one by clicking on it
-
-
+Questions:
 
 
 
@@ -103,3 +93,23 @@ DISCOVER - 	https://api.themoviedb.org/3/discover/movie?api_key=84c6fe840210161c
 GENRES - 	https://api.themoviedb.org/3/genre/movie/list?api_key=84c6fe840210161c52e9a52c9cc129bb
 images - 	https://image.tmdb.org/t/p/w185/yI6X2cCM5YPJtxMhUd3dPGqDAhw.jpg
 
+
+To do:
+
+-	button to see all current answers with option to then update each one by clicking on it
+-	user needs to be able to search by name, then possibly some api related filters eg. genre, release year(s), actors etc.
+-	refactor back end, especially don't like all the switch cases for categories (one on front end too)
+
+	TV (TMDB)
+	Books
+	Music (artists? albums? songs?)
+	Video games
+
+
+Done:
+
+-	when getting more Qs for queue from API source, it will remember the max page for the current filters and only fetch from API from this page for efficiency. as soon as filters are changed though, a new queue is generated which will start from page 1 to build the queue.
+just need to make it so when filters are changed in front end code that isNewQueue is set to true when calling update()...
+
+-	at the moment, questions page is set up to query DB every time a user's questions queue needs adding to. db will be queried and questions in this category will be checked.
+alternative could be to use another repository object to store all DB questions here if I know there won't be that many, would save many queries to the database.
