@@ -1,8 +1,6 @@
 To do:
 
-questions code...
-
-use APIs for films, books etc.
+continue with API work, doing books, check for other categories. then check other work I did for new schema design, find-kindred and recommendations...
 
 add validation to mongoose schemas, eg. scores can only be between 1 and 10 etc.
 
@@ -101,9 +99,14 @@ To do:
 -	refactor back end, especially don't like all the switch cases for categories (one on front end too)
 
 	TV (TMDB)
-	Books
+	Books (openlibrary)
 	Music (artists? albums? songs?)
-	Video games
+	Video games (RAWG, IGDB)
+
+
+books - think use top popular books in my db for initial questions (https://docs.google.com/spreadsheets/d/1dhxblR1Vl7PbVP_mNhwEa3_lfUWiF__xSODLq1W83CA/edit#gid=0)
+then use api and have to search for all books afterwards (page will ask user to search to keep rating books after initial 100 or whatever).
+use openlibrary.org api
 
 
 Done:

@@ -57,7 +57,7 @@ const categoryQuestionsListSchema = new mongoose.Schema({
 });
 
 export const CategoryQuestionsList = new mongoose.model("CategoryQuestionsList", 
-categoryQuestionsListSchema);
+  categoryQuestionsListSchema);
 
 
 
@@ -101,4 +101,4 @@ const categoryAnswersListSchema = new mongoose.Schema({
 });
 
 export const CategoryAnswersList = new mongoose.model("CategoryAnswersList", 
-categoryAnswersListSchema);
+  categoryAnswersListSchema);

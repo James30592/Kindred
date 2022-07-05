@@ -51,49 +51,6 @@ router.get("/logout", function(req, res){
   res.redirect("/");
 });
 
-
-
-// ---------------------REMOVE---------------------------------------------------
-router.get("/questions-menu-old", async function(req, res){
-  const allCategoryTypes = await models.CategoryType.find({}).exec();
-  res.render("questions-menu-old", {allCategoryTypes: allCategoryTypes});
-});
-
-router.all("/questions-old/:categoryType.:category", async function(req, res){
-  const categoryTypeName = req.params.categoryType;
-  const categoryName = req.params.category;
-
-  // Get this user in the database, to update their answer(s).
-  const user = await models.User.findOne({_id: req.user._id}).exec();
-
-  // Get user answers info for this category.
-  let userCategoryAnswersInfo = questions.getCategoryAnswersInfo(
-    user, categoryTypeName, categoryName);
-  // Initialise for current category, if not done previously for this user.
-  userCategoryAnswersInfo = questions.initUserCategory(user,
-    userCategoryAnswersInfo, categoryTypeName, categoryName);
-
-  let userAnswers = userCategoryAnswersInfo.answers;
-
-  if (req.method === "GET"){
-    const questionsRenderInfo = await questions.getQuestionsRenderInfo(
-      categoryTypeName, categoryName, userAnswers);
-
-    res.render("questions-old", questionsRenderInfo);
-  }
-
-  else if (req.method === "POST"){
-    questions.updateUserAnswers(req.body, userAnswers);
-    user.save(function(){
-      res.redirect("/questions-menu-old");
-    });
-  };
-});
-// ------------------------------------------------------------------------------
-
-
-
-
 router.get("/find-kindred", async function(req, res){
   const allCategoryTypes = await models.CategoryType.find({}).exec();
   const userCategoryAnswers = await models.CategoryAnswersList.find(
@@ -245,4 +202,55 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
       res.json({results: newQs.results, endOfQSource: newQs.endOfQSource});
     };
   };
+});
+
+
+
+
+router.get("/music-test", async function(req, res) {
+
+
+  const client_id = '18ddf7eb35004d86b4f9e3ed38604685';
+  const client_secret = '239118a54fab4b6c9d45cf1449d3c0cb';
+
+  let body = new URLSearchParams({
+    "grant_type": "client_credentials"
+  });
+
+  const fetchResponse = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + 
+        client_secret).toString('base64')),
+      
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: body
+  });
+
+  const token = await fetchResponse.json();
+
+
+  // Think I should do a playlist for each genre, maybe also one for current popular songs.
+  // Global top 50 playlist.
+  // "https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF"
+  // My top 1000 playlist.
+  // https://api.spotify.com/v1/playlists/0K1696gAQ0HqgTXd37EE3B.
+
+  // Search for a track.
+  // "https://api.spotify.com/v1/search?type=track&q=" + encodeURI("dear mr fantasy"
+
+  const top1000 = "0K1696gAQ0HqgTXd37EE3B";
+  let offset = 0;
+  // fields=items(track(name,artists[0].name,album.name,album.release_date,album.images[0].url,preview_url))&
+  const apiFetch = await fetch(`https://api.spotify.com/v1/playlists/${top1000}/tracks?limit=20&offset=${offset}`, {
+    headers: {"Authorization": "Bearer " + token.access_token},
+  });
+  
+  const apiObj = await apiFetch.json();
+
+  res.render("musicTest", {
+    track: apiObj.items[6].track
+  });
+
 });
