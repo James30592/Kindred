@@ -246,7 +246,7 @@ router.get("/music-test", async function(req, res) {
   const apiFetch = await fetch(`https://api.spotify.com/v1/playlists/${top1000}/tracks?limit=20&offset=${offset}`, {
     headers: {"Authorization": "Bearer " + token.access_token},
   });
-  
+
   const apiObj = await apiFetch.json();
 
   res.render("musicTest", {
@@ -254,3 +254,17 @@ router.get("/music-test", async function(req, res) {
   });
 
 });
+
+
+
+
+
+
+let rawgAPIKey = "ccb65d31462d49dba9b0daabc65952e9";
+// Seems to roughly order by popularity / vote count but not quite, good enough though I think.
+
+// Searches for all games.
+let fetchString = `https://api.rawg.io/api/games?key=${rawgAPIKey}`
+
+// Searches for a game using a search term.
+fetchString = `https://api.rawg.io/api/games?key=${rawgAPIKey}&search=ultimate%20chicken%20horse`

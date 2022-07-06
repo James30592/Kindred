@@ -1,8 +1,10 @@
 To do:
 
-continue with API work, doing books, check for other categories. then check other work I did for new schema design, find-kindred and recommendations...
+-	continue with API work, doing books, check for other categories. then check other work I did for new schema design, find-kindred and recommendations...
 
-add validation to mongoose schemas, eg. scores can only be between 1 and 10 etc.
+-	think change when answers are submitted from client, think make it so instead it's on a timer on front end, storing answers in local storage and then submitting them to server every 10 mins. if changing page make it submit any unsubmitted answers before changing page. if trying to close the browser / tab show a warning that you will lose unsubmitted answers.
+
+-	add validation to mongoose schemas, eg. scores can only be between 1 and 10 etc.
 
 
 
@@ -100,8 +102,8 @@ To do:
 
 	TV (TMDB)
 	Books (openlibrary)
-	Music (artists? albums? songs?)
-	Video games (RAWG, IGDB)
+	Music (spotify)
+	Video games (RAWG, IGDB - RAWG seems better)
 
 
 books - think use top popular books in my db for initial questions (https://docs.google.com/spreadsheets/d/1dhxblR1Vl7PbVP_mNhwEa3_lfUWiF__xSODLq1W83CA/edit#gid=0)
