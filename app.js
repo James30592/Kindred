@@ -3,6 +3,7 @@ const require = createRequire(import.meta.url);
 
 import * as models from "./models/models.mjs";
 import {router} from "./controllers/controllers.mjs";
+import {ServerState} from "./lib/serverState/serverState.mjs";
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -37,3 +38,6 @@ passport.deserializeUser(models.User.deserializeUser());
 app.listen(3000, function(){
   console.log("Server running on port 3000.");
 });
+
+export const serverState = new ServerState();
+serverState.init();

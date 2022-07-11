@@ -6,7 +6,7 @@ import * as questions from "../lib/questions.mjs";
 import * as similarity from "../lib/similarity.mjs";
 import * as recommendations from "../lib/recommendations.mjs";
 import * as admin from "../lib/admin.mjs";
-import { currAnswerers } from '../lib/currentAnswerers.mjs';
+import { serverState } from '../app.js';
 
 const express = require("express");
 const ejs = require("ejs");
@@ -46,7 +46,7 @@ router.get("/profile", function(req, res){
 });
 
 router.get("/logout", function(req, res){
-  currAnswerers.removeUser(req.user._id);
+  serverState.currAnswerers.removeUser(req.user._id);
   req.logout();
   res.redirect("/");
 });
@@ -159,7 +159,6 @@ router.post('/login',
 
 
 
-
 router.get("/questions-menu", async function(req, res) {
   const allCategoryTypes = await models.CategoryType.find().exec();
   res.render("questions-menu", {allCategoryTypes: allCategoryTypes});
@@ -169,8 +168,8 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
   const categoryTypeName = req.params.categoryType;
   const categoryName = req.params.category;
 
-  const currAnswerer = await currAnswerers.getCurrAnswerer(req.user._id, 
-    categoryTypeName, categoryName);
+  const currAnswerer = await serverState.currAnswerers.getCurrAnswerer(
+    req.user._id, categoryTypeName, categoryName);
 
   const userAnswers = currAnswerer.answersList.answers;
 
@@ -195,10 +194,10 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
     // Get new questions for the questions queue.
     else if (postObj.type = "updateQueue") {
-      const newQs = new questions.NewQuestions(categoryTypeName, categoryName, 
-        postObj.data);
+      const newQs = questions.createNewQuestions(categoryTypeName, categoryName, 
+        userAnswers, postObj.data);
 
-      await newQs.getQuestions(userAnswers);
+      await newQs.getQuestions();
       res.json({results: newQs.results, endOfQSource: newQs.endOfQSource});
     };
   };
@@ -207,44 +206,27 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
 
 
+
+
+
+
 router.get("/music-test", async function(req, res) {
-
-
-  const client_id = '18ddf7eb35004d86b4f9e3ed38604685';
-  const client_secret = '239118a54fab4b6c9d45cf1449d3c0cb';
-
-  let body = new URLSearchParams({
-    "grant_type": "client_credentials"
-  });
-
-  const fetchResponse = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + 
-        client_secret).toString('base64')),
-      
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: body
-  });
-
-  const token = await fetchResponse.json();
-
-
   // Think I should do a playlist for each genre, maybe also one for current popular songs.
   // Global top 50 playlist.
   // "https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF"
   // My top 1000 playlist.
   // https://api.spotify.com/v1/playlists/0K1696gAQ0HqgTXd37EE3B.
 
+  // fields=items(track(name,artists[0].name,album.name,album.release_date,album.images[0].url,preview_url))&
+
   // Search for a track.
   // "https://api.spotify.com/v1/search?type=track&q=" + encodeURI("dear mr fantasy"
 
-  const top1000 = "0K1696gAQ0HqgTXd37EE3B";
-  let offset = 0;
-  // fields=items(track(name,artists[0].name,album.name,album.release_date,album.images[0].url,preview_url))&
+  // const top1000 = "0K1696gAQ0HqgTXd37EE3B";
+  // let offset = 0;
+  // // fields=items(track(name,artists[0].name,album.name,album.release_date,album.images[0].url,preview_url))&
   const apiFetch = await fetch(`https://api.spotify.com/v1/playlists/${top1000}/tracks?limit=20&offset=${offset}`, {
-    headers: {"Authorization": "Bearer " + token.access_token},
+    headers: {"Authorization": "Bearer " + serverState.spotifyToken.access_token},
   });
 
   const apiObj = await apiFetch.json();
@@ -252,19 +234,6 @@ router.get("/music-test", async function(req, res) {
   res.render("musicTest", {
     track: apiObj.items[6].track
   });
-
 });
 
 
-
-
-
-
-let rawgAPIKey = "ccb65d31462d49dba9b0daabc65952e9";
-// Seems to roughly order by popularity / vote count but not quite, good enough though I think.
-
-// Searches for all games.
-let fetchString = `https://api.rawg.io/api/games?key=${rawgAPIKey}`
-
-// Searches for a game using a search term.
-fetchString = `https://api.rawg.io/api/games?key=${rawgAPIKey}&search=ultimate%20chicken%20horse`

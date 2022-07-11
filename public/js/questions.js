@@ -1,4 +1,5 @@
-import * as questionsHelper from "./modules/questionsHelper.mjs";
+import { QuestionsQueue } from "./modules/questions/questionsQueue.mjs";
+import { QuestionsUiPanel } from "./modules/questions/QuestionsUiPanel.mjs";
 
 // Questions panel elements.
 const panelElems = {
@@ -20,11 +21,11 @@ const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
 // New questions queue object.
-const thisQueue = new questionsHelper.QuestionsQueue(categoryTypeName, 
+const thisQueue = new QuestionsQueue(categoryTypeName, 
   categoryName);
 
 // New UI panel object.
-const questionsPanel = new questionsHelper.QuestionsUiPanel(panelElems, 
+const questionsPanel = new QuestionsUiPanel(panelElems, 
   thisQueue, categoryTypeName, categoryName);
 
 // Add event listeners to the panel buttons.

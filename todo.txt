@@ -1,10 +1,21 @@
 To do:
 
--	continue with API work, doing books, check for other categories. then check other work I did for new schema design, find-kindred and recommendations...
-
 -	think change when answers are submitted from client, think make it so instead it's on a timer on front end, storing answers in local storage and then submitting them to server every 10 mins. if changing page make it submit any unsubmitted answers before changing page. if trying to close the browser / tab show a warning that you will lose unsubmitted answers.
 
--	add validation to mongoose schemas, eg. scores can only be between 1 and 10 etc.
+-	make spotify API token refresh every hour
+
+
+
+
+Optional to do:
+
+-	make so can filter questions for each category when retrieving new questions.
+Films		TMDB			Age rating	Release date	With people (crew / actor)	Genre(s)		
+TV		TMDB			Air date		Genre(s)		
+Music		Spotify			Genre (if I make a playlist for each genre)		
+Books		OpenLibrary		Not possible		
+Video Games	RAWG			Platform	Developer	Publisher	Genre(s)	Tag(s)	Release date
+
 
 
 
@@ -96,19 +107,14 @@ images - 	https://image.tmdb.org/t/p/w185/yI6X2cCM5YPJtxMhUd3dPGqDAhw.jpg
 
 To do:
 
--	button to see all current answers with option to then update each one by clicking on it
--	user needs to be able to search by name, then possibly some api related filters eg. genre, release year(s), actors etc.
--	refactor back end, especially don't like all the switch cases for categories (one on front end too)
+-	way to edit past answers
+-	user needs to be able to search
+-	front end side, different look and details for each category
 
 	TV (TMDB)
-	Books (openlibrary)
+	Books (openlibrary) https://covers.openlibrary.org/b/ID/8578467-M.jpg
 	Music (spotify)
-	Video games (RAWG, IGDB - RAWG seems better)
-
-
-books - think use top popular books in my db for initial questions (https://docs.google.com/spreadsheets/d/1dhxblR1Vl7PbVP_mNhwEa3_lfUWiF__xSODLq1W83CA/edit#gid=0)
-then use api and have to search for all books afterwards (page will ask user to search to keep rating books after initial 100 or whatever).
-use openlibrary.org api
+	Video games (RAWG)
 
 
 Done:
@@ -116,5 +122,4 @@ Done:
 -	when getting more Qs for queue from API source, it will remember the max page for the current filters and only fetch from API from this page for efficiency. as soon as filters are changed though, a new queue is generated which will start from page 1 to build the queue.
 just need to make it so when filters are changed in front end code that isNewQueue is set to true when calling update()...
 
--	at the moment, questions page is set up to query DB every time a user's questions queue needs adding to. db will be queried and questions in this category will be checked.
-alternative could be to use another repository object to store all DB questions here if I know there won't be that many, would save many queries to the database.
+-	at the moment, questions page is set up to query DB every time a user's questions queue needs adding to. db will be queried and questions in this category will be checked. alternative could be to use another repository object to store all DB questions here if I know there won't be that many, would save many queries to the database.

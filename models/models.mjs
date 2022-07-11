@@ -50,7 +50,7 @@ const categoryQuestionsListSchema = new mongoose.Schema({
   categoryType: { type: String, required: true},
   category: { type: String, required: true},
   // recommendable: Boolean,
-  isSourceAPI: { type: Boolean, required: true },
+  // isSourceAPI: { type: Boolean, required: true },                      - not needed anymore
   apiInfo: apiInfo,
   questions: [questionSchema]
   // possAnswers: [{ type: Schema.Types.ObjectId, ref: "PossAnswer" }]      - default possAnswers for this category, removed for now
@@ -81,7 +81,7 @@ export const User = new mongoose.model("User", userSchema);
 // Collection of user answers for each category for each user, linked to user 
 // and categoryType through ids.
 const answerDetailSchema = new mongoose.Schema({
-  questionId: {type: Number, required: true},
+  questionId: {type: mongoose.Schema.Types.Mixed, required: true, unique: true},
   skip: {type: Boolean, required: true},
   answerVal: {
     type: Number,
