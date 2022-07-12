@@ -12,23 +12,19 @@
             data-cat="<%= categoryName %>">
             <%= categoryTypeName %> - <%= categoryName %></h2>
 
-          <button>Show current answers</button>
-          
           <hr>
+          <button>Auto Queue</button>
+          <button>Search</button>
+          <button>Current Answers</button>
+          <hr>
+
+          <!-- Search box -->
           <h3>Search...</h3>
           <input type="text" name="search" placeholder="Enter film title...">
-          <hr>
-          <h3>Filter new Qs</h3>
-          <!-- checkbox for each genre (ticked by default), expand and 
-          collapsible (actually buttons that highlight -->
-          <input type="date" name="filter-date-from">
-          <input type="date" name="filter-date-to">
-          <!-- another search box for people that shows results then adds these 
-          people to filter list of include_people -->
+          <button>-></button>
           <hr>
 
-
-
+          <!-- Rating panel -->
           <div>
             <div>
               <p class="curr-question">Placeholder...</p>
@@ -44,8 +40,12 @@
               <button class="rate-btn">Rate it!</button>
             </div>
           </div>
-
           <hr>
+
+          <!-- Current Answers -->
+
+
+
           <a class="btn btn-light" href="/questions-menu" role="button">Back to questions menu</a>
           <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
         </div>

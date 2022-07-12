@@ -176,17 +176,18 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
   if (req.method === "GET") {
     res.render("questions", {
       categoryTypeName: categoryTypeName,
-      categoryName: categoryName,
-      userAnswers: userAnswers
+      categoryName: categoryName
     });
   }
 
   else if (req.method === "POST") {
     const postObj = req.body;
 
-    // Update the database for this user with their new answer.
-    if (postObj.type === "answer") {
-      userAnswers.push(postObj.data);
+    // Update the database for this user with their new answers.
+    if (postObj.type === "answers") {
+      console.log(`rough object size is: ${JSON.stringify(postObj).length}`);
+      const newAnswers = postObj.data;
+      userAnswers.push(...newAnswers);
       await currAnswerer.answersList.save();
       currAnswerer.updateLastActionTime();
       res.end();

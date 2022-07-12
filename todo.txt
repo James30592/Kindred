@@ -1,8 +1,6 @@
 To do:
 
--	think change when answers are submitted from client, think make it so instead it's on a timer on front end, storing answers in local storage and then submitting them to server every 10 mins. if changing page make it submit any unsubmitted answers before changing page. if trying to close the browser / tab show a warning that you will lose unsubmitted answers.
-
--	make spotify API token refresh every hour
+-	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one).
 
 
 
@@ -109,6 +107,7 @@ To do:
 
 -	way to edit past answers
 -	user needs to be able to search
+
 -	front end side, different look and details for each category
 
 	TV (TMDB)
@@ -123,3 +122,5 @@ Done:
 just need to make it so when filters are changed in front end code that isNewQueue is set to true when calling update()...
 
 -	at the moment, questions page is set up to query DB every time a user's questions queue needs adding to. db will be queried and questions in this category will be checked. alternative could be to use another repository object to store all DB questions here if I know there won't be that many, would save many queries to the database.
+
+-	made it so answers are submitted every 10 mins or on leaving the questions page (async using sendBeacon). More efficient, fewer interactions with server / db than doing it every answer.
