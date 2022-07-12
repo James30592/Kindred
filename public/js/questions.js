@@ -21,18 +21,18 @@ const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
 // New questions queue object.
-const thisQueue = new QuestionsQueue(categoryTypeName, 
+const autoQueue = new QuestionsQueue(categoryTypeName, 
   categoryName);
 
 // New UI panel object.
 const questionsPanel = new QuestionsUiPanel(panelElems, 
-  thisQueue, categoryTypeName, categoryName);
+  autoQueue, categoryTypeName, categoryName);
 
 // Add event listeners to the panel buttons.
 questionsPanel.init();
 
 // On page load, update the questions queue and show the first question.
 window.onload = async () => {
-  await thisQueue.update(true);
+  await autoQueue.update(true);
   questionsPanel.displayCurrQ();
 };
