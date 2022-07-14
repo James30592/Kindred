@@ -2,7 +2,6 @@
 export class QuestionsUiPanel {
   #domElems;
   #questionsQueue;
-  #questionsMode;
   #categoryTypeName;
   #categoryName;
   #newAnswers = [];
@@ -40,23 +39,14 @@ export class QuestionsUiPanel {
     }, QuestionsUiPanel.#submitAnswersInterval);
   }
 
-  // Switches from using one mode of questions to another eg. from the default 
+  // Switches from using one queue of questions to another eg. from the default 
   // auto queue to the search queue and shows the first question in this queue.
-  async changeMode(newMode, isFirstTime = false) {
-    if (newMode !== this.#questionsMode) {
-      this.#questionsMode = newMode;
+  async changeQueue(newQueue, isFirstTime = false) {
+    if (newQueue !== this.#questionsQueue) {
+      this.#questionsQueue = newQueue;
       await this.#updateQueueAndShowFirst(isFirstTime);
     };
   }
-
-  // // Switches from using one queue of questions to another eg. from the default 
-  // // auto queue to the search queue and shows the first question in this queue.
-  // async changeQueue(newQueue, isFirstTime = false) {
-  //   if (newQueue !== this.#questionsQueue) {
-  //     this.#questionsQueue = newQueue;
-  //     await this.#updateQueueAndShowFirst(isFirstTime);
-  //   };
-  // }
 
   // Sets the search query on the queue, updates it and then displays curr Q.
   async newSearch(searchTerm) {
@@ -71,7 +61,7 @@ export class QuestionsUiPanel {
 
   // Updates the questions queue and then displays the first question of it.
   async #updateQueueAndShowFirst(isNewQueue) {
-    await this.#questionsMode.questionsQueue.update(isNewQueue);
+    await this.#questionsQueue.update(isNewQueue);
     this.#displayCurrQ();
   }
 

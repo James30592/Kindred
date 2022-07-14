@@ -1,6 +1,5 @@
 import * as questionsQueue from "./modules/questions/questionsQueue.mjs";
 import { QuestionsUiPanel } from "./modules/questions/QuestionsUiPanel.mjs";
-import * as questionsMode from "./modules/questions/questionsMode.mjs";
 
 
 // Questions panel elements.
@@ -30,10 +29,6 @@ const searchQueue = new questionsQueue.SearchQuestionsQueue(categoryTypeName,
 const autoQueuePanel = document.querySelector(".auto-queue-panel");
 const searchQueuePanel = document.querySelector(".search-queue-panel");
 
-// Create questions modes for each type.
-const autoMode = new questionsMode.AutoQMode(autoQueue, autoQueuePanel);
-const searchMode = new questionsMode.SearchQMode(searchQueue, searchQueuePanel);
-
 // New UI panel object.
 const questionsPanel = new QuestionsUiPanel(panelElems, categoryTypeName, 
   categoryName);
@@ -43,8 +38,7 @@ questionsPanel.init();
 
 // On page load, update the questions queue and show the first question.
 window.onload = async () => {
-  // await questionsPanel.changeQueue(autoQueue, true);
-  await questionsPanel.changeMode(autoMode, true);
+  await questionsPanel.changeQueue(autoQueue, true);
 };
 
 
@@ -52,11 +46,11 @@ window.onload = async () => {
 
 // tidy up later...
 document.querySelector(".auto-queue").addEventListener("click", async () => {
-  await questionsPanel.changeMode(autoMode);
+  await questionsPanel.changeQueue(autoQueue);
 })
 
 document.querySelector(".search").addEventListener("click", async () => {
-  await questionsPanel.changeMode(searchMode);
+  await questionsPanel.changeQueue(searchQueue);
 })
 
 
