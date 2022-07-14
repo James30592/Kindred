@@ -1,5 +1,7 @@
-import { QuestionsQueue } from "./modules/questions/questionsQueue.mjs";
+import * as questionsQueue from "./modules/questions/questionsQueue.mjs";
 import { QuestionsUiPanel } from "./modules/questions/QuestionsUiPanel.mjs";
+import * as questionsMode from "./modules/questions/questionsMode.mjs";
+
 
 // Questions panel elements.
 const panelElems = {
@@ -8,31 +10,59 @@ const panelElems = {
   skipBtn:document.querySelector(".skip-btn"),
   changeScoreBtns: document.querySelectorAll(".change-score-btn"),
   currQuestionText: document.querySelector(".curr-question"),
-  ratingScore: document.querySelector(".rating-score")
+  ratingScore: document.querySelector(".rating-score"),
+  prevAnsDiv: document.querySelector(".prev-ans-info"),
+  prevAnsVal: document.querySelector(".prev-ans-val")
 };
-
-// Filter info.
-const fromDateInput = document.querySelector(".filter-date-from");
-const toDateInput = document.querySelector(".filter-date-to");
 
 // Current category info.
 const mainHeader = document.querySelector(".main-header");
 const categoryTypeName = mainHeader.dataset.catType;
 const categoryName = mainHeader.dataset.cat;
 
-// New questions queue object.
-const autoQueue = new QuestionsQueue(categoryTypeName, 
+// New auto questions and search questions queue objects.
+const autoQueue = new questionsQueue.AutoQuestionsQueue(categoryTypeName, 
+  categoryName);
+const searchQueue = new questionsQueue.SearchQuestionsQueue(categoryTypeName, 
   categoryName);
 
+// Input panels for each questions mode.
+const autoQueuePanel = document.querySelector(".auto-queue-panel");
+const searchQueuePanel = document.querySelector(".search-queue-panel");
+
+// Create questions modes for each type.
+const autoMode = new questionsMode.AutoQMode(autoQueue, autoQueuePanel);
+const searchMode = new questionsMode.SearchQMode(searchQueue, searchQueuePanel);
+
 // New UI panel object.
-const questionsPanel = new QuestionsUiPanel(panelElems, 
-  autoQueue, categoryTypeName, categoryName);
+const questionsPanel = new QuestionsUiPanel(panelElems, categoryTypeName, 
+  categoryName);
 
 // Add event listeners to the panel buttons.
 questionsPanel.init();
 
 // On page load, update the questions queue and show the first question.
 window.onload = async () => {
-  await autoQueue.update(true);
-  questionsPanel.displayCurrQ();
+  // await questionsPanel.changeQueue(autoQueue, true);
+  await questionsPanel.changeMode(autoMode, true);
 };
+
+
+
+
+// tidy up later...
+document.querySelector(".auto-queue").addEventListener("click", async () => {
+  await questionsPanel.changeMode(autoMode);
+})
+
+document.querySelector(".search").addEventListener("click", async () => {
+  await questionsPanel.changeMode(searchMode);
+})
+
+
+
+
+document.querySelector(".search-btn").addEventListener("click", async () => {
+  const currSearchTerm = document.querySelector(".search-term").value;
+  await questionsPanel.newSearch(currSearchTerm);
+})

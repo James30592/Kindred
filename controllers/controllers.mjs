@@ -185,7 +185,6 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
     // Update the database for this user with their new answers.
     if (postObj.type === "answers") {
-      console.log(`rough object size is: ${JSON.stringify(postObj).length}`);
       const newAnswers = postObj.data;
       userAnswers.push(...newAnswers);
       await currAnswerer.answersList.save();

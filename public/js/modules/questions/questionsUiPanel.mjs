@@ -2,14 +2,14 @@
 export class QuestionsUiPanel {
   #domElems;
   #questionsQueue;
+  #questionsMode;
   #categoryTypeName;
   #categoryName;
   #newAnswers = [];
   static #submitAnswersInterval = 600000; // 10 mins
 
-  constructor(panelElems, questionsQueue, categoryTypeName, categoryName) {
+  constructor(panelElems, categoryTypeName, categoryName) {
     this.#domElems = panelElems;
-    this.#questionsQueue = questionsQueue;
     this.#categoryTypeName = categoryTypeName;
     this.#categoryName = categoryName;
   }
@@ -40,16 +40,71 @@ export class QuestionsUiPanel {
     }, QuestionsUiPanel.#submitAnswersInterval);
   }
 
-  // Updates the displayed question with the new first queue item.
-  displayCurrQ() {
-    const newQInfo = this.#questionsQueue.getCurrQText();
-    const newQText = newQInfo.currQText;
+  // Switches from using one mode of questions to another eg. from the default 
+  // auto queue to the search queue and shows the first question in this queue.
+  async changeMode(newMode, isFirstTime = false) {
+    if (newMode !== this.#questionsMode) {
+      this.#questionsMode = newMode;
+      await this.#updateQueueAndShowFirst(isFirstTime);
+    };
+  }
 
+  // // Switches from using one queue of questions to another eg. from the default 
+  // // auto queue to the search queue and shows the first question in this queue.
+  // async changeQueue(newQueue, isFirstTime = false) {
+  //   if (newQueue !== this.#questionsQueue) {
+  //     this.#questionsQueue = newQueue;
+  //     await this.#updateQueueAndShowFirst(isFirstTime);
+  //   };
+  // }
+
+  // Sets the search query on the queue, updates it and then displays curr Q.
+  async newSearch(searchTerm) {
+    const userChangedSearchText = searchTerm !== this.#questionsQueue.searchQuery;
+    const searchNotEmpty = searchTerm !== "";
+
+    if (userChangedSearchText && searchNotEmpty) {
+      this.#questionsQueue.newSearch(searchTerm);
+      await this.#updateQueueAndShowFirst(true);
+    };
+  }
+
+  // Updates the questions queue and then displays the first question of it.
+  async #updateQueueAndShowFirst(isNewQueue) {
+    await this.#questionsMode.questionsQueue.update(isNewQueue);
+    this.#displayCurrQ();
+  }
+
+  // Updates the displayed question with the new first queue item.
+  #displayCurrQ() {
+    const newQInfo = this.#questionsQueue.getCurrQInfo(
+      this.#domElems.includeAlreadyAnswered);
+
+    // Show or hide the scoring buttons as necessary.
     if (newQInfo.endOfQueue) {
       this.#domElems.panelDiv.style.visibility = "hidden";
+    }
+    else {
+      this.#domElems.panelDiv.style.visibility = "visible";
     };
-    this.#domElems.currQuestionText.innerText = newQText;
+
+    // Show current question text.
+    this.#domElems.currQuestionText.innerText = newQInfo.currQText;
+    // Reset the score and previous answer value.
     this.#domElems.ratingScore.innerText = 5;
+    this.#domElems.prevAnsVal.innerText = "";
+
+    // If want to include already answered questions and current question has a 
+    // previous answer by the user, show the previous answer details.
+    if (this.#domElems.includeAlreadyAnswered && newQInfo.currQAns) {
+      this.#domElems.prevAnsDiv.style.visibility = "visible";
+
+      const prevAnsDisplayVal = newQInfo.currQAns.skip ? "Skipped" : currQAns.answerVal;
+      this.#domElems.prevAnsVal.innerText = prevAnsDisplayVal;
+    }
+    else {
+      this.#domElems.prevAnsDiv.style.visibility = "hidden";
+    };
   }
 
   // Update the score on button presses.
@@ -79,7 +134,7 @@ export class QuestionsUiPanel {
     this.#newAnswers.push(answerObj);
 
     // Updates the displayed question with the new first queue item.
-    this.displayCurrQ();
+    this.#displayCurrQ();
 
     // Adds more questions to the questions queue if necessary.
     this.#questionsQueue.update(false);

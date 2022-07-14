@@ -1,6 +1,14 @@
 To do:
 
+
+-	continue with search and including current answers... just done back end side (see highlighted code), now do front end side of this...
+
+
 -	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one).
+
+-	for api queries, include only stuff that has already been released
+
+-	change questions queue back end to work in number of pages rather than get set number of items (get minimum that number of items but get every item up to the last page it iterates for)
 
 
 
@@ -118,7 +126,7 @@ To do:
 
 Done:
 
--	when getting more Qs for queue from API source, it will remember the max page for the current filters and only fetch from API from this page for efficiency. as soon as filters are changed though, a new queue is generated which will start from page 1 to build the queue.
+-	when getting more Qs for queue from API source, it will remember the max page and only fetch from API from this page for efficiency. as soon as have left the page though, a new queue is generated next time which will start from page 1 to build the queue.
 just need to make it so when filters are changed in front end code that isNewQueue is set to true when calling update()...
 
 -	at the moment, questions page is set up to query DB every time a user's questions queue needs adding to. db will be queried and questions in this category will be checked. alternative could be to use another repository object to store all DB questions here if I know there won't be that many, would save many queries to the database.

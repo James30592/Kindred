@@ -11,23 +11,43 @@
           <h2 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
             data-cat="<%= categoryName %>">
             <%= categoryTypeName %> - <%= categoryName %></h2>
-
+          
+          <!-- Questions mode select -->
           <hr>
-          <button>Auto Queue</button>
-          <button>Search</button>
-          <button>Current Answers</button>
-          <hr>
-
-          <!-- Search box -->
-          <h3>Search...</h3>
-          <input type="text" name="search" placeholder="Enter film title...">
-          <button>-></button>
+          <button class="auto-queue">Auto Queue</button>
+          <button class="search">Search</button>
+          <button class="curr-answers">Current Answers</button>
           <hr>
 
-          <!-- Rating panel -->
+          <!-- Auto queue panel -->
+          <div class="auto-queue-panel">
+            <label>
+              <h3>Auto queue...</h3>
+              <input class="incl-prev-ans" type="checkbox" checked="checked"> Include already answered
+            </label>
+            <hr>
+          </div>
+
+          <!-- Search queue panel -->
+          <div class="search-queue-panel">
+            <h3>Search...</h3>
+            <input type="text" class="search-term" placeholder="Enter film title...">
+            <button class="search-btn">-></button>
+            <br>
+            <label>
+              <input class="incl-prev-ans" type="checkbox" checked="checked"> Include already answered
+            </label>
+            <hr>
+          </div>
+
+          <!-- Questions UI panel -->
           <div>
             <div>
               <p class="curr-question">Placeholder...</p>
+              <div class="prev-ans-info hidden">
+                <p>Question is already scored, current answer is:</p>
+                <p class="prev-ans-val"></p>
+              </div>
             </div>
             <div class="rate-panel">
               <button class="change-score-btn big-change-btn down-btn"><<</button>
@@ -42,7 +62,6 @@
           </div>
           <hr>
 
-          <!-- Current Answers -->
 
 
 
