@@ -146,10 +146,9 @@ export class SearchQuestionsQueue extends QuestionsQueue {
   searchQuery = "";
 
   // Resets this search queue and then sets the search query.
-  newSearch(searchTerm, inclPrevAnswers) {
+  newSearch(searchTerm) {
     this.#reset();
     this.searchQuery = encodeURI(searchTerm);
-    this.inclPrevAnswers = inclPrevAnswers;
   }
 
   // Resets the search queue, ready for a new search query and update call.

@@ -38,7 +38,8 @@ questionsPanel.init();
 
 // On page load, update the questions queue and show the first question.
 window.onload = async () => {
-  await questionsPanel.changeQueue(autoQueue, true);
+  searchQueuePanel.style.display = "none";
+  await questionsPanel.changeMode(autoQueue, autoQueuePanel, true);
 };
 
 
@@ -46,11 +47,11 @@ window.onload = async () => {
 
 // tidy up later...
 document.querySelector(".auto-queue").addEventListener("click", async () => {
-  await questionsPanel.changeQueue(autoQueue);
+  await questionsPanel.changeMode(autoQueue, autoQueuePanel);
 })
 
 document.querySelector(".search").addEventListener("click", async () => {
-  await questionsPanel.changeQueue(searchQueue);
+  await questionsPanel.changeMode(searchQueue, searchQueuePanel);
 })
 
 

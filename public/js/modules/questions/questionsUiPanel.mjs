@@ -2,6 +2,7 @@
 export class QuestionsUiPanel {
   #domElems;
   #questionsQueue;
+  #queueInputPanel;
   #categoryTypeName;
   #categoryName;
   #newAnswers = [];
@@ -41,9 +42,10 @@ export class QuestionsUiPanel {
 
   // Switches from using one queue of questions to another eg. from the default 
   // auto queue to the search queue and shows the first question in this queue.
-  async changeQueue(newQueue, isFirstTime = false) {
+  async changeMode(newQueue, newQueuePanel, isFirstTime = false) {
     if (newQueue !== this.#questionsQueue) {
       this.#questionsQueue = newQueue;
+      this.#switchQueuePanels(newQueuePanel);
       await this.#updateQueueAndShowFirst(isFirstTime);
     };
   }
@@ -57,6 +59,16 @@ export class QuestionsUiPanel {
       this.#questionsQueue.newSearch(searchTerm);
       await this.#updateQueueAndShowFirst(true);
     };
+  }
+
+  // Hides the old queue input panel and shows the new one.
+  #switchQueuePanels(newQueuePanel) {
+    if (this.#queueInputPanel) {
+      this.#queueInputPanel.style.display = "none";
+    };
+    
+    this.#queueInputPanel = newQueuePanel;
+    this.#queueInputPanel.style.display = "block";
   }
 
   // Updates the questions queue and then displays the first question of it.
