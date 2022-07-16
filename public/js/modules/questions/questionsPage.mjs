@@ -6,6 +6,7 @@ export class QuestionsPage {
   newAnswers = [];
   updatedAnswers = [];
   recentPostedAnswers = [];
+  allRecentAnswers = [];
   static #submitAnswersInterval = 600000; // 10 mins
 
   constructor(qModes, categoryType, category) {
@@ -25,7 +26,8 @@ export class QuestionsPage {
     // When questions page is left / tab closed, post any answers to the server.
     window.addEventListener("beforeunload", async () => {
       this.getCurrQModeAnswers();
-      await this.#postAnswers(true);
+      // not sure if need an await here for postAnswers.........................................................................................................
+      this.#postAnswers(true);
     });
 
     // Submit answers every 10 mins, if there are any.
@@ -60,10 +62,10 @@ export class QuestionsPage {
     // Update the queue for the questions mode and show the first item in the 
     // queue. Pass in recently changed answers so that the queue can update 
     // considering these if necessary.
-    await this.currQuestionMode.updateQueueAndShowFirst(allRecentAnswers);
+    this.currQuestionMode.setRecentAnswers(allRecentAnswers);
+    await this.currQuestionMode.updateQueueAndShowFirst();
   }
 
- 
   // Make an array - allRecentAnswers - that consists of the recentPostedAnswers 
   // plus and new / updated answers since then. If new / updated answers cover 
   // anything in the recentPostedAnswers then the recentPostedAnswers version is 
@@ -103,6 +105,15 @@ export class QuestionsPage {
     this.updatedAnswers = [];
   }
 
+  // Once the fetch POST of some new answers every 10 mins has been completed, 
+  // clear the recently POSTed answers so that the queue has less to modify.
+  clearRecentlyPostedAnswers() {
+    this.currQuestionMode.clearRecentlyPostedAnswers(this.newAnswers.concat(
+      this.updatedAnswers));
+
+    this.recentPostedAnswers = [];
+  }
+
   // POST these answers info to the server.
   async #postAnswers(isChangeOfPage = false) {
     // Set the recently posted answers with the answers that are about to be 
@@ -134,6 +145,7 @@ export class QuestionsPage {
     
     await fetch(postRoute, postObj);
 
+    this.clearRecentlyPostedAnswers();
     this.resetAnswers();
   }
 }

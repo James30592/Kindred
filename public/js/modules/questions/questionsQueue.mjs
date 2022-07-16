@@ -19,8 +19,10 @@ class QuestionsQueue {
   }
 
   // Add items to the questions queue if it's running low and there are 
-  // unanswered questions remaining in the source.
-  async update() {
+  // unanswered questions remaining in the source. isNewQueue is boolean for 
+  // whether queue should be started from scratch, used when the queue input 
+  // criteria have changed eg. new search term.
+  async update(isNewQueue = false) {
     let updated = false;
 
     // If already waiting for fetch on a previous update call, don't update.
@@ -33,8 +35,12 @@ class QuestionsQueue {
       // Queue needs to and can be extended.
       const numNewQs = QuestionsQueue.#QUEUE_DESIRED_SIZE - this.queue.length;
       const currQueueIds = this.queue.map(q => q._id);
-      const maxQueueApiPage = this.queue.at(-1)?.apiPageNum;
-      const startApiPage = this.queue.length > 0 ? maxQueueApiPage : 1;
+
+      let startApiPage = 1;
+      if (!isNewQueue) {
+        const maxQueueApiPage = this.queue.at(-1)?.apiPageNum;
+        startApiPage = this.queue.length > 0 ? maxQueueApiPage : 1;
+      };
 
       // POST request to server for new questions for the queue.
       const newQuestionsObj = await this.#postNewQsRequest(numNewQs, 
@@ -168,6 +174,15 @@ class QuestionsQueue {
 export class AutoQuestionsQueue extends QuestionsQueue {
   endQueueMsg = "You have answered all questions in this category! Use Search to answer more!";
   queueType = "auto";
+
+  // Adds in data on whether previously answered questions should be included.
+  _getPostObj(numQuestions, currQueueIds, startApiPage) {
+    const postObj = super._getPostObj(numQuestions, currQueueIds, 
+      startApiPage);
+
+    postObj.data.includeAnsweredQs = this.inputPanel.includeAlreadyAnsweredCheckbox.value;
+    return postObj;
+  }
 }
 
 
@@ -194,12 +209,14 @@ export class SearchQuestionsQueue extends QuestionsQueue {
   }
 
   // Search queue version of the making the post object for updating the queue, 
-  // also includes the search query.
+  // also includes the search query and whether previously answered questions 
+  // should be included.
   _getPostObj(numQuestions, currQueueIds, startApiPage) {
     const postObj = super._getPostObj(numQuestions, currQueueIds, 
       startApiPage);
 
     postObj.data.searchQuery = this.searchQuery;
+    postObj.data.includeAnsweredQs = this.inputPanel.includeAlreadyAnsweredCheckbox.value;
     return postObj;
   }
 }

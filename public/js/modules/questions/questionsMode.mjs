@@ -48,9 +48,6 @@ class QuestionsMode {
     const ansArrayToUpdate = currQuestion.currAns ? this.updatedAnswers : this.newAnswers;
     ansArrayToUpdate.push(answerObj);
 
-    // Save this answer ready to post when leaving page / after x mins.
-    this.newAnswers.push(answerObj);
-
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
     this.showCurrQ();    
@@ -62,12 +59,15 @@ class QuestionsMode {
     };
   }
 
+  setRecentAnswers(allRecentAnswers) {
+    // Set the allRecentAnswers for the questions queue to bear in mind whenever updating.
+    this.allRecentAnswers = allRecentAnswers;
+    this.questionsQueue.allRecentAnswers = allRecentAnswers;
+  }
+
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
-  async updateQueueAndShowFirst(allRecentAnswers) {
-    // Set the allRecentAnswers for the questions queue to bear in mind whenever updating.
-    this.questionsQueue.allRecentAnswers = allRecentAnswers;
-
+  async updateQueueAndShowFirst() {
     // Queue will only update if it's short on answers.
     await this.questionsQueue.update();
 
@@ -113,6 +113,24 @@ class QuestionsMode {
     this.newAnswers = [];
     this.updatedAnswers = [];
   }
+
+  // Once the fetch POST of some new answers every 10 mins has been completed, 
+  // clear the recently POSTed answers so that the queue has less to modify.
+  clearRecentlyPostedAnswers(newAndUpdatedAnswers) {
+    for (let i=0; i< this.allRecentAnswers.length; i++) {
+      const recentAnswer = this.allRecentAnswers[i];
+      const found = newAndUpdatedAnswers.find(ans => {
+        ans.questionId === recentAnswer.questionId
+      });
+
+      // Recently posted answer, remove from recent answers now that POST has 
+      // completed.
+      if (!found) {
+        this.allRecentAnswers.splice(i, 1);
+      };
+    };
+    this.questionsQueue.allRecentAnswers = this.allRecentAnswers;
+  }
 }
 
 
@@ -144,8 +162,13 @@ export class SearchMode extends QuestionsMode {
 
     this.queueInputPanel.searchBtn.addEventListener("click", async () => {
       const currSearchTerm = this.queueInputPanel.searchInput.value;
-      
-      .....await questionsPanel.newSearch(currSearchTerm);
+      this.questionsQueue.newSearch(currSearchTerm);
+      await this.updateQueueAndShowFirst();
+    });
+
+    this.queueInputPanel.includeAlreadyAnsweredCheckbox.addEventListener(
+      "click", async () => {
+      await this.updateQueueAndShowFirst();
     });
   }
 }
