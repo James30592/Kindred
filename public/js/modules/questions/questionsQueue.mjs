@@ -9,8 +9,9 @@ class QuestionsQueue {
   _endOfQSource = false;
   _currentlyUpdating = false;
   endQueueMsg;
-  queueType;
-  inclPrevAnswers;  
+  queueType; 
+  allRecentAnswers = [];
+  inputPanel;
 
   constructor(categoryType, category) {
     this.#categoryTypeName = categoryType;
@@ -18,9 +19,10 @@ class QuestionsQueue {
   }
 
   // Add items to the questions queue if it's running low and there are 
-  // unanswered questions remaining in the source. isNewQueue is boolean for if 
-  // queue is merely appended too or built from scratch.
-  async update(isNewQueue) {
+  // unanswered questions remaining in the source.
+  async update() {
+    let updated = false;
+
     // If already waiting for fetch on a previous update call, don't update.
     if (this._currentlyUpdating) return;
 
@@ -28,22 +30,56 @@ class QuestionsQueue {
     const moreQsInSource = !this._endOfQSource;
 
     if (queueNeedsExtending && moreQsInSource) {
-        // Queue needs to and can be extended.
-        const numNewQs = QuestionsQueue.#QUEUE_DESIRED_SIZE - this.queue.length;
-        const currQueueIds = this.queue.map(q => q._id);
-        const maxQueueApiPage = this.queue.at(-1)?.apiPageNum;
+      // Queue needs to and can be extended.
+      const numNewQs = QuestionsQueue.#QUEUE_DESIRED_SIZE - this.queue.length;
+      const currQueueIds = this.queue.map(q => q._id);
+      const maxQueueApiPage = this.queue.at(-1)?.apiPageNum;
+      const startApiPage = this.queue.length > 0 ? maxQueueApiPage : 1;
 
-        // Post request to server for new questions for the queue.
-        const newQuestionsObj = await this.#postNewQsRequest(numNewQs, 
-            currQueueIds, maxQueueApiPage, isNewQueue);
+      // POST request to server for new questions for the queue.
+      const newQuestionsObj = await this.#postNewQsRequest(numNewQs, 
+        currQueueIds, startApiPage);
 
-        this._endOfQSource = newQuestionsObj.endOfQSource;
-        this.queue = this.queue.concat(newQuestionsObj.results);
+      this._endOfQSource = newQuestionsObj.endOfQSource;
+      this.queue = this.queue.concat(newQuestionsObj.results);
+      updated = true;
+    };
+
+    return updated;
+  }
+
+  // Checks each question in the queue to see if it has recently been answered 
+  // (and therefore should no longer be in the queue, or should be there with a 
+  // newer answer value) and handles this.
+  checkForOutdatedQs() {
+    for (let recentAnswer of this.allRecentAnswers) {
+      const queueIndex = this.queue.findIndex(q => {
+        q._id === recentAnswer.questionId
+      });
+
+      if (queueIndex > -1) {
+        this.handleOutdatedQueueItem(queueIndex, recentAnswer);
+      };
+    };
+  }
+
+  // If question in the queue has been answered recently and data isn't 
+  // reflected on server yet, update answer info with latest local answer info.
+  handleOutdatedQueueItem(queueIndex, recentAnswer) {
+    // If want to include already answered questions, then just updated the 
+    // queue question currAns to the latest local answer info.
+    if (this.inputPanel?.includeAlreadyAnsweredCheckbox?.value) {
+      this.queue[queueIndex].currAns.skip = recentAnswer.skip;
+      this.queue[queueIndex].currAns.answerVal = recentAnswer?.answerVal;
+    }
+    // Otherwise, remove this now answered question from the queue.
+    else {
+      this.queue.splice(queueIndex, 1);
     };
   }
 
   // Gets the text to display of the current first item in the questions queue.
-  getCurrQInfo(includeAlreadyAnswered) {
+  getCurrQInfo() {
     let currQText;
     let currQAns;
     let endOfQueue = false;
@@ -57,20 +93,17 @@ class QuestionsQueue {
       currQText = QuestionsQueue.#getQuestionText(this.#categoryTypeName, 
         this.#categoryName, this.queue[0]);
       
-      if (includeAlreadyAnswered) {
-        currQAns = this.queue[0].currAns;
-      };
+      currQAns = this.queue[0].currAns;
     };
 
     return {endOfQueue, currQText, currQAns};
   }
 
   // Gets more items to the questions queue, when it's running low.
-  async #postNewQsRequest(numQuestions, currQueueIds, maxQueueApiPage, isNewQueue) {
+  async #postNewQsRequest(numQuestions, currQueueIds, startApiPage) {
     this._currentlyUpdating = true;
     
-    const postObj = this._getPostObj(numQuestions, currQueueIds, maxQueueApiPage, 
-      isNewQueue);
+    const postObj = this._getPostObj(numQuestions, currQueueIds, startApiPage);
 
     const fetchResponse = await fetch(`/questions/${this.#categoryTypeName}/${this.#categoryName}`, {
       method: "POST",
@@ -86,15 +119,14 @@ class QuestionsQueue {
   }
 
   // Makes the object to POST for updating the queue.
-  _getPostObj(numQuestions, currQueueIds, maxQueueApiPage, isNewQueue) {
+  _getPostObj(numQuestions, currQueueIds, startApiPage) {
     return {
       type: "updateQueue",
       data: {
         queueType: this.queueType,
         numQs: numQuestions,
-        isNewQueue: isNewQueue,
         currQueueIds: currQueueIds,
-        maxQueueApiPage: maxQueueApiPage,
+        startApiPage: startApiPage,
         filters: {}
       }
     };
@@ -131,11 +163,14 @@ class QuestionsQueue {
 
 
 
+
+
 export class AutoQuestionsQueue extends QuestionsQueue {
   endQueueMsg = "You have answered all questions in this category! Use Search to answer more!";
   queueType = "auto";
-  inclPrevAnswers = false;
 }
+
+
 
 
 
@@ -160,9 +195,9 @@ export class SearchQuestionsQueue extends QuestionsQueue {
 
   // Search queue version of the making the post object for updating the queue, 
   // also includes the search query.
-  _getPostObj(numQuestions, currQueueIds, maxQueueApiPage, isNewQueue) {
+  _getPostObj(numQuestions, currQueueIds, startApiPage) {
     const postObj = super._getPostObj(numQuestions, currQueueIds, 
-      maxQueueApiPage, isNewQueue);
+      startApiPage);
 
     postObj.data.searchQuery = this.searchQuery;
     return postObj;
