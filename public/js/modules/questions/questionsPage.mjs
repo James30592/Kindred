@@ -9,17 +9,17 @@ export class QuestionsPage {
   allRecentAnswers = [];
   static #submitAnswersInterval = 600000; // 10 mins
 
-  constructor(qModes, categoryType, category) {
+  constructor(qModes, categoryTypeName, categoryName) {
     this.questionsModes = qModes;
-    this.categoryType = categoryType;
-    this.category = category;
+    this.categoryTypeName = categoryTypeName;
+    this.categoryName = categoryName;
   }
 
   // Set up the event listeners for all buttons and protocol for uploading 
   // answers data.
   init() {
     // Set up event listeners for buttons within each questions mode.
-    for (let qMode in this.questionsModes) {
+    for (let qMode of this.questionsModes) {
       qMode.init();
     };
 
@@ -47,14 +47,14 @@ export class QuestionsPage {
   // Remove current question mode: hide it, get the latest answers and post 
   // them to the server.
   removeQmode() {
-    this.currQuestionMode.classList.add("fully-hidden");
+    this.currQuestionMode.mainDiv.classList.add("fully-hidden");
     this.getCurrQModeAnswers();
   }
 
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
     this.currQuestionMode = newQMode;
-    this.currQuestionMode.classList.remove("fully-hidden");
+    this.currQuestionMode.mainDiv.classList.remove("fully-hidden");
 
     // Get all recently done answers, including those sent in the most recent POST.
     const allRecentAnswers = this.getAllRecentAnswers();

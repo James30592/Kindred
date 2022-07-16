@@ -36,7 +36,7 @@ class QuestionsMode {
   }
 
   // Save answer information, update the queue if necessary.
-  answerQuestion(event) {
+  async answerQuestion(event) {
     const userSkipped = (event.currentTarget === this.answerUiPanel.skipBtn);
     const currQuestion = this.questionsQueue.queue.shift();
     const thisScore = (userSkipped ? null : Number(this.answerUiPanel.ratingScore.innerText));
@@ -156,19 +156,36 @@ export class SearchMode extends QuestionsMode {
     this.queueInputPanel = new SearchQueueInputPanel(mainDiv);
   }
 
+  // Updates the questions queue and then displays the first question of it, 
+  // called when switching to this questions mode.
+  async updateQueueAndShowFirst() {
+    if (this.queueInputPanel.searchInput.value !== "") {
+      // Queue will only update if it's short on answers.
+      await this.questionsQueue.update();
+
+      // Checks the queue to see if any questions in it are now outdated based on 
+      // recently POSTed answers or recent answers from other questions modes that 
+      // haven't yet been POSTed.
+      this.questionsQueue.checkForOutdatedQs();
+    }
+
+    this.showCurrQ();
+  }
+
   // Sets up the queue input panel and answer UI panel button event listeners.
   init() {
     super.init();
 
     this.queueInputPanel.searchBtn.addEventListener("click", async () => {
-      const currSearchTerm = this.queueInputPanel.searchInput.value;
-      this.questionsQueue.newSearch(currSearchTerm);
-      await this.updateQueueAndShowFirst();
+      const searchTermChanged = this.questionsQueue.newSearch();
+      if (searchTermChanged) await this.updateQueueAndShowFirst();
     });
 
     this.queueInputPanel.includeAlreadyAnsweredCheckbox.addEventListener(
       "click", async () => {
-      await this.updateQueueAndShowFirst();
+
+      const searchTermChanged = this.questionsQueue.newSearch();
+      if (searchTermChanged) await this.updateQueueAndShowFirst();
     });
   }
 }

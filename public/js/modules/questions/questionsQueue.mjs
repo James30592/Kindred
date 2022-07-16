@@ -1,7 +1,7 @@
 // For retreiving new questions from server.
 class QuestionsQueue {
   static #QUEUE_DESIRED_SIZE = 40;
-  static #QUEUE_REFRESH_THRESHOLD = 20;
+  _QUEUE_REFRESH_THRESHOLD = 20;
   #categoryTypeName;
   #categoryName;
   queue = [];
@@ -28,10 +28,9 @@ class QuestionsQueue {
     // If already waiting for fetch on a previous update call, don't update.
     if (this._currentlyUpdating) return;
 
-    const queueNeedsExtending = this.queue.length <= QuestionsQueue.#QUEUE_REFRESH_THRESHOLD;
-    const moreQsInSource = !this._endOfQSource;
+    const queueToBeUpdated = this.checkQueueToBeUpdated();
 
-    if (queueNeedsExtending && moreQsInSource) {
+    if (queueToBeUpdated) {
       // Queue needs to and can be extended.
       const numNewQs = QuestionsQueue.#QUEUE_DESIRED_SIZE - this.queue.length;
       const currQueueIds = this.queue.map(q => q._id);
@@ -52,6 +51,15 @@ class QuestionsQueue {
     };
 
     return updated;
+  }
+
+  // Checks if the queue needs and can be updated.
+  checkQueueToBeUpdated() {
+    const queueNeedsExtending = this.queue.length <= this._QUEUE_REFRESH_THRESHOLD;
+    const moreQsInSource = !this._endOfQSource;
+
+    const queueToBeUpdated = queueNeedsExtending && moreQsInSource;
+    return queueToBeUpdated;
   }
 
   // Checks each question in the queue to see if it has recently been answered 
@@ -195,10 +203,20 @@ export class SearchQuestionsQueue extends QuestionsQueue {
   queueType = "search";
   searchQuery = "";
 
-  // Resets this search queue and then sets the search query.
-  newSearch(searchTerm) {
+  // Checks if the queue needs and can be extended.
+  checkQueueToBeUpdated() {
+    const canBeUpdated = super.checkQueueToBeUpdated();
+    const isValidSearch = this.searchQuery !== "";
+    return canBeUpdated && isValidSearch;
+  }
+
+  // Resets this search queue and then sets the search query. Returns whether 
+  // search query has changed or not.
+  newSearch() {
     this.#reset();
-    this.searchQuery = encodeURI(searchTerm);
+    const prevSearchTerm = this.searchQuery;
+    this.searchQuery = encodeURI(this.inputPanel.searchInput.value);
+    return this.searchQuery !== prevSearchTerm;
   }
 
   // Resets the search queue, ready for a new search query and update call.

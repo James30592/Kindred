@@ -11,7 +11,7 @@ class QueueInputPanel {
 
 
 
-export class AutoQueueInputPanel {
+export class AutoQueueInputPanel extends QueueInputPanel {
   includeAlreadyAnsweredCheckbox;
 
   constructor(qModeDiv) {
@@ -25,7 +25,7 @@ export class AutoQueueInputPanel {
 
 
 
-export class SearchQueueInputPanel {
+export class SearchQueueInputPanel extends QueueInputPanel {
   includeAlreadyAnsweredCheckbox;
   searchInput;
   searchBtn;
