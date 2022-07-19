@@ -3,6 +3,7 @@ import { SearchQuestionsQueue } from "./questionsQueue.mjs";
 import { AutoQueueInputPanel } from "./queueInputPanel.mjs";
 import { SearchQueueInputPanel } from "./queueInputPanel.mjs";
 import { AnswerUIPanel } from "./answerUiPanel.mjs";
+import { findAndOverwriteElsePush } from "../../../sharedJs/utils.mjs";
 
 
 
@@ -41,12 +42,18 @@ class QuestionsMode {
     const currQuestion = this.questionsQueue.queue.shift();
     const thisScore = (userSkipped ? null : Number(this.answerUiPanel.ratingScore.innerText));
 
+    // Get the answer object as it should be stored in the DB.
     const answerObj = this.getAnswerObj(currQuestion, userSkipped, thisScore);
 
-    // Check if a new answer or for a previously answered question and push to
-    // relevant array.
-    const ansArrayToUpdate = currQuestion.currAns ? this.updatedAnswers : this.newAnswers;
-    ansArrayToUpdate.push(answerObj);
+    // Get relevant array to push answer to and update this.
+    const ansArrayToUpdate = currQuestion.alreadyInDb ? this.updatedAnswers : this.newAnswers;
+    this.updateAnswersArray(ansArrayToUpdate, answerObj);
+
+    // Also do this with the allRecentAnswers array (at the moment so that 
+    // subsequent searches without switching questions mode will show the 
+    // correct, most recent answer).
+    this.updateAnswersArray(this.allRecentAnswers, answerObj);
+    this.questionsQueue.allRecentAnswers = this.allRecentAnswers;
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
@@ -59,8 +66,18 @@ class QuestionsMode {
     };
   }
 
+  // Updates the relevant answers array for this questions mode (new / updated) 
+  // with a new (or merely an updated) answer.
+  updateAnswersArray(ansArrayToUpdate, answerObj) {
+    const matchFunc = (arrItem, newItem) => {
+      return arrItem.questionId === newItem.questionId
+    };
+    
+    findAndOverwriteElsePush(ansArrayToUpdate, answerObj, matchFunc);
+  }
+
+  // Set the allRecentAnswers for the questions queue to bear in mind whenever updating.
   setRecentAnswers(allRecentAnswers) {
-    // Set the allRecentAnswers for the questions queue to bear in mind whenever updating.
     this.allRecentAnswers = allRecentAnswers;
     this.questionsQueue.allRecentAnswers = allRecentAnswers;
   }
@@ -87,7 +104,7 @@ class QuestionsMode {
     const newCurrQInfo = this.questionsQueue.getCurrQInfo();
 
     const inclAlreadyAnswered = this.queueInputPanel?.
-      includeAlreadyAnsweredCheckbox.value;
+      includeAlreadyAnsweredCheckbox.checked;
 
     this.answerUiPanel.displayCurrQ(newCurrQInfo, inclAlreadyAnswered);
   }
@@ -120,7 +137,7 @@ class QuestionsMode {
     for (let i=0; i< this.allRecentAnswers.length; i++) {
       const recentAnswer = this.allRecentAnswers[i];
       const found = newAndUpdatedAnswers.find(ans => {
-        ans.questionId === recentAnswer.questionId
+        return ans.questionId === recentAnswer.questionId
       });
 
       // Recently posted answer, remove from recent answers now that POST has 
@@ -142,6 +159,18 @@ export class AutoMode extends QuestionsMode {
     super(mainDiv);
     this.questionsQueue = new AutoQuestionsQueue(categoryType, category);
     this.queueInputPanel = new AutoQueueInputPanel(mainDiv);
+  }
+
+  // Sets up the queue input panel and answer UI panel button event listeners.
+  init() {
+    super.init();
+
+    this.queueInputPanel.includeAlreadyAnsweredCheckbox.addEventListener(
+      "click", async () => {
+
+      this.questionsQueue.reset();
+      await this.updateQueueAndShowFirst();
+    });
   }
 }
 
@@ -184,8 +213,8 @@ export class SearchMode extends QuestionsMode {
     this.queueInputPanel.includeAlreadyAnsweredCheckbox.addEventListener(
       "click", async () => {
 
-      const searchTermChanged = this.questionsQueue.newSearch();
-      if (searchTermChanged) await this.updateQueueAndShowFirst();
+      this.questionsQueue.newSearch();
+      await this.updateQueueAndShowFirst();
     });
   }
 }

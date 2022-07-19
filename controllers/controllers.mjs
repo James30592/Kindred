@@ -171,8 +171,6 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
   const currAnswerer = await serverState.currAnswerers.getCurrAnswerer(
     req.user._id, categoryTypeName, categoryName);
 
-  const userAnswers = currAnswerer.answersList.answers;
-
   if (req.method === "GET") {
     res.render("questions", {
       categoryTypeName: categoryTypeName,
@@ -185,15 +183,21 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
     // Update the database for this user with their new answers.
     if (postObj.type === "answers") {
-      const newAnswers = postObj.data;
-      userAnswers.push(...newAnswers);
-      await currAnswerer.answersList.save();
+
+      // Add the new answers to the User's answersList DB entry and update any 
+      // updated answers.
+      currAnswerer.answersList.addAnswers(postObj.data.newAnswers);
+      currAnswerer.answersList.updateAnswers(postObj.data.updatedAnswers);
+
+      await currAnswerer.answersList.item.save();
       currAnswerer.updateLastActionTime();
       res.end();
     }
 
     // Get new questions for the questions queue.
     else if (postObj.type = "updateQueue") {
+      const userAnswers = currAnswerer.answersList.item.answers;
+
       const newQs = questions.createNewQuestions(categoryTypeName, categoryName, 
         userAnswers, postObj.data);
 

@@ -66,13 +66,11 @@ class QuestionsQueue {
   // (and therefore should no longer be in the queue, or should be there with a 
   // newer answer value) and handles this.
   checkForOutdatedQs() {
-    for (let recentAnswer of this.allRecentAnswers) {
-      const queueIndex = this.queue.findIndex(q => {
-        q._id === recentAnswer.questionId
-      });
+    for (let ans of this.allRecentAnswers) {
+      const queueIndex = this.queue.findIndex(q => q._id === ans.questionId);
 
       if (queueIndex > -1) {
-        this.handleOutdatedQueueItem(queueIndex, recentAnswer);
+        this.handleOutdatedQueueItem(queueIndex, ans);
       };
     };
   }
@@ -82,9 +80,11 @@ class QuestionsQueue {
   handleOutdatedQueueItem(queueIndex, recentAnswer) {
     // If want to include already answered questions, then just updated the 
     // queue question currAns to the latest local answer info.
-    if (this.inputPanel?.includeAlreadyAnsweredCheckbox?.value) {
-      this.queue[queueIndex].currAns.skip = recentAnswer.skip;
-      this.queue[queueIndex].currAns.answerVal = recentAnswer?.answerVal;
+    if (this.inputPanel?.includeAlreadyAnsweredCheckbox?.checked) {
+      this.queue[queueIndex].currAns = {
+        skip: recentAnswer.skip,
+        answerVal: recentAnswer?.answerVal
+      };
     }
     // Otherwise, remove this now answered question from the queue.
     else {
@@ -146,6 +146,14 @@ class QuestionsQueue {
     };
   }
 
+  // Resets the search queue, ready for a new search query and update call or a 
+  // new queue after toggling "include already answered".
+  reset() {
+    this.queue = [];
+    this._endOfQSource = false;
+    this._currentlyUpdating = false;
+  }
+
   // Get the string to show as the question text, depending on the category.
   static #getQuestionText(catTypeName, catName, currQuestion) {
     let displayText;
@@ -188,7 +196,7 @@ export class AutoQuestionsQueue extends QuestionsQueue {
     const postObj = super._getPostObj(numQuestions, currQueueIds, 
       startApiPage);
 
-    postObj.data.includeAnsweredQs = this.inputPanel.includeAlreadyAnsweredCheckbox.value;
+    postObj.data.includeAnsweredQs = this.inputPanel.includeAlreadyAnsweredCheckbox.checked;
     return postObj;
   }
 }
@@ -213,17 +221,10 @@ export class SearchQuestionsQueue extends QuestionsQueue {
   // Resets this search queue and then sets the search query. Returns whether 
   // search query has changed or not.
   newSearch() {
-    this.#reset();
+    this.reset();
     const prevSearchTerm = this.searchQuery;
     this.searchQuery = encodeURI(this.inputPanel.searchInput.value);
     return this.searchQuery !== prevSearchTerm;
-  }
-
-  // Resets the search queue, ready for a new search query and update call.
-  #reset() {
-    this.queue = [];
-    this._endOfQSource = false;
-    this._currentlyUpdating = false;
   }
 
   // Search queue version of the making the post object for updating the queue, 
@@ -234,7 +235,7 @@ export class SearchQuestionsQueue extends QuestionsQueue {
       startApiPage);
 
     postObj.data.searchQuery = this.searchQuery;
-    postObj.data.includeAnsweredQs = this.inputPanel.includeAlreadyAnsweredCheckbox.value;
+    postObj.data.includeAnsweredQs = this.inputPanel.includeAlreadyAnsweredCheckbox.checked;
     return postObj;
   }
 }

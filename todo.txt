@@ -1,8 +1,7 @@
 To do:
 
--	continue debugging, at the moment include answered checkbox doesnt seem to be working...
+-	make search work for other APIs, back end...
 -	do previous answers questions mode...
--	check that its still being efficient with generating queues on backend in terms of starting on a high api page when possible
 
 
 -	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one).

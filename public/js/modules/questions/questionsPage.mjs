@@ -1,3 +1,7 @@
+import { findAndOverwriteElsePush } from "../../../sharedJs/utils.mjs";
+
+
+
 export class QuestionsPage {
   questionsModes;
   currQuestionMode;
@@ -7,7 +11,7 @@ export class QuestionsPage {
   updatedAnswers = [];
   recentPostedAnswers = [];
   allRecentAnswers = [];
-  static #submitAnswersInterval = 600000; // 10 mins
+  static #submitAnswersInterval = 30000; // 10 mins  600000
 
   constructor(qModes, categoryTypeName, categoryName) {
     this.questionsModes = qModes;
@@ -25,31 +29,44 @@ export class QuestionsPage {
 
     // When questions page is left / tab closed, post any answers to the server.
     window.addEventListener("beforeunload", async () => {
-      this.getCurrQModeAnswers();
-      // not sure if need an await here for postAnswers.........................................................................................................
+      this.getAndResetCurrQModeAnswers();
       this.#postAnswers(true);
     });
 
     // Submit answers every 10 mins, if there are any.
     setInterval(() => {
-      this.getCurrQModeAnswers();
+      this.getAndResetCurrQModeAnswers();
       this.#postAnswers();
     }, QuestionsPage.#submitAnswersInterval);
   }
 
   // Gets the latest new and updated answers from the current questions mode.
-  getCurrQModeAnswers() {
-    this.newAnswers.push(...this.currQuestionMode.newAnswers);
-    this.updatedAnswers.push(...this.currQuestionMode.updatedAnswers);
+  getAndResetCurrQModeAnswers() {
+    this.getCurrQModeAnswers(this.newAnswers, this.currQuestionMode.newAnswers);
+    this.getCurrQModeAnswers(this.updatedAnswers, this.currQuestionMode.updatedAnswers);
     this.currQuestionMode.resetAnswers();
+  }
+
+  // Updates the qPage new / updated answers arrays with the new / updated 
+  // answers from the switched from questions mode.
+  getCurrQModeAnswers(qPageAnswers, newQModeAnswers) {
+    const matchFunc = (arrItem, newItem) => {
+      return arrItem.questionId === newItem.questionId
+    };
+
+    for (let newQModeAnswer of newQModeAnswers) {
+      findAndOverwriteElsePush(qPageAnswers, newQModeAnswer, matchFunc);
+    };
   }
 
   // Remove current question mode: hide it, get the latest answers and post 
   // them to the server.
   removeQmode() {
     this.currQuestionMode.mainDiv.classList.add("fully-hidden");
-    this.getCurrQModeAnswers();
+    this.getAndResetCurrQModeAnswers();
   }
+
+
 
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
@@ -79,7 +96,7 @@ export class QuestionsPage {
 
     for (let newAnswer of newAndUpdatedAnswers) {
       let indexRecentPostedAnswers = allRecentAnswers.findIndex(ans => {
-        ans.questionId === newAnswer.questionId
+        return ans.questionId === newAnswer.questionId
       });
 
       if (indexRecentPostedAnswers > 0) {
@@ -133,12 +150,14 @@ export class QuestionsPage {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         type: "answers", 
-        data: this.newAnswers
-        // change this to also POST the updated answers and handle this on the backend.................................................
+        data: {
+          newAnswers: this.newAnswers,
+          updatedAnswers: this.updatedAnswers
+        }
       })
     };
     
-    // If moving off the page, send answers data async.
+    // If moving off the page, keep fetch request alive.
     if (isChangeOfPage) {
       postObj.keepalive = true;
     };
