@@ -1,9 +1,9 @@
-import { AutoQuestionsQueue } from "./questionsQueue.mjs";
-import { SearchQuestionsQueue } from "./questionsQueue.mjs";
-import { AutoQueueInputPanel } from "./queueInputPanel.mjs";
-import { SearchQueueInputPanel } from "./queueInputPanel.mjs";
-import { AnswerUIPanel } from "./answerUiPanel.mjs";
-import { findAndOverwriteElsePush } from "../../../sharedJs/utils.mjs";
+import { AutoQuestionsQueue } from "./components/questionsQueue.mjs";
+import { SearchQuestionsQueue } from "./components/questionsQueue.mjs";
+import { AutoQueueInputPanel } from "./components/queueInputPanel.mjs";
+import { SearchQueueInputPanel } from "./components/queueInputPanel.mjs";
+import { AnswerUIPanel } from "./components/answerUiPanel.mjs";
+import { findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
 
 
 

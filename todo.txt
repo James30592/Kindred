@@ -114,8 +114,6 @@ images - 	https://image.tmdb.org/t/p/w185/yI6X2cCM5YPJtxMhUd3dPGqDAhw.jpg
 To do:
 
 -	way to edit past answers
--	user needs to be able to search
-
 -	front end side, different look and details for each category
 
 	TV (TMDB)
