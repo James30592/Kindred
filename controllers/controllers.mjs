@@ -2,7 +2,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 import * as models from "../models/models.mjs";
-import * as questions from "../lib/questions.mjs";
+import { createNewQuestions } from '../lib/questions/createNewQuestions.mjs';
 import * as similarity from "../lib/similarity.mjs";
 import * as recommendations from "../lib/recommendations.mjs";
 import * as admin from "../lib/admin.mjs";
@@ -198,7 +198,7 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
     else if (postObj.type = "updateQueue") {
       const userAnswers = currAnswerer.answersList.item.answers;
 
-      const newQs = questions.createNewQuestions(categoryTypeName, categoryName, 
+      const newQs = createNewQuestions(categoryTypeName, categoryName, 
         userAnswers, postObj.data);
 
       await newQs.getQuestions();
