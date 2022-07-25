@@ -186,8 +186,7 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
       // Add the new answers to the User's answersList DB entry and update any 
       // updated answers.
-      currAnswerer.answersList.addAnswers(postObj.data.newAnswers);
-      currAnswerer.answersList.updateAnswers(postObj.data.updatedAnswers);
+      currAnswerer.answersList.updateOrAddAnswers(postObj.data);
 
       await currAnswerer.answersList.item.save();
       currAnswerer.updateLastActionTime();

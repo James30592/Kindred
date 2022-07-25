@@ -8,10 +8,9 @@ export class QuestionsPage {
   categoryTypeName;
   categoryName;
   newAnswers = [];
-  updatedAnswers = [];
   recentPostedAnswers = [];
   allRecentAnswers = [];
-  static #submitAnswersInterval = 30000; // 10 mins  600000
+  static #submitAnswersInterval = 600000; // 10 mins
 
   constructor(qModes, categoryTypeName, categoryName) {
     this.questionsModes = qModes;
@@ -43,7 +42,6 @@ export class QuestionsPage {
   // Gets the latest new and updated answers from the current questions mode.
   getAndResetCurrQModeAnswers() {
     this.getCurrQModeAnswers(this.newAnswers, this.currQuestionMode.newAnswers);
-    this.getCurrQModeAnswers(this.updatedAnswers, this.currQuestionMode.updatedAnswers);
     this.currQuestionMode.resetAnswers();
   }
 
@@ -91,10 +89,7 @@ export class QuestionsPage {
     // Duplicate of the recentPostedAnswers.
     const allRecentAnswers = this.recentPostedAnswers.slice();
 
-    // All new and updated answers since the last POST.
-    const newAndUpdatedAnswers = this.newAnswers.concat(this.updatedAnswers);
-
-    for (let newAnswer of newAndUpdatedAnswers) {
+    for (let newAnswer of this.newAnswers) {
       let indexRecentPostedAnswers = allRecentAnswers.findIndex(ans => {
         return ans.questionId === newAnswer.questionId
       });
@@ -119,15 +114,12 @@ export class QuestionsPage {
   // Resets the new and updated answers for this questions page.
   resetAnswers() {
     this.newAnswers = [];
-    this.updatedAnswers = [];
   }
 
   // Once the fetch POST of some new answers every 10 mins has been completed, 
   // clear the recently POSTed answers so that the queue has less to modify.
   clearRecentlyPostedAnswers() {
-    this.currQuestionMode.clearRecentlyPostedAnswers(this.newAnswers.concat(
-      this.updatedAnswers));
-
+    this.currQuestionMode.clearRecentlyPostedAnswers(this.newAnswers);
     this.recentPostedAnswers = [];
   }
 
@@ -136,12 +128,11 @@ export class QuestionsPage {
     // Set the recently posted answers with the answers that are about to be 
     // posted (even if they are empty as it will necessarily have been a while 
     // since this was called).
-    this.recentPostedAnswers = (this.newAnswers.concat(this.updatedAnswers));
+    this.recentPostedAnswers = this.newAnswers;
 
     // Check if there are any answers to upload.
     const noNewAnswers = this.newAnswers.length === 0;
-    const noUpdatedAnswers = this.updatedAnswers.length === 0;
-    if (noNewAnswers && noUpdatedAnswers) return;
+    if (noNewAnswers) return;
 
     const postRoute = `/questions/${this.categoryTypeName}/${this.categoryName}`;
 
@@ -150,10 +141,7 @@ export class QuestionsPage {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         type: "answers", 
-        data: {
-          newAnswers: this.newAnswers,
-          updatedAnswers: this.updatedAnswers
-        }
+        data: this.newAnswers
       })
     };
     

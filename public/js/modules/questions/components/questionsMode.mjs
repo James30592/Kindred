@@ -45,9 +45,8 @@ class QuestionsMode {
     // Get the answer object as it should be stored in the DB.
     const answerObj = this.getAnswerObj(currQuestion, userSkipped, thisScore);
 
-    // Get relevant array to push answer to and update this.
-    const ansArrayToUpdate = currQuestion.alreadyInDb ? this.updatedAnswers : this.newAnswers;
-    this.updateAnswersArray(ansArrayToUpdate, answerObj);
+    // Update / push answer in this newAnswers.
+    this.updateAnswersArray(this.newAnswers, answerObj);
 
     // Also do this with the allRecentAnswers array (at the moment so that 
     // subsequent searches without switching questions mode will show the 
@@ -128,7 +127,6 @@ class QuestionsMode {
   // answers are passed to the QuestionsPage and uploaded from there.
   resetAnswers() {
     this.newAnswers = [];
-    this.updatedAnswers = [];
   }
 
   // Once the fetch POST of some new answers every 10 mins has been completed, 
@@ -137,7 +135,7 @@ class QuestionsMode {
     for (let i=0; i< this.allRecentAnswers.length; i++) {
       const recentAnswer = this.allRecentAnswers[i];
       const found = newAndUpdatedAnswers.find(ans => {
-        return ans.questionId === recentAnswer.questionId
+        return ans.questionId === recentAnswer.questionId;
       });
 
       // Recently posted answer, remove from recent answers now that POST has 
