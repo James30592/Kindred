@@ -158,23 +158,30 @@ class QuestionsQueue {
   static #getQuestionText(catTypeName, catName, currQuestion) {
     let displayText;
   
-    switch(true) {
+    switch(catTypeName, catName) {
   
-      case (catTypeName === "Interests" && 
-            (catName === "Films" || catName ==="TV")) :
-        displayText = `${currQuestion.title} (${currQuestion.releaseDate})`;
+      case ("Interests", "Films") :
+        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
+        break;
+  
+      case ("Interests", "TV") :
+        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
         break;
 
-      case (catTypeName === "Interests" && catName === "Music"):
-        displayText = `${currQuestion.trackName} (${currQuestion.album} - ${currQuestion.releaseDate})`;
+      case ("Interests", "Music"):
+        displayText = `${currQuestion?.trackName} - ${currQuestion?.artist} (${currQuestion?.album} - ${currQuestion?.releaseDate})`;
         break;
   
-      case (catTypeName === "Interests" && catName === "Video Games"):
-        displayText = `${currQuestion.title} (${currQuestion.releaseDate})`;
+      case ("Interests", "Video Games"):
+        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
+        break;
+  
+      case ("Interests", "Books"):
+        displayText = `${currQuestion?.title} (${currQuestion?.author})`;
         break;
   
       default:
-        displayText = currQuestion.text;
+        displayText = currQuestion?.text;
     };
     
     return displayText;
