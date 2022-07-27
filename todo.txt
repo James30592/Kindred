@@ -1,6 +1,5 @@
 To do:
 
--	make search work for DB sources...  https://www.npmjs.com/package/fuzzy-search...
 -	do previous answers questions mode...
 
 

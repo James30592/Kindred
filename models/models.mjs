@@ -36,7 +36,7 @@ export const CategoryType = new mongoose.model("CategoryType", categoryTypeSchem
 
 const questionSchema = new mongoose.Schema({
   _id: {type: mongoose.Schema.Types.Mixed, required: true, unique: true},
-  text: String,
+  text: {type: String, required: false},
   // possAnswers: [possAnswerSchema]                  - removed for now to just do 0 - 10 numeric answers
 }, {strict: false});
 
