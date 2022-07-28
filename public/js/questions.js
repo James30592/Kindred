@@ -16,22 +16,22 @@ const autoQModeDiv = document.querySelector(".auto-mode");
 const searchQModeDiv = document.querySelector(".search-mode");
 const singleAnswerQModeDiv = document.querySelector(".single-answer-mode");
 
-// Create the question modes.
-const autoQMode = new AutoMode(autoQModeDiv, categoryTypeName, categoryName);
-const searchQMode = new SearchMode(searchQModeDiv, categoryTypeName, categoryName);
-const singleAnswerQMode = new SingleAnswerMode(singleAnswerQModeDiv, 
-  categoryTypeName, categoryName);
-
-const allQModes = [autoQMode, searchQMode, singleAnswerQMode];
-
 // Previous answers.
 const prevAnswersListDiv = document.querySelector(".prev-answers-list");
 const prevAnswersList = new PreviousAnswers(prevAnswersListDiv, 
   categoryTypeName, categoryName);
 
+// Create the question modes.
+const autoQMode = new AutoMode(autoQModeDiv, categoryTypeName, categoryName);
+const searchQMode = new SearchMode(searchQModeDiv, categoryTypeName, categoryName);
+const singleAnswerQMode = new SingleAnswerMode(singleAnswerQModeDiv, 
+  prevAnswersList, categoryTypeName, categoryName);
+
+const allQModes = [autoQMode, searchQMode, singleAnswerQMode];
+
 // Create the questions page.
-const questionsPage = new FullQuestionsPage(allQModes, prevAnswersList, 
-  categoryTypeName, categoryName);
+const questionsPage = new FullQuestionsPage(allQModes, categoryTypeName, 
+  categoryName);
 
 questionsPage.init();
 
@@ -45,21 +45,18 @@ questionsPage.init();
 document.querySelector(".auto-queue-mode-btn").addEventListener("click", 
   async () => {
     await questionsPage.switchQMode(autoQMode);
-    questionsPage.deactivatePrevAnsList();
   }
 );
 
 document.querySelector(".search-mode-btn").addEventListener("click", 
   async () => {
     await questionsPage.switchQMode(searchQMode);
-    questionsPage.deactivatePrevAnsList();
   }
 );
 
 document.querySelector(".prev-answers-mode-btn").addEventListener("click", 
   async () => {
     await questionsPage.switchQMode(singleAnswerQMode);
-    await questionsPage.activatePrevAnsList();
   }
 );
 

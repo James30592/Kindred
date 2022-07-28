@@ -58,7 +58,7 @@ class QuestionsPage {
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
     this.currQuestionMode = newQMode;
-    this.currQuestionMode.activate();
+    this._activateNewQMode();
 
     // Get all recently done answers, including those sent in the most recent POST.
     this.getAllRecentAnswers();
@@ -68,6 +68,10 @@ class QuestionsPage {
     // considering these if necessary.
     this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
     await this.currQuestionMode.updateQueueAndShowFirst();
+  }
+
+  _activateNewQMode() {
+    this.currQuestionMode.activate();
   }
 
   // Make an array - allRecentAnswers - that consists of the recentPostedAnswers 
@@ -117,7 +121,7 @@ class QuestionsPage {
     // Set the recently posted answers with the answers that are about to be 
     // posted (even if they are empty as it will necessarily have been a while 
     // since this was called).
-    this.recentPostedAnswers = this.newAnswers;
+    this.recentPostedAnswers = this.newAnswers.slice();
 
     // Check if there are any answers to upload.
     const noNewAnswers = this.newAnswers.length === 0;
@@ -153,27 +157,26 @@ class QuestionsPage {
 // Questions page that included a previous answers section for seeing previous 
 // answers made by the user, for use when in questions mode proper.
 export class FullQuestionsPage extends QuestionsPage {
-  #prevAnswersList;
-  #latestNewAnswers;
+  #latestNewAnswers = [];  // new answers since last time was on the prev answers mode.
 
-  constructor(qModes, prevAnswers, categoryTypeName, categoryName) {
+  constructor(qModes, categoryTypeName, categoryName) {
     super(qModes, categoryTypeName, categoryName);
-    this.#prevAnswersList = prevAnswers;
-  }
-
-  // 
-  async activatePrevAnsList() {
-    await this.#prevAnswersList.activate(this.#latestNewAnswers);
-  }
-
-  // 
-  deactivatePrevAnsList() {
-    this.#prevAnswersList.deactivate();
   }
 
   // Gets the latest new and updated answers from the current questions mode.
   getAndResetCurrQModeAnswers() {
-    this.#latestNewAnswers = this.currQuestionMode.newAnswers;
+    this.#latestNewAnswers.push(...this.currQuestionMode.newAnswers);
     super.getAndResetCurrQModeAnswers();
+  }
+
+  // If switching to the prev answers mode, also pass in the latest new answers.
+  async _activateNewQMode() {
+    if (this.currQuestionMode.hasOwn("#prevAnswersList")) {
+      await this.currQuestionMode.activate(this.#latestNewAnswers);
+      this.#latestNewAnswers = [];
+    }
+    else {
+      this.currQuestionMode.activate();
+    };
   }
 }

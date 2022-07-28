@@ -262,16 +262,24 @@ export class SearchMode extends QModeWithQueueInput {
 
 
 export class SingleAnswerMode extends QuestionsMode {
-  constructor(mainDiv, categoryType, category) {
+  #prevAnswersList;
+
+  constructor(mainDiv, prevAnswers, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new SingleQuestionQueue(categoryType, category);
+    this.#prevAnswersList = prevAnswers;
   }
 
-  activate() {
+  async activate(latestNewAnswers) {
+
+
+    await this.#prevAnswersList.activate(latestNewAnswers);
+
     // Instead of showing the answerUIpanel, set up event listeners on the re-rate buttons to show the answerUiPanel
   }
 
   deactivate() {
+    this.#prevAnswersList.deactivate();
     // Hide the answerUiPanel if it's showing, unlink it from whatever q it's linked to.
   }
 }
