@@ -35,7 +35,7 @@ export const CategoryType = new mongoose.model("CategoryType", categoryTypeSchem
 // }, {_id: false});
 
 const questionSchema = new mongoose.Schema({
-  _id: {type: mongoose.Schema.Types.Mixed, required: true, unique: true},
+  _id: {type: mongoose.Schema.Types.Mixed, required: true},
   text: {type: String, required: false},
   // possAnswers: [possAnswerSchema]                  - removed for now to just do 0 - 10 numeric answers
 }, {strict: false});
@@ -78,17 +78,21 @@ export const User = new mongoose.model("User", userSchema);
 
 
 
+const answerQuestionDetails = new mongoose.Schema({}, 
+  {_id: false, strict: false});
+
 // Collection of user answers for each category for each user, linked to user 
 // and categoryType through ids.
 const answerDetailSchema = new mongoose.Schema({
-  questionId: {type: mongoose.Schema.Types.Mixed, required: true, unique: true},
+  questionId: {type: mongoose.Schema.Types.Mixed, required: true},
   skip: {type: Boolean, required: true},
   answerVal: {
     type: Number,
     min: [0, "Score must be at least 0."],
     max: [10, "Score must be at most 10."]
   },
-  answerPercentile: Number
+  answerPercentile: Number,
+  questionDetails: answerQuestionDetails
 }, {_id: false});
 
 const categoryAnswersListSchema = new mongoose.Schema({
@@ -96,7 +100,7 @@ const categoryAnswersListSchema = new mongoose.Schema({
   categoryTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "CategoryType", required: true},
   categoryType: {type: String, required: true},
   category: {type: String, required: true},
-  currAPIPage: Number,
+  // currAPIPage: Number,
   answers: [answerDetailSchema]
 });
 

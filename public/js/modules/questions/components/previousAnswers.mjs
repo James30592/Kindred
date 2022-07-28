@@ -74,7 +74,8 @@ export class PreviousAnswers {
     const answerText = document.createElement("span");
     const answerReScoreBtn = document.createElement("button");
     
-    answerText.innerText = `Question ID: ${answer.questionId}. Skipped: ${answer.skip}. Answer Percentage: ${answer?.answerPercentile}.`;
+    const thisAnsText = this.#getAnswerDisplayText(answer?.questionDetails);
+    answerText.innerText = `${thisAnsText}. Skipped: ${answer.skip}. Answer Percentage: ${answer?.answerPercentile}.`;
     answerReScoreBtn.innerText = "Re-rate";
     
     rowDiv.appendChild(answerText);
@@ -86,5 +87,38 @@ export class PreviousAnswers {
   // Hides the list.
   deactivate() {
     this.#listDiv.classList.add("fully-hidden");
+  }
+
+  // Get the string to show as the question text, depending on the category.
+  #getAnswerDisplayText(questionDetails) {
+    let displayText;
+  
+    switch(this.#categoryTypeName, this.#categoryName) {
+  
+      case ("Interests", "Films") :
+        displayText = `${questionDetails?.title}`;
+        break;
+  
+      case ("Interests", "TV") :
+        displayText = `${questionDetails?.title}`;
+        break;
+
+      case ("Interests", "Music"):
+        displayText = `${questionDetails?.trackName} - ${questionDetails?.artist}`;
+        break;
+  
+      case ("Interests", "Video Games"):
+        displayText = `${questionDetails?.title}`;
+        break;
+  
+      case ("Interests", "Books"):
+        displayText = `${questionDetails?.title} (${questionDetails?.author})`;
+        break;
+  
+      default:
+        displayText = questionDetails?.text;
+    };
+    
+    return displayText;
   }
 }

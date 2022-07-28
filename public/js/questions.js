@@ -35,6 +35,11 @@ const questionsPage = new FullQuestionsPage(allQModes, prevAnswersList,
 
 questionsPage.init();
 
+
+
+// Think but these addEventListeners inside a qModeSwitcher object (with the 3 
+// buttons at the top) later.
+
 // Event listeners for mode change buttons, maybe put this inside QuestionsPage 
 // init method later.
 document.querySelector(".auto-queue-mode-btn").addEventListener("click", 
@@ -57,6 +62,8 @@ document.querySelector(".prev-answers-mode-btn").addEventListener("click",
     await questionsPage.activatePrevAnsList();
   }
 );
+
+
 
 // On page load, update the questions queue and show the first question.
 window.onload = async () => await questionsPage.setQMode(autoQMode);

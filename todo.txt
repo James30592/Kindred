@@ -7,7 +7,7 @@ To do:
 
 -	for api queries, include only stuff that has already been released
 
--	change questions queue back end to work in number of pages rather than get set number of items (get minimum that number of items but get every item up to the last page it iterates for)
+-	change questions queue back end to work in number of pages rather than getting a set number of items (get minimum that number of items but get every item up to the last page it iterates for)
 
 
 

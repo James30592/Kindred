@@ -105,9 +105,12 @@ class QuestionsMode {
 
   // Gets current answer to current question as an object for DB.
   getAnswerObj(currQuestion, userSkipped, thisScore) {
+    const questionDetails = this._getQuestionDetails(currQuestion);
+
     const answerInfo = {
       questionId: currQuestion._id,
-      skip: userSkipped
+      skip: userSkipped,
+      questionDetails: questionDetails
     };
   
     if (!userSkipped) {
@@ -116,6 +119,21 @@ class QuestionsMode {
     };
 
     return answerInfo;
+  }
+
+  // Gets all the question details (eg. title, release date etc.) for the current 
+  // question in an object to be added to the answers object, to be added to the DB.
+  _getQuestionDetails(currQuestion) {
+    const questionDetails = {};
+    const propsToIgnore = ["_id", "apiPageNum", "alreadyInDb", "currAns"];
+
+    for (let prop in currQuestion) {
+      const ignoreProp = propsToIgnore.includes(prop);
+      if (ignoreProp) continue;
+      questionDetails[prop] = currQuestion[prop];
+    };
+
+    return questionDetails;
   }
 
   // Called when switching question mode in the questions page, since these 
@@ -140,6 +158,14 @@ class QuestionsMode {
       };
     };
     this.questionsQueue.allRecentAnswers = this.allRecentAnswers;
+  }
+
+  activate() {
+    this.mainDiv.classList.remove("fully-hidden");
+  }
+
+  deactivate() {
+    this.mainDiv.classList.add("fully-hidden");
   }
 }
 
@@ -239,5 +265,13 @@ export class SingleAnswerMode extends QuestionsMode {
   constructor(mainDiv, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new SingleQuestionQueue(categoryType, category);
+  }
+
+  activate() {
+    // Instead of showing the answerUIpanel, set up event listeners on the re-rate buttons to show the answerUiPanel
+  }
+
+  deactivate() {
+    // Hide the answerUiPanel if it's showing, unlink it from whatever q it's linked to.
   }
 }

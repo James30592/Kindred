@@ -51,14 +51,14 @@ class QuestionsPage {
   // Remove current question mode: hide it, get the latest answers and post 
   // them to the server.
   removeQmode() {
-    this.currQuestionMode.mainDiv.classList.add("fully-hidden");
+    this.currQuestionMode.deactivate();
     this.getAndResetCurrQModeAnswers();
   }
 
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
     this.currQuestionMode = newQMode;
-    this.currQuestionMode.mainDiv.classList.remove("fully-hidden");
+    this.currQuestionMode.activate();
 
     // Get all recently done answers, including those sent in the most recent POST.
     this.getAllRecentAnswers();
