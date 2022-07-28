@@ -192,8 +192,6 @@ class QuestionsQueue {
 
 
 
-
-
 export class AutoQuestionsQueue extends QuestionsQueue {
   endQueueMsg = "You have answered all questions in this category! Use Search to answer more!";
   queueType = "auto";
@@ -207,7 +205,6 @@ export class AutoQuestionsQueue extends QuestionsQueue {
     return postObj;
   }
 }
-
 
 
 
@@ -245,4 +242,12 @@ export class SearchQuestionsQueue extends QuestionsQueue {
     postObj.data.includeAnsweredQs = this.inputPanel.includeAlreadyAnsweredCheckbox.checked;
     return postObj;
   }
+}
+
+
+
+
+
+export class SingleQuestionQueue extends QuestionsQueue {
+
 }

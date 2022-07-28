@@ -1,5 +1,6 @@
 import { AutoQuestionsQueue } from "./components/questionsQueue.mjs";
 import { SearchQuestionsQueue } from "./components/questionsQueue.mjs";
+import { SingleQuestionQueue } from "./components/questionsQueue.mjs";
 import { AutoQueueInputPanel } from "./components/queueInputPanel.mjs";
 import { SearchQueueInputPanel } from "./components/queueInputPanel.mjs";
 import { AnswerUIPanel } from "./components/answerUiPanel.mjs";
@@ -9,7 +10,6 @@ import { findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
 
 class QuestionsMode {
   mainDiv;
-  queueInputPanel;
   answerUiPanel;
   questionsQueue;
   newAnswers = [];
@@ -23,8 +23,6 @@ class QuestionsMode {
 
   // Sets up the answer UI panel button event listeners.
   init() {
-    this.questionsQueue.inputPanel = this.queueInputPanel;
-
     // Sets up the change score buttons event listeners.
     this.answerUiPanel.init();
 
@@ -56,7 +54,7 @@ class QuestionsMode {
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
-    this.showCurrQ();    
+    this._showCurrQ();    
 
     // Adds more questions to the questions queue if necessary.
     let queueUpdated = await this.questionsQueue.update();
@@ -92,18 +90,15 @@ class QuestionsMode {
     // haven't yet been POSTed.
     this.questionsQueue.checkForOutdatedQs();
     
-    this.showCurrQ();
+    this._showCurrQ();
   }
 
   // Updates the displayed question in the answer UI panel with the new first 
   // queue item. 
-  showCurrQ() {
+  _showCurrQ(inclAlreadyAnswered = true) {
     // Gets information on whether queue is now empty, or what the new current 
     // question text (and user answer, if necessary) should be.
     const newCurrQInfo = this.questionsQueue.getCurrQInfo();
-
-    const inclAlreadyAnswered = this.queueInputPanel?.
-      includeAlreadyAnsweredCheckbox.checked;
 
     this.answerUiPanel.displayCurrQ(newCurrQInfo, inclAlreadyAnswered);
   }
@@ -132,7 +127,7 @@ class QuestionsMode {
   // Once the fetch POST of some new answers every 10 mins has been completed, 
   // clear the recently POSTed answers so that the queue has less to modify.
   clearRecentlyPostedAnswers(newAndUpdatedAnswers) {
-    for (let i=0; i< this.allRecentAnswers.length; i++) {
+    for (let i = 0; i < this.allRecentAnswers.length; i++) {
       const recentAnswer = this.allRecentAnswers[i];
       const found = newAndUpdatedAnswers.find(ans => {
         return ans.questionId === recentAnswer.questionId;
@@ -152,7 +147,24 @@ class QuestionsMode {
 
 
 
-export class AutoMode extends QuestionsMode {
+class QModeWithQueueInput extends QuestionsMode {
+  queueInputPanel;
+
+  // Updates the displayed question in the answer UI panel with the new first 
+  // queue item. 
+  _showCurrQ() {
+    const inclAlreadyAnswered = this.queueInputPanel?.
+      includeAlreadyAnsweredCheckbox.checked;
+
+    super._showCurrQ(inclAlreadyAnswered);
+  }  
+}
+
+
+
+
+
+export class AutoMode extends QModeWithQueueInput {
   constructor(mainDiv, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new AutoQuestionsQueue(categoryType, category);
@@ -162,6 +174,7 @@ export class AutoMode extends QuestionsMode {
   // Sets up the queue input panel and answer UI panel button event listeners.
   init() {
     super.init();
+    this.questionsQueue.inputPanel = this.queueInputPanel;
 
     this.queueInputPanel.includeAlreadyAnsweredCheckbox.addEventListener(
       "click", async () => {
@@ -176,7 +189,7 @@ export class AutoMode extends QuestionsMode {
 
 
 
-export class SearchMode extends QuestionsMode {
+export class SearchMode extends QModeWithQueueInput {
   constructor(mainDiv, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new SearchQuestionsQueue(categoryType, category);
@@ -196,12 +209,13 @@ export class SearchMode extends QuestionsMode {
       this.questionsQueue.checkForOutdatedQs();
     }
 
-    this.showCurrQ();
+    this._showCurrQ();
   }
 
   // Sets up the queue input panel and answer UI panel button event listeners.
   init() {
     super.init();
+    this.questionsQueue.inputPanel = this.queueInputPanel;
 
     this.queueInputPanel.searchBtn.addEventListener("click", async () => {
       const searchTermChanged = this.questionsQueue.newSearch();
@@ -214,5 +228,16 @@ export class SearchMode extends QuestionsMode {
       this.questionsQueue.newSearch();
       await this.updateQueueAndShowFirst();
     });
+  }
+}
+
+
+
+
+
+export class SingleAnswerMode extends QuestionsMode {
+  constructor(mainDiv, categoryType, category) {
+    super(mainDiv);
+    this.questionsQueue = new SingleQuestionQueue(categoryType, category);
   }
 }

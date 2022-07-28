@@ -1,6 +1,6 @@
 To do:
 
--	do previous answers questions mode...
+-	do previous answers questions mode...should i make it so answers stores image and name etc. or query api on back end line 220 in controllers?... think definitely going to be better to just store in database...
 
 
 -	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one).

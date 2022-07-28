@@ -2,7 +2,7 @@ import { findAndOverwriteElsePush } from "../../../sharedJs/utils.mjs";
 
 
 
-export class QuestionsPage {
+class QuestionsPage {
   questionsModes;
   currQuestionMode;
   categoryTypeName;
@@ -28,33 +28,24 @@ export class QuestionsPage {
 
     // When questions page is left / tab closed, post any answers to the server.
     window.addEventListener("beforeunload", async () => {
-      this.getAndResetCurrQModeAnswers();
-      this.#postAnswers(true);
+      this._updateDBAnswers(true);
     });
 
     // Submit answers every 10 mins, if there are any.
     setInterval(() => {
-      this.getAndResetCurrQModeAnswers();
-      this.#postAnswers();
+      this._updateDBAnswers(false);
     }, QuestionsPage.#submitAnswersInterval);
+  }
+
+  _updateDBAnswers(isChangeOfPage = false) {
+    this.getAndResetCurrQModeAnswers();
+    this._postAnswers(isChangeOfPage);
   }
 
   // Gets the latest new and updated answers from the current questions mode.
   getAndResetCurrQModeAnswers() {
-    this.getCurrQModeAnswers(this.newAnswers, this.currQuestionMode.newAnswers);
+    this._updateAnsArrayWithArray(this.newAnswers, this.currQuestionMode.newAnswers);
     this.currQuestionMode.resetAnswers();
-  }
-
-  // Updates the qPage new / updated answers arrays with the new / updated 
-  // answers from the switched from questions mode.
-  getCurrQModeAnswers(qPageAnswers, newQModeAnswers) {
-    const matchFunc = (arrItem, newItem) => {
-      return arrItem.questionId === newItem.questionId
-    };
-
-    for (let newQModeAnswer of newQModeAnswers) {
-      findAndOverwriteElsePush(qPageAnswers, newQModeAnswer, matchFunc);
-    };
   }
 
   // Remove current question mode: hide it, get the latest answers and post 
@@ -64,45 +55,43 @@ export class QuestionsPage {
     this.getAndResetCurrQModeAnswers();
   }
 
-
-
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
     this.currQuestionMode = newQMode;
     this.currQuestionMode.mainDiv.classList.remove("fully-hidden");
 
     // Get all recently done answers, including those sent in the most recent POST.
-    const allRecentAnswers = this.getAllRecentAnswers();
+    this.getAllRecentAnswers();
 
     // Update the queue for the questions mode and show the first item in the 
     // queue. Pass in recently changed answers so that the queue can update 
     // considering these if necessary.
-    this.currQuestionMode.setRecentAnswers(allRecentAnswers);
+    this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
     await this.currQuestionMode.updateQueueAndShowFirst();
   }
 
   // Make an array - allRecentAnswers - that consists of the recentPostedAnswers 
-  // plus and new / updated answers since then. If new / updated answers cover 
+  // plus any new / updated answers since then. If new / updated answers cover 
   // anything in the recentPostedAnswers then the recentPostedAnswers version is 
   // overwritten.
   getAllRecentAnswers() {
     // Duplicate of the recentPostedAnswers.
     const allRecentAnswers = this.recentPostedAnswers.slice();
+    this._updateAnsArrayWithArray(allRecentAnswers, this.newAnswers);
 
-    for (let newAnswer of this.newAnswers) {
-      let indexRecentPostedAnswers = allRecentAnswers.findIndex(ans => {
-        return ans.questionId === newAnswer.questionId
-      });
+    this.allRecentAnswers = allRecentAnswers;
+  }
 
-      if (indexRecentPostedAnswers > 0) {
-        allRecentAnswers.splice(indexRecentPostedAnswers, 1, newAnswer);
-      }
-      else {
-        allRecentAnswers.push(newAnswer);
-      };
+  // Updates an origAnsArray with answers from newAnsArray, overwriting where 
+  // present in the origAnsArray (otherwise adding).
+  _updateAnsArrayWithArray(origAnsArray, newAnsArray) {
+    const matchFunc = (arrItem, newItem) => {
+      return arrItem.questionId === newItem.questionId
     };
 
-    return allRecentAnswers;
+    for (let newAnswer of newAnsArray) {
+      findAndOverwriteElsePush(origAnsArray, newAnswer, matchFunc);
+    };
   }
 
   // Switch between question modes.
@@ -124,7 +113,7 @@ export class QuestionsPage {
   }
 
   // POST these answers info to the server.
-  async #postAnswers(isChangeOfPage = false) {
+  async _postAnswers(isChangeOfPage = false) {
     // Set the recently posted answers with the answers that are about to be 
     // posted (even if they are empty as it will necessarily have been a while 
     // since this was called).
@@ -154,5 +143,37 @@ export class QuestionsPage {
 
     this.clearRecentlyPostedAnswers();
     this.resetAnswers();
+  }
+}
+
+
+
+
+
+// Questions page that included a previous answers section for seeing previous 
+// answers made by the user, for use when in questions mode proper.
+export class FullQuestionsPage extends QuestionsPage {
+  #prevAnswersList;
+  #latestNewAnswers;
+
+  constructor(qModes, prevAnswers, categoryTypeName, categoryName) {
+    super(qModes, categoryTypeName, categoryName);
+    this.#prevAnswersList = prevAnswers;
+  }
+
+  // 
+  async activatePrevAnsList() {
+    await this.#prevAnswersList.activate(this.#latestNewAnswers);
+  }
+
+  // 
+  deactivatePrevAnsList() {
+    this.#prevAnswersList.deactivate();
+  }
+
+  // Gets the latest new and updated answers from the current questions mode.
+  getAndResetCurrQModeAnswers() {
+    this.#latestNewAnswers = this.currQuestionMode.newAnswers;
+    super.getAndResetCurrQModeAnswers();
   }
 }

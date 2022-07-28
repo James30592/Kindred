@@ -16,10 +16,23 @@
           <hr>
           <button class="auto-queue-mode-btn">Auto Queue</button>
           <button class="search-mode-btn">Search</button>
-          <button class="curr-answers-mode-btn">Previous Answers</button>
+          <button class="prev-answers-mode-btn">Previous Answers</button>
           <hr>
           
+          <!-- Prev answers list -->
+          <div class="prev-answers-list fully-hidden">
+            <div>
+              <span>name...</span>
+              <button>re-rate</button>
+            </div>
+            <div>
+              <span>name...</span>
+              <button>re-rate</button>
+            </div>
+          </div>
+
           <div class="question-modes">
+
             <!-- Auto mode -->
             <div class="auto-mode fully-hidden">
               <!-- Auto queue input panel -->
@@ -92,14 +105,31 @@
 
             
             <!-- Previous answers mode -->
-            <div class="prev-answers-mode fully-hidden">
-
+            <div class="single-answer-mode fully-hidden">
+              <!-- Answer UI panel -->
+              <div class="answer-panel">
+                <div class="curr-question-div">
+                  <p class="curr-question">Placeholder...</p>
+                </div>
+                <div class="prev-ans-info hidden">
+                  <p>Question is already scored, current answer is:</p>
+                  <p class="prev-ans-val"></p>
+                </div>
+                <div class="rate-panel">
+                  <button class="change-score-btn big-change-btn down-btn"><<</button>
+                  <button class="change-score-btn small-change-btn down-btn"><</button>
+                  <span class="rating-score">5</span>
+                  <button class="change-score-btn small-change-btn up-btn">></button>
+                  <button class="change-score-btn big-change-btn up-btn">>></button>
+                  <br>
+                  <button class="skip-btn">Skip this one</button>
+                  <button class="rate-btn">Rate it!</button>
+                </div>
+              </div>
             </div>
-
 
           </div>
           
-
           <a class="btn btn-light" href="/questions-menu" role="button">Back to questions menu</a>
           <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
         </div>

@@ -207,6 +207,21 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
 
 
+// Used by the questions page when user gets their previous answers for a category.
+router.get("/user-answers/:categoryType/:category", async function(req, res) {
+  const categoryTypeName = req.params.categoryType;
+  const categoryName = req.params.category;
+
+  const currAnswerer = await serverState.currAnswerers.getCurrAnswerer(
+    req.user._id, categoryTypeName, categoryName);
+
+  const currAnswers = currAnswerer.answersList.item.answers;
+
+  res.json(currAnswers);
+});
+
+
+
 
 
 
