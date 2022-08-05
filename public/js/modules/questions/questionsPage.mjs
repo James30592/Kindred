@@ -9,12 +9,10 @@ class QuestionsPage {
   categoryName;
   // New answers that have not yet been POSTed to server.
   notYetPostedAnswers = [];
-  // Most recently POSTed answers, have not yet received response to say they 
-  // have been saved to DB.
-  postedNotYetSavedAnswers = [];
-  // Combination of the above two arrays.
+  // The not yet POSTed answers plus any answers that are POSTed but the save 
+  // on back end hasn't completed yet.
   allRecentAnswers = [];
-  static #submitAnswersInterval = 600000; // 10 mins
+  static #submitAnswersInterval = 60000; // 10 mins
 
   constructor(qModes, categoryTypeName, categoryName) {
     this.questionsModes = qModes;
@@ -31,7 +29,7 @@ class QuestionsPage {
     };
 
     // When questions page is left / tab closed, post any answers to the server.
-    window.addEventListener("beforeunload", async () => {
+    window.addEventListener("beforeunload", () => {
       this._postAnswers(true);
     });
 
@@ -52,16 +50,9 @@ class QuestionsPage {
   // Saves (or overwrites) new answer to notYetPosted and allRecentAnswers and 
   // then sends the updated recent answers array to the current questions mode.
   _handleNewAnswer(answerObj) {
-    this._updateAnsArrayWithArray(this.notYetPostedAnswers, [answerObj]);
-    this._updateAnsArrayWithArray(this.allRecentAnswers, [answerObj]);
-    this._setQModeRecentAnswers();
-  }
-
-  // Sends the latest not yet POSTed and most recently POSTed answers to the 
-  // current question mode.
-  _setQModeRecentAnswers() {
-    this.currQuestionMode.setRecentAnswers(this.notYetPostedAnswers, 
-      this.postedNotYetSavedAnswers);
+    this._updateAnsArrayWithAns(this.notYetPostedAnswers, answerObj);
+    this._updateAnsArrayWithAns(this.allRecentAnswers, answerObj);
+    this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
   }
 
   // Remove current question mode: hide it, get the latest answers and post 
@@ -72,16 +63,12 @@ class QuestionsPage {
 
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
-    // Get all recently done answers, including those sent in the most recent POST.
-    this.getAllRecentAnswers();
-
     this.currQuestionMode = newQMode;
     this._activateNewQMode();
 
-    this.currQuestionMode.setAllRecentAnswers(this.allRecentAnswers);
+    this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
 
-    // Update the queue for the questions mode and show the first item in the 
-    // queue.
+    // Update the queue for the questions mode and show first item in the queue.
     await this.currQuestionMode.updateQueueAndShowFirst();
   }
 
@@ -89,28 +76,14 @@ class QuestionsPage {
     this.currQuestionMode.activate();
   }
 
-  // Make an array - allRecentAnswers - that consists of the recentPostedAnswers 
-  // plus any new / updated answers since then. If new / updated answers cover 
-  // anything in the recentPostedAnswers then the recentPostedAnswers version is 
-  // overwritten.
-  getAllRecentAnswers() {
-    // Duplicate of the recentPostedAnswers.
-    const allRecentAnswers = this.postedNotYetSavedAnswers.slice();
-    this._updateAnsArrayWithArray(allRecentAnswers, this.notYetPostedAnswers);
-
-    this.allRecentAnswers = allRecentAnswers;
-  }
-
-  // Updates an origAnsArray with answers from newAnsArray, overwriting where 
+  // Updates an origAnsArray with a new answer, overwriting where 
   // present in the origAnsArray (otherwise adding).
-  _updateAnsArrayWithArray(origAnsArray, newAnsArray) {
+  _updateAnsArrayWithAns(origAnsArray, newAns) {
     const matchFunc = (arrItem, newItem) => {
       return arrItem.questionId === newItem.questionId
     };
 
-    for (let newAnswer of newAnsArray) {
-      findAndOverwriteElsePush(origAnsArray, newAnswer, matchFunc);
-    };
+    findAndOverwriteElsePush(origAnsArray, newAns, matchFunc);
   }
 
   // Switch between question modes.
@@ -125,20 +98,22 @@ class QuestionsPage {
   }
 
   // Once the fetch POST of some new answers every 10 mins has been completed, 
-  // update the recently POSTed answers so that the queue has less to modify.
+  // update the allRecentAnswers so that the queue has less to modify.
   clearRecentlyPostedAnswers(successPostedAnswers) {
-    // Remove each successfully POSTed answer from this postedNotYetSavedAnswers.
+    // Remove each successfully POSTed answer from this allRecentAnswers.
     for (let successPostedAnswer of successPostedAnswers) {
-      const findIndex = getFindIndex(successPostedAnswer, this.postedNotYetSavedAnswers);
-      this.postedNotYetSavedAnswers.splice(findIndex, 1);
+      const findIndex = getFindIndex(successPostedAnswer, this.allRecentAnswers);
+      if (findIndex > -1) {
+        this.allRecentAnswers.splice(findIndex, 1);
+      };
     };
     
-    // Finds this exact answer in the postedNotYetSavedAnswers (same 
+    // Finds this exact answer in the allRecentAnswers (same 
     // questionId may appear more than once so only find exact match with 
     // answer / skip value too).
-    const getFindIndex = (successPostedAnswer, postedNotYetSavedAnswers) => {
-      const findIndex = postedNotYetSavedAnswers.findIndex(ans => {
-        const isMatch = true;
+    function getFindIndex(successPostedAnswer, updateAnswersArray) {
+      const findIndex = updateAnswersArray.findIndex(ans => {
+        let isMatch = true;
         const propsToCheck = ["questionId", "skip", "answerVal"];
 
         for (let prop in ans) {
@@ -159,11 +134,6 @@ class QuestionsPage {
   // POST these answers info to the server.
   async _postAnswers(isChangeOfPage = false) {
     const answersToPost = this.notYetPostedAnswers.slice();
-
-    // Add the new answers to the postedNotYetSavedAnswers (until the fetch 
-    // response that they were saved in DB is returned).
-    this.postedNotYetSavedAnswers = this.postedNotYetSavedAnswers.concat(
-      ...answersToPost);
 
     // Check if there are any answers to upload.
     const noNewAnswers = answersToPost.length === 0;

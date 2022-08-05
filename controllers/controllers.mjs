@@ -158,7 +158,6 @@ router.post('/login',
 
 
 
-
 router.get("/questions-menu", async function(req, res) {
   const allCategoryTypes = await models.CategoryType.find().exec();
   res.render("questions-menu", {allCategoryTypes: allCategoryTypes});
@@ -200,6 +199,7 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
         userAnswers, postObj.data);
 
       await newQs.getQuestions();
+
       res.json({results: newQs.results, endOfQSource: newQs.endOfQSource});
     };
   };

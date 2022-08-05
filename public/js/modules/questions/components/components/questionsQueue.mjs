@@ -54,8 +54,8 @@ class QuestionsQueue {
   }
 
   // 
-  setRecentAnswers(notYetPostedAnswers, postedNotYetSavedAnswers) {
-    
+  setRecentAnswers(allRecentAnswers) {
+    this.allRecentAnswers = allRecentAnswers;
   }
 
   // Checks if the queue needs and can be updated.

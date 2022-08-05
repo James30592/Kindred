@@ -11,8 +11,6 @@ class QuestionsMode extends EventTarget {
   mainDiv;
   answerUiPanel;
   questionsQueue;
-  newAnswers = [];
-  allRecentAnswers = [];
 
   constructor(mainDiv) {
     super();
@@ -33,10 +31,9 @@ class QuestionsMode extends EventTarget {
     });
   }
 
-  // 
-  setRecentAnswers(notYetPostedAnswers, postedNotYetSavedAnswers) {
-    this.questionsQueue.setRecentAnswers(notYetPostedAnswers, 
-      postedNotYetSavedAnswers);
+  // Passes the allRecentAnswers on to the questions queue.
+  setRecentAnswers(allRecentAnswers) {
+    this.questionsQueue.setRecentAnswers(allRecentAnswers);
   }
 
   // Save answer information, update the queue if necessary.
@@ -64,15 +61,6 @@ class QuestionsMode extends EventTarget {
       new CustomEvent("answeredQ", {detail: {answerObj: answerObj}})
     );
   }
-
-
-
-
-
-
-
-
-
 
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
@@ -134,24 +122,6 @@ class QuestionsMode extends EventTarget {
 
     return questionDetails;
   }
-
-  // // Once the fetch POST of some new answers every 10 mins has been completed, 
-  // // clear the recently POSTed answers so that the queue has less to modify.
-  // clearRecentlyPostedAnswers(newAndUpdatedAnswers) {
-  //   for (let i = 0; i < this.allRecentAnswers.length; i++) {
-  //     const recentAnswer = this.allRecentAnswers[i];
-  //     const found = newAndUpdatedAnswers.find(ans => {
-  //       return ans.questionId === recentAnswer.questionId;
-  //     });
-
-  //     // Recently posted answer, remove from recent answers now that POST has 
-  //     // completed.
-  //     if (!found) {
-  //       this.allRecentAnswers.splice(i, 1);
-  //     };
-  //   };
-  //   this.questionsQueue.allRecentAnswers = this.allRecentAnswers;
-  // }
 
   activate() {
     this.mainDiv.classList.remove("fully-hidden");
