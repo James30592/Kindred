@@ -4,19 +4,18 @@ import { SingleQuestionQueue } from "./components/questionsQueue.mjs";
 import { AutoQueueInputPanel } from "./components/queueInputPanel.mjs";
 import { SearchQueueInputPanel } from "./components/queueInputPanel.mjs";
 import { AnswerUIPanel } from "./components/answerUiPanel.mjs";
-import { findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
 
 
 
-class QuestionsMode {
+class QuestionsMode extends EventTarget {
   mainDiv;
   answerUiPanel;
   questionsQueue;
   newAnswers = [];
-  updatedAnswers = [];
   allRecentAnswers = [];
 
   constructor(mainDiv) {
+    super();
     this.mainDiv = mainDiv;
     this.answerUiPanel = new AnswerUIPanel(mainDiv);
   }
@@ -34,23 +33,21 @@ class QuestionsMode {
     });
   }
 
+  // 
+  setRecentAnswers(notYetPostedAnswers, postedNotYetSavedAnswers) {
+    this.questionsQueue.setRecentAnswers(notYetPostedAnswers, 
+      postedNotYetSavedAnswers);
+  }
+
   // Save answer information, update the queue if necessary.
   async answerQuestion(event) {
     const userSkipped = (event.currentTarget === this.answerUiPanel.skipBtn);
     const currQuestion = this.questionsQueue.queue.shift();
-    const thisScore = (userSkipped ? null : Number(this.answerUiPanel.ratingScore.innerText));
+    const thisScore = (userSkipped ? null : Number(this.answerUiPanel.
+      ratingScore.innerText));
 
     // Get the answer object as it should be stored in the DB.
     const answerObj = this.getAnswerObj(currQuestion, userSkipped, thisScore);
-
-    // Update / push answer in this newAnswers.
-    this.updateAnswersArray(this.newAnswers, answerObj);
-
-    // Also do this with the allRecentAnswers array (at the moment so that 
-    // subsequent searches without switching questions mode will show the 
-    // correct, most recent answer).
-    this.updateAnswersArray(this.allRecentAnswers, answerObj);
-    this.questionsQueue.allRecentAnswers = this.allRecentAnswers;
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
@@ -61,27 +58,31 @@ class QuestionsMode {
     if (queueUpdated) {
       this.questionsQueue.checkForOutdatedQs();
     };
+
+    // Emit event to be picked up by the questions page.
+    this.dispatchEvent(
+      new CustomEvent("answeredQ", {detail: {answerObj: answerObj}})
+    );
   }
 
-  // Updates the relevant answers array for this questions mode (new / updated) 
-  // with a new (or merely an updated) answer.
-  updateAnswersArray(ansArrayToUpdate, answerObj) {
-    const matchFunc = (arrItem, newItem) => {
-      return arrItem.questionId === newItem.questionId
-    };
-    
-    findAndOverwriteElsePush(ansArrayToUpdate, answerObj, matchFunc);
-  }
 
-  // Set the allRecentAnswers for the questions queue to bear in mind whenever updating.
-  setRecentAnswers(allRecentAnswers) {
-    this.allRecentAnswers = allRecentAnswers;
-    this.questionsQueue.allRecentAnswers = allRecentAnswers;
-  }
+
+
+
+
+
+
+
 
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
   async updateQueueAndShowFirst() {
+    await this.updateQueue();    
+    this._showCurrQ();
+  }
+
+  // Updates the questions queue.
+  async updateQueue() {
     // Queue will only update if it's short on answers.
     await this.questionsQueue.update();
 
@@ -89,8 +90,6 @@ class QuestionsMode {
     // recently POSTed answers or recent answers from other questions modes that 
     // haven't yet been POSTed.
     this.questionsQueue.checkForOutdatedQs();
-    
-    this._showCurrQ();
   }
 
   // Updates the displayed question in the answer UI panel with the new first 
@@ -136,29 +135,23 @@ class QuestionsMode {
     return questionDetails;
   }
 
-  // Called when switching question mode in the questions page, since these 
-  // answers are passed to the QuestionsPage and uploaded from there.
-  resetAnswers() {
-    this.newAnswers = [];
-  }
+  // // Once the fetch POST of some new answers every 10 mins has been completed, 
+  // // clear the recently POSTed answers so that the queue has less to modify.
+  // clearRecentlyPostedAnswers(newAndUpdatedAnswers) {
+  //   for (let i = 0; i < this.allRecentAnswers.length; i++) {
+  //     const recentAnswer = this.allRecentAnswers[i];
+  //     const found = newAndUpdatedAnswers.find(ans => {
+  //       return ans.questionId === recentAnswer.questionId;
+  //     });
 
-  // Once the fetch POST of some new answers every 10 mins has been completed, 
-  // clear the recently POSTed answers so that the queue has less to modify.
-  clearRecentlyPostedAnswers(newAndUpdatedAnswers) {
-    for (let i = 0; i < this.allRecentAnswers.length; i++) {
-      const recentAnswer = this.allRecentAnswers[i];
-      const found = newAndUpdatedAnswers.find(ans => {
-        return ans.questionId === recentAnswer.questionId;
-      });
-
-      // Recently posted answer, remove from recent answers now that POST has 
-      // completed.
-      if (!found) {
-        this.allRecentAnswers.splice(i, 1);
-      };
-    };
-    this.questionsQueue.allRecentAnswers = this.allRecentAnswers;
-  }
+  //     // Recently posted answer, remove from recent answers now that POST has 
+  //     // completed.
+  //     if (!found) {
+  //       this.allRecentAnswers.splice(i, 1);
+  //     };
+  //   };
+  //   this.questionsQueue.allRecentAnswers = this.allRecentAnswers;
+  // }
 
   activate() {
     this.mainDiv.classList.remove("fully-hidden");
@@ -226,15 +219,9 @@ export class SearchMode extends QModeWithQueueInput {
   // called when switching to this questions mode.
   async updateQueueAndShowFirst() {
     if (this.queueInputPanel.searchInput.value !== "") {
-      // Queue will only update if it's short on answers.
-      await this.questionsQueue.update();
-
-      // Checks the queue to see if any questions in it are now outdated based on 
-      // recently POSTed answers or recent answers from other questions modes that 
-      // haven't yet been POSTed.
-      this.questionsQueue.checkForOutdatedQs();
-    }
-
+      await super.updateQueue();
+    };
+  
     this._showCurrQ();
   }
 

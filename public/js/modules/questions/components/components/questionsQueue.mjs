@@ -53,6 +53,11 @@ class QuestionsQueue {
     return updated;
   }
 
+  // 
+  setRecentAnswers(notYetPostedAnswers, postedNotYetSavedAnswers) {
+    
+  }
+
   // Checks if the queue needs and can be updated.
   checkQueueToBeUpdated() {
     const queueNeedsExtending = this.queue.length <= this._QUEUE_REFRESH_THRESHOLD;
