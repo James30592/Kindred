@@ -1,5 +1,13 @@
+class BaseQuestionsQueue {
+
+}
+
+
+
+
+
 // For retreiving new questions from server.
-class QuestionsQueue {
+class QuestionsQueue extends BaseQuestionsQueue {
   static #QUEUE_DESIRED_SIZE = 40;
   _QUEUE_REFRESH_THRESHOLD = 20;
   #categoryTypeName;
@@ -253,6 +261,10 @@ export class SearchQuestionsQueue extends QuestionsQueue {
 
 
 
-export class SingleQuestionQueue extends QuestionsQueue {
+export class SingleQuestionQueue extends BaseQuestionsQueue {
+  update(question) {
+    this.queue = [question];
+  }
+
 
 }

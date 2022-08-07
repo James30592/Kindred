@@ -65,7 +65,7 @@ class QuestionsMode extends EventTarget {
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
   async updateQueueAndShowFirst() {
-    await this.updateQueue();    
+    await this.updateQueue();
     this._showCurrQ();
   }
 
@@ -154,6 +154,8 @@ class QModeWithQueueInput extends QuestionsMode {
 
 
 export class AutoMode extends QModeWithQueueInput {
+  name = "auto";
+
   constructor(mainDiv, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new AutoQuestionsQueue(categoryType, category);
@@ -179,6 +181,8 @@ export class AutoMode extends QModeWithQueueInput {
 
 
 export class SearchMode extends QModeWithQueueInput {
+  name = "search";
+
   constructor(mainDiv, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new SearchQuestionsQueue(categoryType, category);
@@ -216,27 +220,68 @@ export class SearchMode extends QModeWithQueueInput {
 
 
 
+class SingleAnswerMode extends QuestionsMode {
+  name = "single";
 
-
-export class SingleAnswerMode extends QuestionsMode {
-  #prevAnswersList;
-
-  constructor(mainDiv, prevAnswers, categoryType, category) {
+  constructor(mainDiv, qSource, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new SingleQuestionQueue(categoryType, category);
-    this.#prevAnswersList = prevAnswers;
+    this.#qSource = qSource;
   }
 
-  async activate(latestNewAnswers) {
+  init() {
+    super.init();
+
+    this.#qSource.addEventListener("answerSingleQ", evt => {
+      this._handleClickSingleQ(evt);
+    });
+  }
+}
 
 
-    await this.#prevAnswersList.activate(latestNewAnswers);
 
-    // Instead of showing the answerUIpanel, set up event listeners on the re-rate buttons to show the answerUiPanel
+
+
+export class PrevAnswerMode extends SingleAnswerMode {
+  name = "prevAns";
+  #qSource;
+
+  _handleClickSingleQ(evt) {
+    // do the queue for this single question...
+    const thisPrevAns = evt.detail.answer;
+    const thisQuestion = this.#makeQuestion(thisPrevAns);
+    this.questionsQueue.update(thisQuestion);
+
+    // show the answerUiPanel...
+
+  }
+
+  // Makes a question, ready to be shown in the answerUiPanel, from the current 
+  // user answer.
+  #makeQuestion(prevAns) {
+    const thisQ = {
+      _id: prevAns.questionId,
+      currAns: {
+        skip: prevAns.skip,
+        answerVal: prevAns.answerVal
+      }
+    };
+
+    for (let prop in prevAns.questionDetails) {
+      thisQ[prop] = prevAns.questionDetails[prop]
+    };
+
+    return thisQ;
+  }
+
+  async activate(latestSessionAnswers) {
+    await this.#qSource.activate(latestSessionAnswers);
   }
 
   deactivate() {
-    this.#prevAnswersList.deactivate();
+    this.#qSource.deactivate();
     // Hide the answerUiPanel if it's showing, unlink it from whatever q it's linked to.
+
+
   }
 }

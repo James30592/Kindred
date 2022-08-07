@@ -2,9 +2,21 @@ import { findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
 
 
 
-export class PreviousAnswers {
+class SingleModeQSource extends EventTarget {
+  
+}
+
+
+
+
+
+
+
+export class PreviousAnswers extends SingleModeQSource {
   #listDiv;
   #notYetActivated = true;
+  // Combination of all DB answers overwritten with any more recent answers for 
+  // current session.
   #prevAnswers = [];
   #categoryTypeName;
   #categoryName;
@@ -17,17 +29,17 @@ export class PreviousAnswers {
 
   // Get the latest version of all the user's current answers and update the 
   // div with them.
-  async activate(latestNewAnswers) {
+  async activate(latestSessionAnswers) {
     // Get user's current answers in the DB for this category, if first time running.
     if (this.#notYetActivated) {
       this.#prevAnswers = await this.#getDBAnswers();
     };
 
     // Add / overwrite prevAnswers with any newAnswers as necessary.
-    this.#updatePrevAnswers(latestNewAnswers);
+    this.#updatePrevAnswers(latestSessionAnswers);
 
     // Populate the listDiv with each answer as a row.
-    const areNewAnswers = latestNewAnswers.length > 0;
+    const areNewAnswers = latestSessionAnswers.length > 0;
     if (areNewAnswers || this.#notYetActivated) {
       this.#clearListDiv();
       this.#buildListDiv();
@@ -45,12 +57,12 @@ export class PreviousAnswers {
   }
 
   // Add / overwrite prevAnswers with any newAnswers as necessary.
-  #updatePrevAnswers(latestNewAnswers) {
+  #updatePrevAnswers(latestSessionAnswers) {
     const matchFunc = (arrItem, newItem) => {
       return arrItem.questionId === newItem.questionId
     };
 
-    for (let newAnswer of latestNewAnswers) {
+    for (let newAnswer of latestSessionAnswers) {
       findAndOverwriteElsePush(this.#prevAnswers, newAnswer, matchFunc);
     };
   }
@@ -73,7 +85,13 @@ export class PreviousAnswers {
     const rowDiv = document.createElement("div");
     const answerText = document.createElement("span");
     const answerReScoreBtn = document.createElement("button");
-    
+
+    answerReScoreBtn.addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("answerSingleQ", {detail: {answer: answer}})
+      );
+    });
+
     const thisAnsText = this.#getAnswerDisplayText(answer?.questionDetails);
     answerText.innerText = `${thisAnsText}. Skipped: ${answer.skip}. Answer Percentage: ${answer?.answerPercentile}.`;
     answerReScoreBtn.innerText = "Re-rate";

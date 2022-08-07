@@ -169,23 +169,26 @@ class QuestionsPage {
 // Questions page that included a previous answers section for seeing previous 
 // answers made by the user, for use when in questions mode proper.
 export class FullQuestionsPage extends QuestionsPage {
-  #latestNewAnswers = [];  // new answers since last time was on the prev answers mode.
+  // Just the session answers since last time was on the prev answers mode.
+  #latestSessionAnswers = [];
 
   constructor(qModes, categoryTypeName, categoryName) {
     super(qModes, categoryTypeName, categoryName);
   }
 
-  // Gets the latest new and updated answers from the current questions mode.
-  getAndResetCurrQModeAnswers() {
-    this.#latestNewAnswers.push(...this.currQuestionMode.newAnswers);
-    super.getAndResetCurrQModeAnswers();
+  // Updates the session answers (if not in the prev answers mode currently).
+  _handleNewAnswer(answerObj) {
+    super._handleNewAnswer(answerObj);
+    if (this.currQuestionMode?.name !== "prevAns") {
+      this._updateAnsArrayWithAns(this.#latestSessionAnswers, answerObj);
+    };
   }
 
   // If switching to the prev answers mode, also pass in the latest new answers.
   async _activateNewQMode() {
-    if (Object.hasOwn(this.currQuestionMode, "#prevAnswersList")) {
-      await this.currQuestionMode.activate(this.#latestNewAnswers);
-      this.#latestNewAnswers = [];
+    if (this.currQuestionMode?.name === "prevAns") {
+      await this.currQuestionMode.activate(this.#latestSessionAnswers);
+      this.#latestSessionAnswers = [];
     }
     else {
       this.currQuestionMode.activate();
