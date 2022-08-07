@@ -52,7 +52,7 @@ class QuestionsPage {
   _handleNewAnswer(answerObj) {
     this._updateAnsArrayWithAns(this.notYetPostedAnswers, answerObj);
     this._updateAnsArrayWithAns(this.allRecentAnswers, answerObj);
-    this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
+    this._setRecentAnswers();
   }
 
   // Remove current question mode: hide it, get the latest answers and post 
@@ -64,16 +64,16 @@ class QuestionsPage {
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
     this.currQuestionMode = newQMode;
-    this._activateNewQMode();
+    this.currQuestionMode.activate();
 
-    this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
+    this._setRecentAnswers();
 
     // Update the queue for the questions mode and show first item in the queue.
     await this.currQuestionMode.updateQueueAndShowFirst();
   }
 
-  _activateNewQMode() {
-    this.currQuestionMode.activate();
+  _setRecentAnswers() {
+    this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
   }
 
   // Updates an origAnsArray with a new answer, overwriting where 
@@ -176,22 +176,34 @@ export class FullQuestionsPage extends QuestionsPage {
     super(qModes, categoryTypeName, categoryName);
   }
 
-  // Updates the session answers (if not in the prev answers mode currently).
-  _handleNewAnswer(answerObj) {
-    super._handleNewAnswer(answerObj);
-    if (this.currQuestionMode?.name !== "prevAns") {
-      this._updateAnsArrayWithAns(this.#latestSessionAnswers, answerObj);
-    };
-  }
+  // ------------------------------------------REMOVE---------------------------------------------------------------------------
+  // // Updates the session answers (if not in the prev answers mode currently 
+  // // because in this case it updates the prev answers list immediately).
+  // _handleNewAnswer(answerObj) {
+  //   if (this.currQuestionMode?.name !== "prevAns") {
+  //     this._updateAnsArrayWithAns(this.#latestSessionAnswers, answerObj);
+  //   };
+  //   super._handleNewAnswer(answerObj);
+  // }
 
-  // If switching to the prev answers mode, also pass in the latest new answers.
-  async _activateNewQMode() {
+  _setRecentAnswers() {
+    // If currently in the previous answers mode, reset the latestSessionAnswers 
+    // immediately after setting it as it will be reflected in the prev answers 
+    // list straight away.
     if (this.currQuestionMode?.name === "prevAns") {
-      await this.currQuestionMode.activate(this.#latestSessionAnswers);
+      this.currQuestionMode.setRecentAnswers(this.#latestSessionAnswers);
       this.#latestSessionAnswers = [];
     }
     else {
-      this.currQuestionMode.activate();
+      this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
     };
+  }
+
+  // Set the new questions mode and show it.
+  async setQMode(newQMode) {
+    this.currQuestionMode = newQMode;
+    this.currQuestionMode.activate();
+
+    this._setRecentAnswers();
   }
 }

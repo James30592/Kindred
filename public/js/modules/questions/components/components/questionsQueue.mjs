@@ -1,5 +1,67 @@
 class BaseQuestionsQueue {
+  _categoryTypeName;
+  _categoryName;
+  queue = [];
+  queueType;
 
+  constructor(categoryType, category) {
+    this._categoryTypeName = categoryType;
+    this._categoryName = category;
+  }
+
+  // Gets the text to display of the current first item in the questions queue.
+  getCurrQInfo() {
+    let currQText;
+    let currQAns;
+    let endOfQueue = false;
+
+    // Hide question answer panel if run out of questions and display a message.
+    if (this.queue.length === 0) {
+      currQText = this.endQueueMsg;
+      endOfQueue = true;
+    }
+    else {
+      currQText = QuestionsQueue._getQuestionText(this._categoryTypeName, 
+        this._categoryName, this.queue[0]);
+      
+      currQAns = this.queue[0].currAns;
+    };
+
+    return {endOfQueue, currQText, currQAns};
+  }
+
+  // Get the string to show as the question text, depending on the category.
+  static _getQuestionText(catTypeName, catName, currQuestion) {
+    let displayText;
+  
+    switch(catTypeName, catName) {
+  
+      case ("Interests", "Films") :
+        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
+        break;
+  
+      case ("Interests", "TV") :
+        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
+        break;
+
+      case ("Interests", "Music"):
+        displayText = `${currQuestion?.trackName} - ${currQuestion?.artist} (${currQuestion?.album} - ${currQuestion?.releaseDate})`;
+        break;
+  
+      case ("Interests", "Video Games"):
+        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
+        break;
+  
+      case ("Interests", "Books"):
+        displayText = `${currQuestion?.title} (${currQuestion?.author})`;
+        break;
+  
+      default:
+        displayText = currQuestion?.text;
+    };
+    
+    return displayText;
+  }
 }
 
 
@@ -10,21 +72,12 @@ class BaseQuestionsQueue {
 class QuestionsQueue extends BaseQuestionsQueue {
   static #QUEUE_DESIRED_SIZE = 40;
   _QUEUE_REFRESH_THRESHOLD = 20;
-  #categoryTypeName;
-  #categoryName;
-  queue = [];
   #filters;
   _endOfQSource = false;
   _currentlyUpdating = false;
   endQueueMsg;
-  queueType; 
-  allRecentAnswers = [];
   inputPanel;
-
-  constructor(categoryType, category) {
-    this.#categoryTypeName = categoryType;
-    this.#categoryName = category;
-  }
+  allRecentAnswers = [];
 
   // Add items to the questions queue if it's running low and there are 
   // unanswered questions remaining in the source. isNewQueue is boolean for 
@@ -61,11 +114,6 @@ class QuestionsQueue extends BaseQuestionsQueue {
     return updated;
   }
 
-  // 
-  setRecentAnswers(allRecentAnswers) {
-    this.allRecentAnswers = allRecentAnswers;
-  }
-
   // Checks if the queue needs and can be updated.
   checkQueueToBeUpdated() {
     const queueNeedsExtending = this.queue.length <= this._QUEUE_REFRESH_THRESHOLD;
@@ -75,11 +123,16 @@ class QuestionsQueue extends BaseQuestionsQueue {
     return queueToBeUpdated;
   }
 
+  // 
+  setRecentAnswers(recallRecentAnswers) {
+    this.recallRecentAnswers = recallRecentAnswers;
+  }
+
   // Checks each question in the queue to see if it has recently been answered 
   // (and therefore should no longer be in the queue, or should be there with a 
   // newer answer value) and handles this.
   checkForOutdatedQs() {
-    for (let ans of this.allRecentAnswers) {
+    for (let ans of this.recallRecentAnswers) {
       const queueIndex = this.queue.findIndex(q => q._id === ans.questionId);
 
       if (queueIndex > -1) {
@@ -105,34 +158,13 @@ class QuestionsQueue extends BaseQuestionsQueue {
     };
   }
 
-  // Gets the text to display of the current first item in the questions queue.
-  getCurrQInfo() {
-    let currQText;
-    let currQAns;
-    let endOfQueue = false;
-
-    // Hide question answer panel if run out of questions and display a message.
-    if (this.queue.length === 0) {
-      currQText = this.endQueueMsg;
-      endOfQueue = true;
-    }
-    else {
-      currQText = QuestionsQueue.#getQuestionText(this.#categoryTypeName, 
-        this.#categoryName, this.queue[0]);
-      
-      currQAns = this.queue[0].currAns;
-    };
-
-    return {endOfQueue, currQText, currQAns};
-  }
-
   // Gets more items to the questions queue, when it's running low.
   async #postNewQsRequest(numQuestions, currQueueIds, startApiPage) {
     this._currentlyUpdating = true;
     
     const postObj = this._getPostObj(numQuestions, currQueueIds, startApiPage);
 
-    const fetchResponse = await fetch(`/questions/${this.#categoryTypeName}/${this.#categoryName}`, {
+    const fetchResponse = await fetch(`/questions/${this._categoryTypeName}/${this._categoryName}`, {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(postObj)
@@ -165,39 +197,6 @@ class QuestionsQueue extends BaseQuestionsQueue {
     this.queue = [];
     this._endOfQSource = false;
     this._currentlyUpdating = false;
-  }
-
-  // Get the string to show as the question text, depending on the category.
-  static #getQuestionText(catTypeName, catName, currQuestion) {
-    let displayText;
-  
-    switch(catTypeName, catName) {
-  
-      case ("Interests", "Films") :
-        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
-        break;
-  
-      case ("Interests", "TV") :
-        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
-        break;
-
-      case ("Interests", "Music"):
-        displayText = `${currQuestion?.trackName} - ${currQuestion?.artist} (${currQuestion?.album} - ${currQuestion?.releaseDate})`;
-        break;
-  
-      case ("Interests", "Video Games"):
-        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
-        break;
-  
-      case ("Interests", "Books"):
-        displayText = `${currQuestion?.title} (${currQuestion?.author})`;
-        break;
-  
-      default:
-        displayText = currQuestion?.text;
-    };
-    
-    return displayText;
   }
 }
   
@@ -266,5 +265,11 @@ export class SingleQuestionQueue extends BaseQuestionsQueue {
     this.queue = [question];
   }
 
-
+  // // Update answer info with latest local answer info.
+  // handleOutdatedQueueItem(queueIndex, recentAnswer) {
+  //   this.queue[queueIndex].currAns = {
+  //     skip: recentAnswer.skip,
+  //     answerVal: recentAnswer?.answerVal
+  //   };
+  // }
 }

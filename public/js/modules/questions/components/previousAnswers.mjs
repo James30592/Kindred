@@ -29,12 +29,17 @@ export class PreviousAnswers extends SingleModeQSource {
 
   // Get the latest version of all the user's current answers and update the 
   // div with them.
-  async activate(latestSessionAnswers) {
+  async activate() {
     // Get user's current answers in the DB for this category, if first time running.
     if (this.#notYetActivated) {
       this.#prevAnswers = await this.#getDBAnswers();
     };
 
+    this.#listDiv.classList.remove("fully-hidden");
+  }
+
+  // Updates this #prevAnswers and the div list on a change.
+  updateAnswersList(latestSessionAnswers) {
     // Add / overwrite prevAnswers with any newAnswers as necessary.
     this.#updatePrevAnswers(latestSessionAnswers);
 
@@ -45,8 +50,7 @@ export class PreviousAnswers extends SingleModeQSource {
       this.#buildListDiv();
     };
 
-    this.#listDiv.classList.remove("fully-hidden");
-    this.#notYetActivated = false;
+    if (this.#notYetActivated) this.#notYetActivated = false;
   }
 
   // Get user's current answers in the DB for this category.

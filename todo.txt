@@ -1,17 +1,8 @@
 To do:
 
--	do previous answers questions mode...think should be working now, latest new answers cumulates between switching modes and then gets run through activate when switching to prev answers mode, so unlike the other question modes where they are given this.allRecentAnswers from the questions page during setQMode, the prevAnswersMode gets the "latestNewAnswers" which is all the cumulative newAnswers since the last time the prevAnswersMode was activated.
-The PreviousAnswers object then updates it's #prevAnswers property with these latestAnswers when it is activated (which is called when the prevAnswersMode is activated).
-
-Think keep the queue and panel functioning very similar to the other modes but havent done any work on this yet and haven't tested the above. 
-
-Think tweak the answerQuestion function for the SingleAnswerMode so that it's not doing all the stuff to do with updating the queue when a question is answered. Instead make it so that when question is answered the answerUiPanel disappears. Also need to update the relevant row in the previousAnswersList with the new answer. keep lines 47 and 52 of the answerQuestion function to do with updated this.newAnswers and this.allRecentAnswers with the new answer.
-
-
-
-Think the getAndResetCurrQModeAnswers function of the FullQuestionsPage on line 167 will need tweaking slightly on line 168 to not push the newAnswers from the currQuestionMode to this.#latestAnswers if the currQuestionMode is the SingleAnswerMode (because then the new answers have already been reflected in the answerQuestion function so the prevAnswersList is up to date).
-
-Think hopefully after all of this it might work...
+-	think done and ready to test...
+-	make so the list is not rebuilt fully every time there is a change, just changes the relevant row...
+-	make so event listeners are different and cant click re-rate buttons once already re-rating one. also make answer ui panel a modal instead of at the bottom.
 
 
 

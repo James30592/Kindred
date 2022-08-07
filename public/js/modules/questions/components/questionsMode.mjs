@@ -38,13 +38,8 @@ class QuestionsMode extends EventTarget {
 
   // Save answer information, update the queue if necessary.
   async answerQuestion(event) {
-    const userSkipped = (event.currentTarget === this.answerUiPanel.skipBtn);
-    const currQuestion = this.questionsQueue.queue.shift();
-    const thisScore = (userSkipped ? null : Number(this.answerUiPanel.
-      ratingScore.innerText));
-
     // Get the answer object as it should be stored in the DB.
-    const answerObj = this.getAnswerObj(currQuestion, userSkipped, thisScore);
+    const answerObj = this.getAnswerObj(event);
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
@@ -91,7 +86,12 @@ class QuestionsMode extends EventTarget {
   }
 
   // Gets current answer to current question as an object for DB.
-  getAnswerObj(currQuestion, userSkipped, thisScore) {
+  getAnswerObj(event) {
+    const userSkipped = (event.currentTarget === this.answerUiPanel.skipBtn);
+    const currQuestion = this.questionsQueue.queue.shift();
+    const thisScore = (userSkipped ? null : Number(this.answerUiPanel.
+      ratingScore.innerText));
+      
     const questionDetails = this._getQuestionDetails(currQuestion);
 
     const answerInfo = {
@@ -220,6 +220,8 @@ export class SearchMode extends QModeWithQueueInput {
 
 
 
+
+
 class SingleAnswerMode extends QuestionsMode {
   name = "single";
 
@@ -236,6 +238,20 @@ class SingleAnswerMode extends QuestionsMode {
       this._handleClickSingleQ(evt);
     });
   }
+
+  // Save answer information.
+  async answerQuestion(event) {
+    // Get the answer object as it should be stored in the DB.
+    const answerObj = this.getAnswerObj(event); 
+
+    // Emit event to be picked up by the questions page.
+    this.dispatchEvent(
+      new CustomEvent("answeredQ", {detail: {answerObj: answerObj}})
+    );
+
+    // Hide the answer ui panel.
+    this.answerUiPanel.mainDiv.classList.add("fully-hidden");
+  }
 }
 
 
@@ -247,13 +263,17 @@ export class PrevAnswerMode extends SingleAnswerMode {
   #qSource;
 
   _handleClickSingleQ(evt) {
-    // do the queue for this single question...
+    // Get the question from this prev answer and make it the queue contents.
     const thisPrevAns = evt.detail.answer;
     const thisQuestion = this.#makeQuestion(thisPrevAns);
     this.questionsQueue.update(thisQuestion);
 
-    // show the answerUiPanel...
+    // Show the answer ui panel.
+    this.answerUiPanel.mainDiv.classList.remove("fully-hidden");
 
+    // Updates the displayed question in the answer UI panel with the new first 
+    // queue item.
+    this._showCurrQ();
   }
 
   // Makes a question, ready to be shown in the answerUiPanel, from the current 
@@ -274,14 +294,19 @@ export class PrevAnswerMode extends SingleAnswerMode {
     return thisQ;
   }
 
-  async activate(latestSessionAnswers) {
-    await this.#qSource.activate(latestSessionAnswers);
+  async activate() {
+    await this.#qSource.activate();
+  }
+
+  // Passes the allRecentAnswers on to the questions queue.
+  setRecentAnswers(latestSessionAnswers) {
+    this.#qSource.updateAnswersList(latestSessionAnswers);
   }
 
   deactivate() {
     this.#qSource.deactivate();
-    // Hide the answerUiPanel if it's showing, unlink it from whatever q it's linked to.
 
-
+    // Hide the answer ui panel.
+    this.answerUiPanel.mainDiv.classList.add("fully-hidden");
   }
 }
