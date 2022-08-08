@@ -1,7 +1,7 @@
 import { FullQuestionsPage } from "./modules/questions/questionsPage.mjs";
 import { AutoMode } from "./modules/questions/components/questionsMode.mjs";
 import { SearchMode } from "./modules/questions/components/questionsMode.mjs";
-import { SingleAnswerMode } from "./modules/questions/components/questionsMode.mjs";
+import { PrevAnswerMode } from "./modules/questions/components/questionsMode.mjs";
 import { PreviousAnswers } from "./modules/questions/components/previousAnswers.mjs";
 
 
@@ -24,10 +24,10 @@ const prevAnswersList = new PreviousAnswers(prevAnswersListDiv,
 // Create the question modes.
 const autoQMode = new AutoMode(autoQModeDiv, categoryTypeName, categoryName);
 const searchQMode = new SearchMode(searchQModeDiv, categoryTypeName, categoryName);
-const singleAnswerQMode = new SingleAnswerMode(singleAnswerQModeDiv, 
+const prevAnswerQMode = new PrevAnswerMode(singleAnswerQModeDiv, 
   prevAnswersList, categoryTypeName, categoryName);
 
-const allQModes = [autoQMode, searchQMode, singleAnswerQMode];
+const allQModes = [autoQMode, searchQMode, prevAnswerQMode];
 
 // Create the questions page.
 const questionsPage = new FullQuestionsPage(allQModes, categoryTypeName, 
@@ -56,11 +56,13 @@ document.querySelector(".search-mode-btn").addEventListener("click",
 
 document.querySelector(".prev-answers-mode-btn").addEventListener("click", 
   async () => {
-    await questionsPage.switchQMode(singleAnswerQMode);
+    await questionsPage.switchQMode(prevAnswerQMode);
   }
 );
 
 
 
 // On page load, update the questions queue and show the first question.
-window.onload = async () => await questionsPage.setQMode(autoQMode);
+window.onload = async () => {
+  await questionsPage.setQMode(autoQMode);
+}

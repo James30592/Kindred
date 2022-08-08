@@ -3,6 +3,7 @@ To do:
 -	think done and ready to test...
 -	make so the list is not rebuilt fully every time there is a change, just changes the relevant row...
 -	make so event listeners are different and cant click re-rate buttons once already re-rating one. also make answer ui panel a modal instead of at the bottom.
+-	make so can't click the question mode button once already in that mode
 
 
 

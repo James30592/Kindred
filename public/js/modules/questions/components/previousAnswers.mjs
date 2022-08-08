@@ -22,6 +22,7 @@ export class PreviousAnswers extends SingleModeQSource {
   #categoryName;
 
   constructor(listDiv, categoryTypeName, categoryName) {
+    super();
     this.#listDiv = listDiv;
     this.#categoryTypeName = categoryTypeName;
     this.#categoryName = categoryName;

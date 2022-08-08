@@ -1,4 +1,5 @@
 import { findAndOverwriteElsePush } from "../../../sharedJs/utils.mjs";
+import { QModeWithQueueInput } from "./components/questionsMode.mjs";
 
 
 
@@ -64,12 +65,14 @@ class QuestionsPage {
   // Set the new questions mode and show it.
   async setQMode(newQMode) {
     this.currQuestionMode = newQMode;
-    this.currQuestionMode.activate();
+    await this.currQuestionMode.activate();
 
     this._setRecentAnswers();
 
-    // Update the queue for the questions mode and show first item in the queue.
-    await this.currQuestionMode.updateQueueAndShowFirst();
+    if (this.currQuestionMode instanceof QModeWithQueueInput) {
+      // Update the queue for the questions mode and show first item in the queue.
+      await this.currQuestionMode.updateQueueAndShowFirst();
+    };
   }
 
   _setRecentAnswers() {
@@ -176,16 +179,6 @@ export class FullQuestionsPage extends QuestionsPage {
     super(qModes, categoryTypeName, categoryName);
   }
 
-  // ------------------------------------------REMOVE---------------------------------------------------------------------------
-  // // Updates the session answers (if not in the prev answers mode currently 
-  // // because in this case it updates the prev answers list immediately).
-  // _handleNewAnswer(answerObj) {
-  //   if (this.currQuestionMode?.name !== "prevAns") {
-  //     this._updateAnsArrayWithAns(this.#latestSessionAnswers, answerObj);
-  //   };
-  //   super._handleNewAnswer(answerObj);
-  // }
-
   _setRecentAnswers() {
     // If currently in the previous answers mode, reset the latestSessionAnswers 
     // immediately after setting it as it will be reflected in the prev answers 
@@ -199,11 +192,9 @@ export class FullQuestionsPage extends QuestionsPage {
     };
   }
 
-  // Set the new questions mode and show it.
-  async setQMode(newQMode) {
-    this.currQuestionMode = newQMode;
-    this.currQuestionMode.activate();
-
-    this._setRecentAnswers();
+  // Adds new answer to latest session answers.
+  _handleNewAnswer(answerObj) {
+    this._updateAnsArrayWithAns(this.#latestSessionAnswers, answerObj);
+    super._handleNewAnswer(answerObj);
   }
 }

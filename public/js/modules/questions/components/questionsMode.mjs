@@ -57,24 +57,6 @@ class QuestionsMode extends EventTarget {
     );
   }
 
-  // Updates the questions queue and then displays the first question of it, 
-  // called when switching to this questions mode.
-  async updateQueueAndShowFirst() {
-    await this.updateQueue();
-    this._showCurrQ();
-  }
-
-  // Updates the questions queue.
-  async updateQueue() {
-    // Queue will only update if it's short on answers.
-    await this.questionsQueue.update();
-
-    // Checks the queue to see if any questions in it are now outdated based on 
-    // recently POSTed answers or recent answers from other questions modes that 
-    // haven't yet been POSTed.
-    this.questionsQueue.checkForOutdatedQs();
-  }
-
   // Updates the displayed question in the answer UI panel with the new first 
   // queue item. 
   _showCurrQ(inclAlreadyAnswered = true) {
@@ -136,7 +118,7 @@ class QuestionsMode extends EventTarget {
 
 
 
-class QModeWithQueueInput extends QuestionsMode {
+export class QModeWithQueueInput extends QuestionsMode {
   queueInputPanel;
 
   // Updates the displayed question in the answer UI panel with the new first 
@@ -146,7 +128,29 @@ class QModeWithQueueInput extends QuestionsMode {
       includeAlreadyAnsweredCheckbox.checked;
 
     super._showCurrQ(inclAlreadyAnswered);
-  }  
+  }
+
+  async activate() {
+    super.activate();
+  }
+
+  // Updates the questions queue and then displays the first question of it, 
+  // called when switching to this questions mode.
+  async updateQueueAndShowFirst() {
+    await this.updateQueue();
+    this._showCurrQ();
+  }
+
+  // Updates the questions queue.
+  async updateQueue() {
+    // Queue will only update if it's short on answers.
+    await this.questionsQueue.update();
+
+    // Checks the queue to see if any questions in it are now outdated based on 
+    // recently POSTed answers or recent answers from other questions modes that 
+    // haven't yet been POSTed.
+    this.questionsQueue.checkForOutdatedQs();
+  }
 }
 
 
@@ -224,17 +228,18 @@ export class SearchMode extends QModeWithQueueInput {
 
 class SingleAnswerMode extends QuestionsMode {
   name = "single";
+  _qSource;
 
   constructor(mainDiv, qSource, categoryType, category) {
     super(mainDiv);
     this.questionsQueue = new SingleQuestionQueue(categoryType, category);
-    this.#qSource = qSource;
+    this._qSource = qSource;
   }
 
   init() {
     super.init();
 
-    this.#qSource.addEventListener("answerSingleQ", evt => {
+    this._qSource.addEventListener("answerSingleQ", evt => {
       this._handleClickSingleQ(evt);
     });
   }
@@ -260,7 +265,6 @@ class SingleAnswerMode extends QuestionsMode {
 
 export class PrevAnswerMode extends SingleAnswerMode {
   name = "prevAns";
-  #qSource;
 
   _handleClickSingleQ(evt) {
     // Get the question from this prev answer and make it the queue contents.
@@ -295,16 +299,17 @@ export class PrevAnswerMode extends SingleAnswerMode {
   }
 
   async activate() {
-    await this.#qSource.activate();
+    super.activate();
+    await this._qSource.activate();
   }
 
   // Passes the allRecentAnswers on to the questions queue.
   setRecentAnswers(latestSessionAnswers) {
-    this.#qSource.updateAnswersList(latestSessionAnswers);
+    this._qSource.updateAnswersList(latestSessionAnswers);
   }
 
   deactivate() {
-    this.#qSource.deactivate();
+    this._qSource.deactivate();
 
     // Hide the answer ui panel.
     this.answerUiPanel.mainDiv.classList.add("fully-hidden");
