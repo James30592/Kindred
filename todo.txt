@@ -1,9 +1,6 @@
 To do:
 
--	think done and ready to test...
--	make so the list is not rebuilt fully every time there is a change, just changes the relevant row...
--	make so event listeners are different and cant click re-rate buttons once already re-rating one. also make answer ui panel a modal instead of at the bottom.
--	make so can't click the question mode button once already in that mode
+-	make so the prev answers list is not rebuilt fully every time there is a change, just changes the relevant row...
 
 
 
@@ -119,7 +116,9 @@ images - 	https://image.tmdb.org/t/p/w185/yI6X2cCM5YPJtxMhUd3dPGqDAhw.jpg
 
 To do:
 
--	way to edit past answers
+-	think add in a counter for current approximate size on disk of the notYetPostedAnswers and force a post every time it gets close to the keepalive post size threshold
+-	make so cant click re-rate buttons once already re-rating one. also make answer ui panel a modal instead of at the bottom.
+-	make so can't click the question mode button once already in that mode
 -	front end side, different look and details for each category
 
 	TV (TMDB)

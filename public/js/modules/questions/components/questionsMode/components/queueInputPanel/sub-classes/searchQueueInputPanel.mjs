@@ -1,27 +1,4 @@
-class QueueInputPanel {
-  mainDiv;
-
-  constructor(qModeDiv) {
-    this.mainDiv = qModeDiv.querySelector(".queue-input-panel");
-  }
-}
-
-
-
-
-
-
-export class AutoQueueInputPanel extends QueueInputPanel {
-  includeAlreadyAnsweredCheckbox;
-
-  constructor(qModeDiv) {
-    super(qModeDiv);
-    this.includeAlreadyAnsweredCheckbox = this.mainDiv.querySelector(".incl-prev-ans");
-  }
-}
-
-
-
+import { QueueInputPanel } from "../queueInputPanel.mjs";
 
 
 

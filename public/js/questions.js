@@ -1,8 +1,17 @@
-import { FullQuestionsPage } from "./modules/questions/questionsPage.mjs";
-import { AutoMode } from "./modules/questions/components/questionsMode.mjs";
-import { SearchMode } from "./modules/questions/components/questionsMode.mjs";
-import { PrevAnswerMode } from "./modules/questions/components/questionsMode.mjs";
-import { PreviousAnswers } from "./modules/questions/components/previousAnswers.mjs";
+import { FullQuestionsPage } from "./modules/questions/questionsPage/\
+sub-classes/fullQuestionsPage.mjs";
+
+import { AutoMode } from "./modules/questions/components/questionsMode/\
+sub-classes/qModeWithQueueInput/sub-classes/autoMode.mjs";
+
+import { SearchMode } from "./modules/questions/components/questionsMode/\
+sub-classes/qModeWithQueueInput/sub-classes/searchMode.mjs";
+
+import { PrevAnswerMode } from "./modules/questions/components/questionsMode/\
+sub-classes/singleAnswerMode/sub-classes/prevAnswerMode.mjs";
+
+import { PreviousAnswers } from "./modules/questions/components/qSource/\
+previousAnswers.mjs";
 
 
 
