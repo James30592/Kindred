@@ -1,7 +1,3 @@
-import { findAndOverwriteElsePush } from "../../../../../sharedJs/utils.mjs";
-
-
-
 class SingleModeQSource extends EventTarget {
   
 }
@@ -29,9 +25,12 @@ export class PreviousAnswers extends SingleModeQSource {
   // Get the latest version of all the user's current answers and update the 
   // div with them.
   async activate() {
-    // Get user's current answers in the DB for this category, if first time running.
+    // Get user's current answers in the DB for this category, if first time 
+    // running, and populate the DOM list.
     if (this.#notYetActivated) {
       this.#prevAnswers = await this.#getDBAnswers();
+      this.#buildListDiv();
+      this.#notYetActivated = false;
     };
 
     this.#listDiv.classList.remove("fully-hidden");
@@ -39,17 +38,27 @@ export class PreviousAnswers extends SingleModeQSource {
 
   // Updates this #prevAnswers and the div list on a change.
   updateAnswersList(latestSessionAnswers) {
-    // Add / overwrite prevAnswers with any newAnswers as necessary.
-    this.#updatePrevAnswers(latestSessionAnswers);
+    for (let newAnswer of latestSessionAnswers) {
+      // Update this prevAnswers and the DOM list with the latest 
+      // session answers.
+      const foundIndex = this.#prevAnswers.findIndex(prevAns => {
+        return prevAns.questionId === newAnswer.questionId
+      });
 
-    // Populate the listDiv with each answer as a row.
-    const areNewAnswers = latestSessionAnswers.length > 0;
-    if (areNewAnswers || this.#notYetActivated) {
-      this.#clearListDiv();
-      this.#buildListDiv();
+      const newAnsRowDiv = this.#createRow(newAnswer);
+
+      // If found, overwrite with new answer.
+      if (foundIndex > -1) {
+        this.#prevAnswers.splice(foundIndex, 1, newAnswer);
+        // this.#listDiv.children.splice(foundIndex, 1, newAnsRowDiv);
+        this.#listDiv.replaceChild(newAnsRowDiv, this.#listDiv.children[foundIndex]);
+      }
+      // Otherwise add new row to end of the listDiv.
+      else {
+        this.#prevAnswers.push(newAnswer);
+        this.#listDiv.appendChild(newAnsRowDiv);
+      };
     };
-
-    if (this.#notYetActivated) this.#notYetActivated = false;
   }
 
   // Get user's current answers in the DB for this category.
@@ -57,22 +66,6 @@ export class PreviousAnswers extends SingleModeQSource {
     const fetchCurrDBAnswers = await fetch(`/user-answers/${this.#categoryTypeName}/${this.#categoryName}`);
     const currDBAnswers = await fetchCurrDBAnswers.json();
     return currDBAnswers;
-  }
-
-  // Add / overwrite prevAnswers with any newAnswers as necessary.
-  #updatePrevAnswers(latestSessionAnswers) {
-    const matchFunc = (arrItem, newItem) => {
-      return arrItem.questionId === newItem.questionId
-    };
-
-    for (let newAnswer of latestSessionAnswers) {
-      findAndOverwriteElsePush(this.#prevAnswers, newAnswer, matchFunc);
-    };
-  }
-
-  // Removes all the rows of answers from the prevAnswers list div.
-  #clearListDiv() {
-    this.#listDiv.innerText = "";
   }
 
   // Builds the list div with all the previous answers.
