@@ -50,7 +50,6 @@ export class PreviousAnswers extends SingleModeQSource {
       // If found, overwrite with new answer.
       if (foundIndex > -1) {
         this.#prevAnswers.splice(foundIndex, 1, newAnswer);
-        // this.#listDiv.children.splice(foundIndex, 1, newAnsRowDiv);
         this.#listDiv.replaceChild(newAnsRowDiv, this.#listDiv.children[foundIndex]);
       }
       // Otherwise add new row to end of the listDiv.

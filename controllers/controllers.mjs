@@ -6,6 +6,7 @@ import { createNewQuestions } from '../lib/questions/createNewQuestions.mjs';
 import * as similarity from "../lib/similarity.mjs";
 import * as recommendations from "../lib/recommendations.mjs";
 import * as admin from "../lib/admin.mjs";
+import { CategoryInfo } from '../public/sharedJs/categoryInfo.mjs';
 import { serverState } from '../app.js';
 
 const express = require("express");
@@ -101,7 +102,7 @@ router.post("/admin/:adminRequest", async function(req, res){
 });
 
 router.post("/find-kindred", async function(req, res){
-  const categoryInfo = req.body;
+  const categoryInfo = new CategoryInfo(req.body);
 
   const thisKindredList = new similarity.KindredList(req.user, 10);
   await thisKindredList.initKindredList(categoryInfo);
@@ -111,10 +112,9 @@ router.post("/find-kindred", async function(req, res){
 });
 
 router.post("/recommendations", async function(req, res){
-
   const allCategoryInfo = req.body;
-  const resultCategoryInfo = allCategoryInfo.recommendationsFor;
-  const basedOnCategoryInfo = allCategoryInfo.basedOn;
+  const resultCategoryInfo = new CategoryInfo(allCategoryInfo.recommendationsFor);
+  const basedOnCategoryInfo = new CategoryInfo(allCategoryInfo.basedOn);
 
   const thisRecommendationList = new recommendations.RecommendationList(req.user);
   await thisRecommendationList.initRecommendationList(basedOnCategoryInfo,

@@ -1,4 +1,6 @@
-import { CategoryCheckboxes } from "/modules/categoryInfo.mjs";
+import { CategoryCheckboxes } from "./modules/categoryCheckboxes.mjs";
+
+
 
 const findKindredBtn = document.querySelector(".find-kindred");
 const categoryCheckboxesArr = document.querySelectorAll(".category-checkbox");
@@ -19,7 +21,7 @@ async function findKindred(){
 
 
   const element = document.querySelector(".kindred-list");
-  element.textContent = "Profile name   -    Location   -   Similarity score  -   Common answers - Perc Diff";
+  element.textContent = "Profile name - Location - Similarity score - Common answers - Perc Diff";
   element.appendChild(document.createElement("hr"));
 
   kindredList.simRatingList.forEach(function(simRating){

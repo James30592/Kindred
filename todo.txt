@@ -1,6 +1,7 @@
 To do:
 
--	make so the prev answers list is not rebuilt fully every time there is a change, just changes the relevant row...
+-	continue debugging find-kindred route...
+
 
 
 
@@ -32,7 +33,7 @@ Video Games	RAWG			Platform	Developer	Publisher	Genre(s)	Tag(s)	Release date
 
 do different categories of question:
 
-personality, films, TV, books, music (artists), video games, hobbies, sports (watch and play?), places to visit on holiday? food? sense of humour
+personality, films, TV, books, music (artists), video games, hobbies, sports (watch and play?), places to visit on holiday? food? sense of humour, opinions on big issues? (eg political, immigration etc. - values)
 
 do recommendation algorithm stuff
 

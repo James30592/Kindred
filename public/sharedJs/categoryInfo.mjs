@@ -3,6 +3,14 @@
 export class CategoryInfo {
   catTypes = {};
 
+  // Where catInfo is an optional category info style object (just the data, not 
+  // an actual instance of this class - from when stringified and sent using fetch).
+  constructor(catInfo = null) {
+    if (catInfo) {
+      this.catTypes = catInfo.catTypes;
+    };
+  }
+
   // Given a category type and category, adds both, just the category, or
   // neither of them depending on what already exists in this.
   // data should be an object and all the key: value pairs from data will be
@@ -18,13 +26,13 @@ export class CategoryInfo {
   }
 
   // Creates a clone of this category info object and returns it, along with new 
-  // data for each category which is calculated using the higher order getDataFun and args.
+  // data for each category which is calculated using the higher order getDataFunc and args.
   cloneWithData(getDataFunc, args) {
     const newCatInfo = new CategoryInfo();
 
     const allCategoriesWithTypes = this.getAllCategories();
 
-    for (let categoryWithType in allCategoriesWithTypes) {
+    for (let categoryWithType of allCategoriesWithTypes) {
       const catTypeName = categoryWithType.categoryType;
       const categoryName = categoryWithType.category;
       const data = getDataFunc(catTypeName, categoryName, args);

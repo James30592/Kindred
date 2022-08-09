@@ -1,4 +1,6 @@
-import { CategoryCheckboxes } from "/modules/categoryInfo.mjs";
+import { CategoryCheckboxes } from "./modules/categoryCheckboxes.mjs";
+
+
 
 const getRecommendationsBtn = document.querySelector(".get-recommendations");
 const recommendationsForDiv = document.querySelector(".recommendations-for");

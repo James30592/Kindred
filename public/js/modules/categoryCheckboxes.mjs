@@ -1,6 +1,7 @@
 import { CategoryInfo } from "../../sharedJs/categoryInfo.mjs";
 
 
+
 // Objects to represent checkbox selection checkboxes for all categories / 
 // category types.
 export class CategoryCheckboxes {
