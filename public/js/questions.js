@@ -46,7 +46,7 @@ questionsPage.init();
 
 
 
-// Think but these addEventListeners inside a qModeSwitcher object (with the 3 
+// Think put these addEventListeners inside a qModeSwitcher object (with the 3 
 // buttons at the top) later.
 
 // Event listeners for mode change buttons, maybe put this inside QuestionsPage 
