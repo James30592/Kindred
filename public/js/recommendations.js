@@ -10,7 +10,6 @@ const basedOnCheckboxesArr = basedOnDiv.querySelectorAll(".category-checkbox");
 
 getRecommendationsBtn.addEventListener("click", getRecommendations);
 
-
 async function getRecommendations() {  
   const recForCategoryCheckboxes = new CategoryCheckboxes(recForCheckboxesArr);
   const basedOnCategoryCheckboxes = new CategoryCheckboxes(basedOnCheckboxesArr);
@@ -30,12 +29,12 @@ async function getRecommendations() {
   const recommendationsList = await fetchResponse.json();
 
   const element = document.querySelector(".recommendations-list");
-  element.textContent = "Estimated liking - Item   -    Category   -   Category Type  - No. of recommends";
+  element.textContent = "Estimated liking - Item - Category - Category Type - No. of recommends";
   element.appendChild(document.createElement("hr"));
 
   recommendationsList.recommendList.forEach(recommendation => {
     const para = document.createElement("p");
-    const thisText = `${recommendation.rating.strength.toFixed(1)}   -   ${recommendation.qText}    -   ${recommendation.category}  -   ${recommendation.categoryType}  -   ${recommendation.rating.numUsersAnswered}`;
+    const thisText = `${recommendation.rating.strength.toFixed(1)} - ${recommendation.qDetails.title} - ${recommendation.category} - ${recommendation.categoryType} - ${recommendation.rating.numUsersAnswered}`;
     const node = document.createTextNode(thisText);
     para.appendChild(node);
 
