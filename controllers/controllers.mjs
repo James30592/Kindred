@@ -207,6 +207,8 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 
 
 
+
+
 // Used by the questions page when user gets their previous answers for a category.
 router.get("/user-answers/:categoryType/:category", async function(req, res) {
   const categoryTypeName = req.params.categoryType;
