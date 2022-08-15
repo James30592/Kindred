@@ -10,7 +10,7 @@ export class BaseQuestionsQueue {
   }
 
   // Gets the text to display of the current first item in the questions queue.
-  getCurrQInfo() {
+  getCurrQInfo(categoryTypeName, categoryName) {
     let currQText;
     let currQAns;
     let endOfQueue = false;
@@ -21,8 +21,8 @@ export class BaseQuestionsQueue {
       endOfQueue = true;
     }
     else {
-      currQText = BaseQuestionsQueue._getQuestionText(this._categoryTypeName, 
-        this._categoryName, this.queue[0]);
+      currQText = BaseQuestionsQueue._getQuestionText(categoryTypeName, 
+        categoryName, this.queue[0]);
       
       currQAns = this.queue[0].currAns;
     };

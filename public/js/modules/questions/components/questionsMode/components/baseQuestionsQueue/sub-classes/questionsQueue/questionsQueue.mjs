@@ -58,15 +58,15 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   }
 
   // 
-  setRecentAnswers(recallRecentAnswers) {
-    this.recallRecentAnswers = recallRecentAnswers;
+  setRecentAnswers(allRecentAnswers) {
+    this.allRecentAnswers = allRecentAnswers;
   }
 
   // Checks each question in the queue to see if it has recently been answered 
   // (and therefore should no longer be in the queue, or should be there with a 
   // newer answer value) and handles this.
   checkForOutdatedQs() {
-    for (let ans of this.recallRecentAnswers) {
+    for (let ans of this.allRecentAnswers) {
       const queueIndex = this.queue.findIndex(q => q._id === ans.questionId);
 
       if (queueIndex > -1) {

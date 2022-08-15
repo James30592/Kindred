@@ -1,7 +1,6 @@
 To do:
 
--	continue debugging find-kindred route...
-
+-	continue work on recommendations being able to answer questions...trying to get rid of catTypeName and catName but have made a mess, needs fixing...mainly _showCurrQ function...
 
 
 

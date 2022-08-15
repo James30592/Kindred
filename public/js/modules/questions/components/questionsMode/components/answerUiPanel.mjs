@@ -60,8 +60,8 @@ export class AnswerUIPanel {
     this.ratingScore.innerText = 5;
     this.prevAnsVal.innerText = "";
 
-    // If want to include already answered questions and current question has a 
-    // previous answer by the user, show the previous answer details.
+    // If current question has a previous answer by the user, show the previous 
+    // answer details.
     if (includeAlreadyAnswered && newQInfo.currQAns) {
       this.prevAnsDiv.style.visibility = "visible";
 

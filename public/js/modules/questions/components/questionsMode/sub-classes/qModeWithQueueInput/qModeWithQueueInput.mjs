@@ -4,14 +4,17 @@ import { QuestionsMode } from "../../questionsMode.mjs";
 
 export class QModeWithQueueInput extends QuestionsMode {
   queueInputPanel;
+  _categoryTypeName;
+  _categoryName;
 
   // Updates the displayed question in the answer UI panel with the new first 
   // queue item. 
-  _showCurrQ() {
+  _showCurrQ(catTypeName, catName) {
     const inclAlreadyAnswered = this.queueInputPanel?.
       includeAlreadyAnsweredCheckbox.checked;
 
-    super._showCurrQ(inclAlreadyAnswered);
+    super._showCurrQ(inclAlreadyAnswered, this._categoryTypeName, 
+      this._categoryName);
   }
 
   async activate() {
@@ -20,9 +23,9 @@ export class QModeWithQueueInput extends QuestionsMode {
 
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
-  async updateQueueAndShowFirst() {
+  async updateQueueAndShowFirst(catTypeName, catName) {
     await this.updateQueue();
-    this._showCurrQ();
+    this._showCurrQ(catTypeName, catName);
   }
 
   // Updates the questions queue.
@@ -35,4 +38,3 @@ export class QModeWithQueueInput extends QuestionsMode {
     // haven't yet been POSTed.
     this.questionsQueue.checkForOutdatedQs();
   }
-}

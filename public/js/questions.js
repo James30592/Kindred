@@ -10,8 +10,7 @@ sub-classes/qModeWithQueueInput/sub-classes/searchMode.mjs";
 import { PrevAnswerMode } from "./modules/questions/components/questionsMode/\
 sub-classes/singleAnswerMode/sub-classes/prevAnswerMode.mjs";
 
-import { PreviousAnswers } from "./modules/questions/components/qSource/\
-previousAnswers.mjs";
+import { PreviousAnswers } from "./modules/questions/components/qSource2/sub-classes/previousAnswers.mjs";
 
 
 

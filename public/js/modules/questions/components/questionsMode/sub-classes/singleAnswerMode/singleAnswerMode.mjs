@@ -36,4 +36,32 @@ export class SingleAnswerMode extends QuestionsMode {
     // Hide the answer ui panel.
     this.answerUiPanel.mainDiv.classList.add("fully-hidden");
   }
+
+  _handleClickSingleQ(evt) {
+    // Get the question from this item and make it the queue contents.
+    const thisQItem = evt.detail.answer;
+    const thisQuestion = this._makeQuestion(thisQItem);
+    this.questionsQueue.update(thisQuestion);
+
+    // Show the answer ui panel.
+    this.answerUiPanel.mainDiv.classList.remove("fully-hidden");
+
+    // Updates the displayed question in the answer UI panel with the new first 
+    // queue item.
+    this._showCurrQ(catTypeName, catName);......................get catType and cat from the question.................
+  }
+
+  // Makes a question, ready to be shown in the answerUiPanel, from the clicked 
+  // on question.
+  _makeQuestion(qItem) {
+    const thisQ = {
+      _id: qItem.questionId
+    };
+
+    for (let prop in qItem.questionDetails) {
+      thisQ[prop] = qItem.questionDetails[prop]
+    };
+
+    return thisQ;
+  }
 }

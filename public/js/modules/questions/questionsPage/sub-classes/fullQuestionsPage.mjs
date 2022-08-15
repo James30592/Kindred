@@ -8,10 +8,6 @@ export class FullQuestionsPage extends QuestionsPage {
   // Just the session answers since last time was on the prev answers mode.
   #latestSessionAnswers = [];
 
-  constructor(qModes, categoryTypeName, categoryName) {
-    super(qModes, categoryTypeName, categoryName);
-  }
-
   _setRecentAnswers() {
     // If currently in the previous answers mode, reset the latestSessionAnswers 
     // immediately after setting it as it will be reflected in the prev answers 

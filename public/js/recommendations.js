@@ -1,5 +1,14 @@
 import { CategoryCheckboxes } from "./modules/categoryCheckboxes.mjs";
 
+import { SingleAnswerMode } from "./modules/questions/components/questionsMode/\
+sub-classes/singleAnswerMode/singleAnswerMode.mjs";
+
+import { SingleModeQSource } from "./modules/questions/components/qSource/\
+singleModeQSource/singleModeQSource.mjs";
+
+import { QuestionsPage } from "./modules/questions/questionsPage/\
+questionsPage.mjs";
+
 
 
 const getRecommendationsBtn = document.querySelector(".get-recommendations");
@@ -9,6 +18,35 @@ const recForCheckboxesArr = recommendationsForDiv.querySelectorAll(".category-ch
 const basedOnCheckboxesArr = basedOnDiv.querySelectorAll(".category-checkbox");
 
 getRecommendationsBtn.addEventListener("click", getRecommendations);
+
+
+
+
+
+
+const singleAnswerQModeDiv = document.querySelector(".single-answer-mode");
+
+const recommendationsListDiv = document.querySelector(".recommendations-list");
+const recommendationsList = new SingleModeQSource(recommendationsListDiv);
+
+const singleAnswerQMode = new SingleAnswerMode(singleAnswerQModeDiv, 
+  recommendationsList, categoryTypeName, categoryName);
+
+// Create the questions page.
+const questionsPage = new QuestionsPage(allQModes, categoryTypeName, 
+  categoryName);
+
+questionsPage.init();
+
+// On page load, update the questions queue and show the first question.
+window.onload = async () => {
+  await questionsPage.setQMode(singleAnswerQMode);
+}
+
+
+
+
+
 
 async function getRecommendations() {  
   const recForCategoryCheckboxes = new CategoryCheckboxes(recForCheckboxesArr);

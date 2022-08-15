@@ -78,7 +78,10 @@ export class QuestionsPage {
   }
 
   _setRecentAnswers() {
-    this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
+    // Don't need to keep a list of recent answers for recommendations mode.
+    if (this.currQuestionMode?.name === "recs") {
+      this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
+    };
   }
 
   // Updates an origAnsArray with a new answer, overwriting where 
