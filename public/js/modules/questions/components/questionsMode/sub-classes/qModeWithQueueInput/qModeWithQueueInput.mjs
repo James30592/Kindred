@@ -7,9 +7,30 @@ export class QModeWithQueueInput extends QuestionsMode {
   _categoryTypeName;
   _categoryName;
 
+  // Save answer information, update the queue if necessary.
+  async answerQuestion(event) {
+    // Get the answer object as it should be stored in the DB.
+    const answerObj = this.getAnswerObj(event);
+
+    // Updates the displayed question in the answer UI panel with the new first 
+    // queue item.
+    this._showCurrQ();    
+
+    // Adds more questions to the questions queue if necessary.
+    let queueUpdated = await this.questionsQueue.update();
+    if (queueUpdated) {
+      this.questionsQueue.checkForOutdatedQs();
+    };
+
+    // Emit event to be picked up by the questions page.
+    this.dispatchEvent(
+      new CustomEvent("answeredQ", {detail: {answerObj: answerObj}})
+    );
+  }
+
   // Updates the displayed question in the answer UI panel with the new first 
   // queue item. 
-  _showCurrQ(catTypeName, catName) {
+  _showCurrQ() {
     const inclAlreadyAnswered = this.queueInputPanel?.
       includeAlreadyAnsweredCheckbox.checked;
 

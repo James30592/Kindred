@@ -9,7 +9,7 @@ export class SingleAnswerMode extends QuestionsMode {
   name = "single";
   _qSource;
 
-  constructor(mainDiv, qSource, categoryType, category) {
+  constructor(mainDiv, qSource) {
     super(mainDiv);
     this.questionsQueue = new SingleQuestionQueue(categoryType, category);
     this._qSource = qSource;

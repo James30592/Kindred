@@ -30,7 +30,7 @@ const recommendationsListDiv = document.querySelector(".recommendations-list");
 const recommendationsList = new SingleModeQSource(recommendationsListDiv);
 
 const singleAnswerQMode = new SingleAnswerMode(singleAnswerQModeDiv, 
-  recommendationsList, categoryTypeName, categoryName);
+  recommendationsList);
 
 // Create the questions page.
 const questionsPage = new QuestionsPage(allQModes, categoryTypeName, 
