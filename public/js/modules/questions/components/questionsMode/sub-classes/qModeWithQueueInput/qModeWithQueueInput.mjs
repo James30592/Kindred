@@ -4,8 +4,6 @@ import { QuestionsMode } from "../../questionsMode.mjs";
 
 export class QModeWithQueueInput extends QuestionsMode {
   queueInputPanel;
-  _categoryTypeName;
-  _categoryName;
 
   // Save answer information, update the queue if necessary.
   async answerQuestion(event) {
@@ -34,8 +32,7 @@ export class QModeWithQueueInput extends QuestionsMode {
     const inclAlreadyAnswered = this.queueInputPanel?.
       includeAlreadyAnsweredCheckbox.checked;
 
-    super._showCurrQ(inclAlreadyAnswered, this._categoryTypeName, 
-      this._categoryName);
+    super._showCurrQ(inclAlreadyAnswered);
   }
 
   async activate() {
@@ -44,9 +41,9 @@ export class QModeWithQueueInput extends QuestionsMode {
 
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
-  async updateQueueAndShowFirst(catTypeName, catName) {
+  async updateQueueAndShowFirst() {
     await this.updateQueue();
-    this._showCurrQ(catTypeName, catName);
+    this._showCurrQ();
   }
 
   // Updates the questions queue.
@@ -59,3 +56,4 @@ export class QModeWithQueueInput extends QuestionsMode {
     // haven't yet been POSTed.
     this.questionsQueue.checkForOutdatedQs();
   }
+}

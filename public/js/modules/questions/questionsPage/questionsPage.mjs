@@ -17,7 +17,7 @@ export class QuestionsPage {
   allRecentAnswers = [];
   static #submitAnswersInterval = 60000; // 10 mins
 
-  constructor(qModes, categoryTypeName, categoryName) {
+  constructor(qModes, categoryTypeName = null, categoryName = null) {
     this.questionsModes = qModes;
     this.categoryTypeName = categoryTypeName;
     this.categoryName = categoryName;
@@ -147,7 +147,10 @@ export class QuestionsPage {
     const noNewAnswers = answersToPost.length === 0;
     if (noNewAnswers) return;
 
-    const postRoute = `/questions/${this.categoryTypeName}/${this.categoryName}`;
+    const answersMixedCategories = !this.categoryName;
+
+    const postRoute = answersMixedCategories ? `/questions` 
+      : `/questions/${this.categoryTypeName}/${this.categoryName}`;
 
     const postObj = {
       method: "POST",

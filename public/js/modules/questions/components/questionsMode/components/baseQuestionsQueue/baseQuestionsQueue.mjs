@@ -4,13 +4,13 @@ export class BaseQuestionsQueue {
   queue = [];
   queueType;
 
-  constructor(categoryType, category) {
+  constructor(categoryType = null, category = null) {
     this._categoryTypeName = categoryType;
     this._categoryName = category;
   }
 
   // Gets the text to display of the current first item in the questions queue.
-  getCurrQInfo(categoryTypeName, categoryName) {
+  getCurrQInfo() {
     let currQText;
     let currQAns;
     let endOfQueue = false;
@@ -21,8 +21,10 @@ export class BaseQuestionsQueue {
       endOfQueue = true;
     }
     else {
-      currQText = BaseQuestionsQueue._getQuestionText(categoryTypeName, 
-        categoryName, this.queue[0]);
+      const [catTypeName, catName] = this._getCurrQCategory(this.queue[0]);
+
+      currQText = BaseQuestionsQueue._getQuestionText(catTypeName, catName, 
+        this.queue[0]);
       
       currQAns = this.queue[0].currAns;
     };
@@ -30,10 +32,22 @@ export class BaseQuestionsQueue {
     return {endOfQueue, currQText, currQAns};
   }
 
+  // If the queue has a category / category type assigned then use this,
+  //  otherwise the queue contains items of various categories so check what 
+  //  category the current question has.
+  _getCurrQCategory(currQ) {
+    if (this._categoryName) {
+      return [this._categoryTypeName, this._categoryName];
+    }
+    else {
+      console.log(currQ);
+    };
+  }
+
   // Get the string to show as the question text, depending on the category.
-  static _getQuestionText(catTypeName, catName, currQuestion) {
+  static _getQuestionText(currQuestion) {
     let displayText;
-  
+
     switch(catTypeName, catName) {
   
       case ("Interests", "Films") :

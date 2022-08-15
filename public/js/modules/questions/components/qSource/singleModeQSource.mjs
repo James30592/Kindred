@@ -1,8 +1,5 @@
 export class SingleModeQSource extends EventTarget {
-  _listDiv;
-  _categoryTypeName;
-  _categoryName;
-  
+  _listDiv;  
 
   // Create a div with information for a question item.
   _createRow(item) {

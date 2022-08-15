@@ -11,7 +11,7 @@ export class SingleAnswerMode extends QuestionsMode {
 
   constructor(mainDiv, qSource) {
     super(mainDiv);
-    this.questionsQueue = new SingleQuestionQueue(categoryType, category);
+    this.questionsQueue = new SingleQuestionQueue();
     this._qSource = qSource;
   }
 
@@ -48,7 +48,7 @@ export class SingleAnswerMode extends QuestionsMode {
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
-    this._showCurrQ(catTypeName, catName);......................get catType and cat from the question.................
+    this._showCurrQ();
   }
 
   // Makes a question, ready to be shown in the answerUiPanel, from the clicked 

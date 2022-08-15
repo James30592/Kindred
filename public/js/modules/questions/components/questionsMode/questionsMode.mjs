@@ -33,10 +33,10 @@ export class QuestionsMode extends EventTarget {
 
   // Updates the displayed question in the answer UI panel with the new first 
   // queue item. 
-  _showCurrQ(inclAlreadyAnswered = true, catTypeName, catName) {
+  _showCurrQ(inclAlreadyAnswered = true) {
     // Gets information on whether queue is now empty, or what the new current 
     // question text (and user answer, if necessary) should be.
-    const newCurrQInfo = this.questionsQueue.getCurrQInfo(, catTypeName, catName);
+    const newCurrQInfo = this.questionsQueue.getCurrQInfo();
 
     this.answerUiPanel.displayCurrQ(newCurrQInfo, inclAlreadyAnswered);
   }

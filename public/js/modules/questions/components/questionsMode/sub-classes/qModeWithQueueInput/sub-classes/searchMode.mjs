@@ -19,12 +19,12 @@ export class SearchMode extends QModeWithQueueInput {
 
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
-  async updateQueueAndShowFirst(catTypeName, catName) {
+  async updateQueueAndShowFirst() {
     if (this.queueInputPanel.searchInput.value !== "") {
       await super.updateQueue();
     };
   
-    this._showCurrQ(catTypeName, catName);
+    this._showCurrQ();
   }
 
   // Sets up the queue input panel and answer UI panel button event listeners.
