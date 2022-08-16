@@ -40,12 +40,12 @@ export class BaseQuestionsQueue {
       return [this._categoryTypeName, this._categoryName];
     }
     else {
-      console.log(currQ);
+      return [currQ.categoryTypeName, currQ.categoryName];
     };
   }
 
   // Get the string to show as the question text, depending on the category.
-  static _getQuestionText(currQuestion) {
+  static _getQuestionText(catTypeName, catName, currQuestion) {
     let displayText;
 
     switch(catTypeName, catName) {

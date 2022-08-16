@@ -15,7 +15,7 @@ export class QuestionsPage {
   // The not yet POSTed answers plus any answers that are POSTed but the save 
   // on back end hasn't completed yet.
   allRecentAnswers = [];
-  static #submitAnswersInterval = 60000; // 10 mins
+  static #submitAnswersInterval = 600000; // 10 mins
 
   constructor(qModes, categoryTypeName = null, categoryName = null) {
     this.questionsModes = qModes;
@@ -79,7 +79,7 @@ export class QuestionsPage {
 
   _setRecentAnswers() {
     // Don't need to keep a list of recent answers for recommendations mode.
-    if (this.currQuestionMode?.name === "recs") {
+    if (this.currQuestionMode?.name !== "recs") {
       this.currQuestionMode.setRecentAnswers(this.allRecentAnswers);
     };
   }

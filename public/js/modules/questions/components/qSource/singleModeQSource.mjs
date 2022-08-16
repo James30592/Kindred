@@ -1,17 +1,22 @@
 export class SingleModeQSource extends EventTarget {
-  _listDiv;  
+  _listDiv;
+
+  constructor(listDiv) {
+    super();
+    this._listDiv = listDiv;
+  }
 
   // Create a div with information for a question item.
-  _createRow(item) {
+  _createRow(question) {
     const rowDiv = document.createElement("div");
     const qText = document.createElement("span");
     const rateBtn = document.createElement("button");
 
     rateBtn.addEventListener("click", evt => {
-      this._handleRateBtnClick(evt);
+      this._handleRateBtnClick(evt, question);
     });
 
-    qText.innerText = this._getQText(item);
+    qText.innerText = this._getQText(question);
     rateBtn.innerText = this._getRateBtnText();
     
     rowDiv.appendChild(qText);
@@ -20,10 +25,18 @@ export class SingleModeQSource extends EventTarget {
     return rowDiv;
   }
 
-  _handleRateBtnClick(evt) {
+  _handleRateBtnClick(evt, question) {
     this.dispatchEvent(
-      new CustomEvent("answerSingleQ", {detail: {answer: item}})
+      new CustomEvent("answerSingleQ", {detail: {question: question}})
     );
+  }
+
+  // Builds the list div with all the questions.
+  _buildListDiv(questions) {
+    for (let question of questions) {
+      const rowDiv = this._createRow(question);
+      this._listDiv.appendChild(rowDiv);
+    };
   }
 
   // Get the string to show as the question text, depending on the category.

@@ -8,35 +8,43 @@ export class RecsQSource extends SingleModeQSource {
   // Stores the DOM row for the question that is currently being answered.
   #currQRow = null;
   #getRecsBtn;
-  #recForDiv;
-  #basedOnDiv;
   #recForCategoryCheckboxes;
   #basedOnCategoryCheckboxes;
 
-  constructor() {
-    super();
+  constructor(listDiv) {
+    super(listDiv);
     this.#getRecsBtn = document.querySelector(".get-recommendations");
-    this.#recommendationsForDiv = document.querySelector(".recommendations-for");
-    this.#basedOnDiv = document.querySelector(".based-on");
 
-    const recForCheckboxesArr = recommendationsForDiv.querySelectorAll(".category-checkbox");
+    const recsForDiv = document.querySelector(".recommendations-for");
+    const basedOnDiv = document.querySelector(".based-on");
+    const recForCheckboxesArr = recsForDiv.querySelectorAll(".category-checkbox");
     const basedOnCheckboxesArr = basedOnDiv.querySelectorAll(".category-checkbox");
+    
     this.#recForCategoryCheckboxes = new CategoryCheckboxes(recForCheckboxesArr);
     this.#basedOnCategoryCheckboxes = new CategoryCheckboxes(basedOnCheckboxesArr);
   }
 
   init() {
-    this.#getRecsBtn.addEventListener("click", this._getRecs);
+    this.#getRecsBtn.addEventListener("click", () => {
+      this.#refreshRecs();
+    });
   }
 
-  // 
+  // Clear the recommendations list and rebuild with latest recommendations.
+  async #refreshRecs() {
+    const recs = await this._getRecs();
+    this.#clearListDiv();
+    this._buildListDiv(recs.recommendList);
+  }
+
+  // Clear the content in the list div.
+  #clearListDiv() {
+    this._listDiv.textContent = "Estimated liking - Item - Category - Category Type - No. of recommends";
+    this._listDiv.appendChild(document.createElement("hr"));
+  }
+
+  // Get the latest recommendations from the back end.
   async _getRecs() {
-    this.#buildListDiv();
-
-    // ............
-
-
-    
     const recForCategoryInfo = this.#recForCategoryCheckboxes.getSelectedCategoryInfo();
     const basedOnCategoryInfo = this.#basedOnCategoryCheckboxes.getSelectedCategoryInfo();
 
@@ -50,26 +58,15 @@ export class RecsQSource extends SingleModeQSource {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(allCategoryInfo)
     });
-    const recommendationsList = await fetchResponse.json();
-
-    this._listDiv.textContent = "Estimated liking - Item - Category - Category Type - No. of recommends";
-    this._listDiv.appendChild(document.createElement("hr"));
-
-    recommendationsList.recommendList.forEach(recommendation => {
-      const para = document.createElement("p");
-      const thisText = `${recommendation.rating.strength.toFixed(1)} - ${recommendation.qDetails.title} - ${recommendation.category} - ${recommendation.categoryType} - ${recommendation.rating.numUsersAnswered}`;
-      const node = document.createTextNode(thisText);
-      para.appendChild(node);
-
-      this._listDiv.appendChild(para);
-    });
+    
+    return await fetchResponse.json();
   }
 
   _getQText(rec) {
     const thisQText = this._getAnswerDisplayText(rec?.questionDetails, 
       rec.categoryType, rec.category);
     
-    return `${rec.rating.strength.toFixed(1)} - ${thisQText} - ${rec.category} - ${rec.categoryType} - ${rec.rating.numUsersAnswered}`;
+    return `${rec.rating.strength.toFixed(0)} - ${thisQText} - ${rec.category} - ${rec.categoryType} - ${rec.rating.numUsersAnswered}`;
   }
 
   _getRateBtnText() {
@@ -78,9 +75,9 @@ export class RecsQSource extends SingleModeQSource {
 
   // Set the currQRow to the question that is now being rated, so it can be 
   // easily removed once answered.
-  _handleRateBtnClick(evt) {
-    this.currQuestion = evt.currentTarget.parentNode;
-    super._handleRateBtnClick(evt);
+  _handleRateBtnClick(evt, question) {
+    this.#currQRow  = evt.currentTarget.parentNode;
+    super._handleRateBtnClick(evt, question);
   }
 
   // Remove the newly answered question from the recommendations list.

@@ -39,7 +39,7 @@ export class SingleAnswerMode extends QuestionsMode {
 
   _handleClickSingleQ(evt) {
     // Get the question from this item and make it the queue contents.
-    const thisQItem = evt.detail.answer;
+    const thisQItem = evt.detail.question;
     const thisQuestion = this._makeQuestion(thisQItem);
     this.questionsQueue.update(thisQuestion);
 
@@ -49,19 +49,5 @@ export class SingleAnswerMode extends QuestionsMode {
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
     this._showCurrQ();
-  }
-
-  // Makes a question, ready to be shown in the answerUiPanel, from the clicked 
-  // on question.
-  _makeQuestion(qItem) {
-    const thisQ = {
-      _id: qItem.questionId
-    };
-
-    for (let prop in qItem.questionDetails) {
-      thisQ[prop] = qItem.questionDetails[prop]
-    };
-
-    return thisQ;
   }
 }

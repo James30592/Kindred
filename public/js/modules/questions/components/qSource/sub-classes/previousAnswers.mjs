@@ -3,7 +3,6 @@ import { SingleModeQSource } from "../singleModeQSource.mjs";
 
 
 export class PreviousAnswers extends SingleModeQSource {
-  _listDiv;
   #notYetActivated = true;
   // Combination of all DB answers overwritten with any more recent answers for 
   // current session.
@@ -12,8 +11,7 @@ export class PreviousAnswers extends SingleModeQSource {
   _categoryName;
 
   constructor(listDiv, categoryTypeName, categoryName) {
-    super();
-    this._listDiv = listDiv;
+    super(listDiv);
     this._categoryTypeName = categoryTypeName;
     this._categoryName = categoryName;
   }
@@ -25,7 +23,7 @@ export class PreviousAnswers extends SingleModeQSource {
     // running, and populate the DOM list.
     if (this.#notYetActivated) {
       this.#prevAnswers = await this.#getDBAnswers();
-      this.#buildListDiv();
+      this._buildListDiv(this.#prevAnswers);
       this.#notYetActivated = false;
     };
 
@@ -41,7 +39,7 @@ export class PreviousAnswers extends SingleModeQSource {
         return prevAns.questionId === newAnswer.questionId
       });
 
-      const newAnsRowDiv = this.#createRow(newAnswer);
+      const newAnsRowDiv = this._createRow(newAnswer);
 
       // If found, overwrite with new answer.
       if (foundIndex > -1) {
@@ -61,14 +59,6 @@ export class PreviousAnswers extends SingleModeQSource {
     const fetchCurrDBAnswers = await fetch(`/user-answers/${this._categoryTypeName}/${this._categoryName}`);
     const currDBAnswers = await fetchCurrDBAnswers.json();
     return currDBAnswers;
-  }
-
-  // Builds the list div with all the previous answers.
-  #buildListDiv() {
-    for (let prevAnswer of this.#prevAnswers) {
-      const ansRowDiv = this._createRow(prevAnswer);
-      this._listDiv.appendChild(ansRowDiv);
-    };
   }
 
   _getQText(prevAns) {

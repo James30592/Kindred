@@ -1,9 +1,18 @@
 import { SingleAnswerMode } from "../singleAnswerMode.mjs";
 
+import { SingleQuestionQueue } from "../../../components/baseQuestionsQueue/\
+sub-classes/singleQuestionQueue.mjs";
+
 
 
 export class PrevAnswerMode extends SingleAnswerMode {
   name = "prevAns";
+
+  constructor(mainDiv, qSource, catTypeName, catName) {
+    super(mainDiv);
+    this.questionsQueue = new SingleQuestionQueue(catTypeName, catName);
+    this._qSource = qSource;
+  }
 
   // Passes the latestSession answers on to the qSource.
   setRecentAnswers(latestSessionAnswers) {
