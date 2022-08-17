@@ -217,7 +217,9 @@ router.post("/questions-mixed-categories", async function(req, res) {
   for (let categoryAnswers of categoriesAnswers) {
     // Find the relevant answers list in the DB
     const dbAnsList = new dbHelpers.CategoryAnswersList();
-    await dbAnsList.init(categoryAnswers.catType, categoryAnswers.cat, req.user._id);
+    await dbAnsList.initAndCreateIfNeeded(categoryAnswers.catType, 
+      categoryAnswers.cat, req.user._id);
+      
     // Update the answers for this category and save.
     dbAnsList.updateOrAddAnswers(categoryAnswers.answers);
     await dbAnsList.item.save();

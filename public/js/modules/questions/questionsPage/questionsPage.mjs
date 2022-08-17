@@ -195,9 +195,12 @@ export class QuestionsPage {
 
     // Populate categoriesAnswers with answers for each different category.
     for (let answer of answersToPost) {
+      const thisAnsCatType = answer.questionDetails.categoryTypeName;
+      const thisAnsCat = answer.questionDetails.categoryName;
+
       const foundCategoryIdx = categoriesAnswers.findIndex(list => {
-        const catTypeMatch = list.catType === answer.questionDetails.categoryTypeName;
-        const catMatch = list.cat === answer.questionDetails.categoryName;
+        const catTypeMatch = list.catType === thisAnsCatType;
+        const catMatch = list.cat === thisAnsCat;
         return (catTypeMatch && catMatch);
       });
 
@@ -208,8 +211,8 @@ export class QuestionsPage {
       }
       else {
         const newCategory = {
-          catType: answer.questionDetails.categoryTypeName,
-          cat: answer.questionDetails.categoryName,
+          catType: thisAnsCatType,
+          cat: thisAnsCat,
           answers: [formattedAns]
         };
 

@@ -4,8 +4,8 @@ questionsMode/sub-classes/singleAnswerMode/sub-classes/recommendationsMode.mjs";
 import { RecsQSource } from "./modules/questions/components/qSource/\
 sub-classes/recsQSource.mjs";
 
-import { QuestionsPage } from "./modules/questions/questionsPage/\
-questionsPage.mjs";
+import { RecsQuestionsPage } from "./modules/questions/questionsPage/\
+sub-classes/recsQuestionsPage.mjs";
 
 
 
@@ -18,7 +18,7 @@ const recommendationsMode = new RecommendationsMode(singleAnswerQModeDiv,
   recommendationsList);
 
 // Create the questions page.
-const questionsPage = new QuestionsPage([recommendationsMode]);
+const questionsPage = new RecsQuestionsPage([recommendationsMode]);
 
 questionsPage.init();
 
