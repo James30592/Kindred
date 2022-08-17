@@ -6,6 +6,7 @@ import { createNewQuestions } from '../lib/questions/createNewQuestions.mjs';
 import * as similarity from "../lib/similarity.mjs";
 import * as recommendations from "../lib/recommendations.mjs";
 import * as admin from "../lib/admin.mjs";
+import * as dbHelpers from "../lib/dbHelpers.mjs"
 import { CategoryInfo } from '../public/sharedJs/categoryInfo.mjs';
 import { serverState } from '../app.js';
 
@@ -205,6 +206,25 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
   };
 });
 
+
+
+// Used when submitting answers for multiple categories, such as on the 
+// recommendations page.
+router.post("/questions-mixed-categories", async function(req, res) {
+  const categoriesAnswers = req.body.data;
+
+  // Save answers for each different category.
+  for (let categoryAnswers of categoriesAnswers) {
+    // Find the relevant answers list in the DB
+    const dbAnsList = new dbHelpers.CategoryAnswersList();
+    await dbAnsList.init(categoryAnswers.catType, categoryAnswers.cat, req.user._id);
+    // Update the answers for this category and save.
+    dbAnsList.updateOrAddAnswers(categoryAnswers.answers);
+    await dbAnsList.item.save();
+  };
+  
+  res.end();
+});
 
 
 

@@ -28,4 +28,8 @@ export class RecommendationsMode extends SingleAnswerMode {
 
     return thisQ;
   }
+
+  async refreshRecs() {
+    await this._qSource.refreshRecs();
+  }
 }

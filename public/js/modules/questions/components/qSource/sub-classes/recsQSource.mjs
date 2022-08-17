@@ -7,13 +7,11 @@ import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
 export class RecsQSource extends SingleModeQSource {
   // Stores the DOM row for the question that is currently being answered.
   #currQRow = null;
-  #getRecsBtn;
   #recForCategoryCheckboxes;
   #basedOnCategoryCheckboxes;
 
   constructor(listDiv) {
     super(listDiv);
-    this.#getRecsBtn = document.querySelector(".get-recommendations");
 
     const recsForDiv = document.querySelector(".recommendations-for");
     const basedOnDiv = document.querySelector(".based-on");
@@ -24,14 +22,8 @@ export class RecsQSource extends SingleModeQSource {
     this.#basedOnCategoryCheckboxes = new CategoryCheckboxes(basedOnCheckboxesArr);
   }
 
-  init() {
-    this.#getRecsBtn.addEventListener("click", () => {
-      this.#refreshRecs();
-    });
-  }
-
   // Clear the recommendations list and rebuild with latest recommendations.
-  async #refreshRecs() {
+  async refreshRecs() {
     const recs = await this._getRecs();
     this.#clearListDiv();
     this._buildListDiv(recs.recommendList);

@@ -141,16 +141,11 @@ export class QuestionsPage {
 
   // POST these answers info to the server.
   async _postAnswers(isChangeOfPage = false) {
-    const answersToPost = this.notYetPostedAnswers.slice();
-
     // Check if there are any answers to upload.
-    const noNewAnswers = answersToPost.length === 0;
+    const noNewAnswers = this.notYetPostedAnswers.length === 0;
     if (noNewAnswers) return;
 
-    const answersMixedCategories = !this.categoryName;
-
-    const postRoute = answersMixedCategories ? `/questions` 
-      : `/questions/${this.categoryTypeName}/${this.categoryName}`;
+    const [postRoute, answersToPost] = this.#getPostInfo();
 
     const postObj = {
       method: "POST",
@@ -170,5 +165,65 @@ export class QuestionsPage {
     await fetch(postRoute, postObj);
 
     this.clearRecentlyPostedAnswers(answersToPost);
+  }
+
+  // Gets the relevant postRoute and answersToPost format for whether uploading 
+  // answers for a single category (from questions page) or for multiple 
+  // categories (eg. from recommendations page).
+  #getPostInfo() {
+    const answersMixedCategories = !this.categoryName;
+
+    let postRoute;
+    let answersToPost;
+
+    if (answersMixedCategories) {
+      postRoute = `/questions-mixed-categories`;
+      answersToPost = this.#getAnswersToPostCatInfo(this.notYetPostedAnswers);
+    }
+    else {
+      postRoute = `/questions/${this.categoryTypeName}/${this.categoryName}`;
+      answersToPost = this.notYetPostedAnswers.slice();
+    };
+
+    return [postRoute, answersToPost];
+  }
+
+  // Make a category info object with the answers for each category, for when 
+  // uploading answers for multiple categories at once (eg. from recommendations page).
+  #getAnswersToPostCatInfo(answersToPost) {
+    const categoriesAnswers = [];
+
+    // Populate categoriesAnswers with answers for each different category.
+    for (let answer of answersToPost) {
+      const foundCategoryIdx = categoriesAnswers.findIndex(list => {
+        const catTypeMatch = list.catType === answer.questionDetails.categoryTypeName;
+        const catMatch = list.cat === answer.questionDetails.categoryName;
+        return (catTypeMatch && catMatch);
+      });
+
+      const formattedAns = formatAnswer(answer);
+
+      if (foundCategoryIdx > -1) {
+        categoriesAnswers[foundCategoryIdx].answers.push(formattedAns);
+      }
+      else {
+        const newCategory = {
+          catType: answer.questionDetails.categoryTypeName,
+          cat: answer.questionDetails.categoryName,
+          answers: [formattedAns]
+        };
+
+        categoriesAnswers.push(newCategory);
+      };
+    };
+
+    // Remove the category and category type from the answer.
+    function formatAnswer(answer) {
+      delete answer.questionDetails.categoryName;
+      delete answer.questionDetails.categoryTypeName;
+      return answer;
+    }
+
+    return categoriesAnswers;
   }
 }

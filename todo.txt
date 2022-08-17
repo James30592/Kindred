@@ -1,13 +1,12 @@
 To do:
 
-
-
--	back end handling answers from mix of categories not done yet... (tweak questionsPage 152 too)...
--	get recommendations button needs to post any notyetposted answers before then getting the recommendations...
+-	redo mixed categories controller to use promise.all...
 
 
 
--	error checking, especially with results from APIs
+
+
+-	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results
 
 -	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one).
 
