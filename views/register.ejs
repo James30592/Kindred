@@ -9,24 +9,34 @@
         <div class="card-body">
 
           <!-- Makes POST request to /register route -->
-          <form action="/register" method="POST">
+          <form class="reg-form" action="/register" method="POST">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="email">
+              <input type="email" class="form-control" name="email" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
+              <input type="password" class="form-control" name="password" required>
             </div>
             <div class="form-group">
-              <label for="profileName">Profile Name</label>
-              <input type="text" class="form-control" name="profileName">
+              <label for="profile-name">Profile Name</label>
+              <input type="text" class="form-control" name="profile-name" required>
             </div>
-            <div class="form-group">
-              <label for="location">Location</label>
-              <input type="text" class="form-control" name="location">
+            <div class="form-group location-group">
+              <label for="loc-input">Location</label>
+              <input class="form-control loc-input" type="text" placeholder="Search for a place...">
+              <input name="formattedAddress" required onfocus="blur();"></input>
+              
+              <div class="full-address fully hidden"></div>
+              <input class="fully-hidden" name="googlePlaceId"></input>
+              <input class="fully-hidden" name="lat"></input>
+              <input class="fully-hidden" name="lng"></input>
+              <input class="fully-hidden" name="countryShort"></input>
+              <input class="fully-hidden" name="countryLong"></input>
+              <input class="fully-hidden" name="placeName"></input>
+
             </div>
-            <button type="submit" class="btn btn-dark">Register</button>
+            <button type="submit" class="submit-btn btn btn-dark">Register</button>
           </form>
 
         </div>
@@ -52,5 +62,8 @@
 
   </div>
 </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBupuPl_TCETkPatiOhkFxBV53iCO72IHY&libraries=places"></script>
+<script type="module" src="js/register.js"></script>
 
 <%- include('partials/footer') %>

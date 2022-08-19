@@ -26,7 +26,9 @@ async function findKindred(){
 
   kindredList.simRatingList.forEach(function(simRating){
     const para = document.createElement("p");
-    const thisText = `${simRating.profileName} - ${simRating.location} - ${simRating.simInfo.simScore.toFixed(1)} - ${simRating.simInfo.numCommonAnswers} - ${simRating.simInfo.percDiff.toFixed(1)}`;
+    const loc = simRating.location;
+
+    const thisText = `${simRating.profileName} - ${loc.placeName}, ${loc.country.long} (${loc.coords.lat}, ${loc.coords.lng}) - ${simRating.simInfo.simScore.toFixed(1)} - ${simRating.simInfo.numCommonAnswers} - ${simRating.simInfo.percDiff.toFixed(1)}`;
     const node = document.createTextNode(thisText);
     para.appendChild(node);
 

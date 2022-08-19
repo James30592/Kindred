@@ -127,11 +127,14 @@ router.post("/recommendations", async function(req, res){
 });
 
 router.post("/register", function(req, res){
+
+  const thisLoc = getLocObj(req.body);
+
   models.User.register(
     {
       email: req.body.email,
-      profileName: req.body.profileName,
-      location: req.body.location
+      profileName: req.body["profile-name"],
+      location: thisLoc 
     },
 
     req.body.password,
@@ -149,6 +152,44 @@ router.post("/register", function(req, res){
     }
   );
 });
+
+
+// Creates an address object ready for the database, from the registration page 
+// form data.
+function getLocObj(form) {
+  const thisLocObj = {
+    placeName: form.placeName,
+    googlePlaceId: form.googlePlaceId,
+    formattedAddress: form.formattedAddress,
+
+    coords: {
+      lat: Number(form.lat),
+      lng: Number(form.lng)
+    },
+
+    country: {
+      short: form.countryShort,
+      long: form.countryLong
+    },
+
+    fullAddress: []
+  };
+
+  // Get all the full address lines.
+  for (let field in form) {
+    const isAddressField = field.slice(0, 11) === "fullAddress";
+    if (isAddressField) {
+      const addressLine = field.slice(11);
+      thisLocObj.fullAddress[addressLine] = form[field];
+    };
+  };
+
+  return thisLocObj; 
+}
+
+
+
+
 
 router.post('/login',
   passport.authenticate('local', {failureRedirect: '/login', failureMessage: true}),
@@ -213,20 +254,34 @@ router.all("/questions/:categoryType/:category", async function(req, res) {
 router.post("/questions-mixed-categories", async function(req, res) {
   const categoriesAnswers = req.body.data;
 
+  const allAnswersListsPromises = [];
+
   // Save answers for each different category.
   for (let categoryAnswers of categoriesAnswers) {
+    allAnswersListsPromises.push(updateDBAnswersList(categoryAnswers, 
+      req.user._id));
+  };
+  
+  // Once all answers lists are saved for each category, respond.
+  Promise.all(allAnswersListsPromises).then(() => res.end());
+
+
+  // Finds / creates a user's answers list for a specific category and updates 
+  // with their new answers for this category. Returns a promise for when the 
+  // answers list is finished saving.
+  async function updateDBAnswersList(categoryAnswers, userId) {
     // Find the relevant answers list in the DB
     const dbAnsList = new dbHelpers.CategoryAnswersList();
     await dbAnsList.initAndCreateIfNeeded(categoryAnswers.catType, 
-      categoryAnswers.cat, req.user._id);
-      
+      categoryAnswers.cat, userId);
+  
     // Update the answers for this category and save.
     dbAnsList.updateOrAddAnswers(categoryAnswers.answers);
-    await dbAnsList.item.save();
-  };
-  
-  res.end();
+    return dbAnsList.item.save();
+  }
 });
+
+
 
 
 

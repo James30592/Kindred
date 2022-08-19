@@ -1,10 +1,12 @@
 To do:
 
--	redo mixed categories controller to use promise.all...
 
 
 
 
+
+
+-	protect api keys (and restrict for google one)
 
 -	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results
 
