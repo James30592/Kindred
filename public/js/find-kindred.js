@@ -24,11 +24,11 @@ async function findKindred(){
   element.textContent = "Profile name - Location - Similarity score - Common answers - Perc Diff";
   element.appendChild(document.createElement("hr"));
 
-  kindredList.simRatingList.forEach(function(simRating){
+  kindredList.simRatingList.forEach(function(simRating) {
     const para = document.createElement("p");
     const loc = simRating.location;
 
-    const thisText = `${simRating.profileName} - ${loc.placeName}, ${loc.country.long} (${loc.coords.lat}, ${loc.coords.lng}) - ${simRating.simInfo.simScore.toFixed(1)} - ${simRating.simInfo.numCommonAnswers} - ${simRating.simInfo.percDiff.toFixed(1)}`;
+    const thisText = `${simRating.profileName} - ${loc.placeName}, ${loc.country.long} - ${simRating.simInfo.simScore.toFixed(1)} - ${simRating.simInfo.numCommonAnswers} - ${simRating.simInfo.percDiff.toFixed(1)}`;
     const node = document.createTextNode(thisText);
     para.appendChild(node);
 

@@ -1,6 +1,7 @@
 let autocomplete;
 const regForm = document.querySelector(".reg-form");
 const fullAddress = document.querySelector(".full-address");
+const locDetails = document.querySelectorAll(".loc-detail");
 
 window.onload = initAutocomplete();
 
@@ -27,8 +28,9 @@ function placeChosen() {
 
 // Populate form fields with some visibile and some hidden place info.
 function populateForm(thisPlace) {
-  for (let detail in thisPlace) {
+  locDetails.forEach(locDetail => locDetail.value = "");
 
+  for (let detail in thisPlace) {
     if (detail === "fullAddress") {
       fullAddress.innerHTML = "";
 
@@ -36,7 +38,6 @@ function populateForm(thisPlace) {
         const addressLineInput = document.createElement("input");
         addressLineInput.classList.add("fully-hidden");
         addressLineInput.value = thisPlace[detail][i].long_name;
-        addressLineInput.innerText = thisPlace[detail][i].long_name;
         addressLineInput.setAttribute("name", `fullAddress${i}`);
         fullAddress.appendChild(addressLineInput);
       };
@@ -45,7 +46,6 @@ function populateForm(thisPlace) {
     else {
       const formInput = document.querySelector(`[name="${detail}"]`);
       formInput.value = thisPlace[detail];
-      formInput.innerText = thisPlace[detail];
     };
   };
 }

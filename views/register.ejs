@@ -25,15 +25,15 @@
             <div class="form-group location-group">
               <label for="loc-input">Location</label>
               <input class="form-control loc-input" type="text" placeholder="Search for a place...">
-              <input name="formattedAddress" required onfocus="blur();"></input>
+              <input name="formattedAddress" class="loc-detail" required onfocus="blur();"></input>
+              <input name="countryLong" class="loc-detail" required onfocus="blur();"></input>
               
               <div class="full-address fully hidden"></div>
-              <input class="fully-hidden" name="googlePlaceId"></input>
-              <input class="fully-hidden" name="lat"></input>
-              <input class="fully-hidden" name="lng"></input>
-              <input class="fully-hidden" name="countryShort"></input>
-              <input class="fully-hidden" name="countryLong"></input>
-              <input class="fully-hidden" name="placeName"></input>
+              <input class="fully-hidden loc-detail" name="googlePlaceId"></input>
+              <input class="fully-hidden loc-detail" name="lat"></input>
+              <input class="fully-hidden loc-detail" name="lng"></input>
+              <input class="fully-hidden loc-detail" name="countryShort"></input>
+              <input class="fully-hidden loc-detail" name="placeName"></input>
 
             </div>
             <button type="submit" class="submit-btn btn btn-dark">Register</button>
