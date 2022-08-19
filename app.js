@@ -3,13 +3,12 @@ const require = createRequire(import.meta.url);
 
 import * as models from "./models/models.mjs";
 import {router} from "./controllers/controllers.mjs";
-import {ServerState} from "./lib/serverState/serverState.mjs";
-
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+import express from "express";
+import mongoose from "mongoose";
+import passport from "passport";
 const session = require("express-session");
-const passport = require("passport");
+
+
 
 const app = express();
 
@@ -35,9 +34,4 @@ passport.use(models.User.createStrategy());
 passport.serializeUser(models.User.serializeUser());
 passport.deserializeUser(models.User.deserializeUser());
 
-app.listen(3000, function(){
-  console.log("Server running on port 3000.");
-});
-
-export const serverState = new ServerState();
-serverState.init();
+app.listen(3000, () => {console.log("Server running on port 3000.")});

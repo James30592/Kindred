@@ -1,18 +1,15 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-
+import express from "express";
 import * as models from "../models/models.mjs";
 import { createNewQuestions } from '../lib/questions/createNewQuestions.mjs';
 import * as similarity from "../lib/similarity.mjs";
 import * as recommendations from "../lib/recommendations.mjs";
 import * as admin from "../lib/admin.mjs";
 import * as dbHelpers from "../lib/dbHelpers.mjs"
-import { CategoryInfo } from '../public/sharedJs/categoryInfo.mjs';
-import { serverState } from '../app.js';
+import { CategoryInfo } from "../public/sharedJs/categoryInfo.mjs";
+import { serverState } from "../lib/serverState/serverState.mjs"
+import passport from "passport";
 
-const express = require("express");
-const ejs = require("ejs");
-const passport = require("passport");
+
 
 export const router = express.Router();
 
