@@ -177,7 +177,7 @@ export class QuestionsPage {
     let answersToPost;
 
     if (answersMixedCategories) {
-      postRoute = `/questions-mixed-categories`;
+      postRoute = `/questions/mixed-categories`;
       answersToPost = this.#getAnswersToPostCatInfo(this.notYetPostedAnswers);
     }
     else {

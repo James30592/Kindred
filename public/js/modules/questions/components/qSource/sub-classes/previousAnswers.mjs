@@ -56,7 +56,7 @@ export class PreviousAnswers extends SingleModeQSource {
 
   // Get user's current answers in the DB for this category.
   async #getDBAnswers() {
-    const fetchCurrDBAnswers = await fetch(`/user-answers/${this._categoryTypeName}/${this._categoryName}`);
+    const fetchCurrDBAnswers = await fetch(`/questions/user-answers/${this._categoryTypeName}/${this._categoryName}`);
     const currDBAnswers = await fetchCurrDBAnswers.json();
     return currDBAnswers;
   }

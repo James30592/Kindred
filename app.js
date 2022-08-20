@@ -2,7 +2,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 import * as models from "./models/models.mjs";
-import {router} from "./controllers/controllers.mjs";
+import { router } from "./controllers/controllers.mjs";
 import express from "express";
 import mongoose from "mongoose";
 import passport from "passport";
@@ -25,7 +25,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use("/", router);
 
 mongoose.connect("mongodb://127.0.0.1:27017/kindred02");
