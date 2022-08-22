@@ -1,18 +1,20 @@
 import express from "express";
-import * as models from "../models/models.mjs";
-import * as similarity from "../lib/similarity.mjs";
+import { CategoryType } from "../models/categoryType.mjs";
+import { CategoryAnswersList } from "../models/categoryAnswersList.mjs";
+import { KindredList } from "../lib/similarity/kindredList/kindredList.mjs"
 import { CategoryInfo } from "../public/sharedJs/categoryInfo.mjs";
+import { getSelectableUserCategories } from "../lib/similarity/getSelectableUserCategories.mjs";
 
 
 
 export const findKindredRouter = express.Router();
 
 findKindredRouter.get("/", async function(req, res) {
-  const allCategoryTypes = await models.CategoryType.find({}).exec();
-  const userCategoryAnswers = await models.CategoryAnswersList.find(
+  const allCategoryTypes = await CategoryType.find({}).exec();
+  const userCategoryAnswers = await CategoryAnswersList.find(
     {userId: req.user._id}).exec();
 
-  const selectableCategories = similarity.getSelectableUserCategories(
+  const selectableCategories = getSelectableUserCategories(
     userCategoryAnswers);
 
   res.render("find-kindred", {
@@ -24,7 +26,7 @@ findKindredRouter.get("/", async function(req, res) {
 findKindredRouter.post("/", async function(req, res){
   const categoryInfo = new CategoryInfo(req.body);
 
-  const thisKindredList = new similarity.KindredList(req.user, 10);
+  const thisKindredList = new KindredList(req.user, 10);
   await thisKindredList.initKindredList(categoryInfo);
   thisKindredList.findKindred();
 

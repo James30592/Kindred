@@ -1,7 +1,7 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-import * as models from "./models/models.mjs";
+import { User } from "./models/user.mjs"
 import { router } from "./controllers/controllers.mjs";
 import express from "express";
 import mongoose from "mongoose";
@@ -29,8 +29,8 @@ app.use("/", router);
 
 mongoose.connect("mongodb://127.0.0.1:27017/kindred02");
 
-passport.use(models.User.createStrategy());
-passport.serializeUser(models.User.serializeUser());
-passport.deserializeUser(models.User.deserializeUser());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.listen(3000, () => {console.log("Server running on port 3000.")});

@@ -1,7 +1,7 @@
 import express from "express";
 import { serverState } from "../../lib/serverState/serverState.mjs"
 import { createNewQuestions } from '../../lib/questions/createNewQuestions.mjs';
-import * as dbHelpers from "../../lib/dbHelpers.mjs"
+import { DBCategoryAnswersList } from "../../lib/dbHelpers/categoryQuestionOrAnswersList/sub-classes/categoryAnswersList.mjs";
 import { userAnswersRouter } from "./userAnswers.mjs";
 
 
@@ -73,7 +73,7 @@ questionsRouter.post("/mixed-categories", async function(req, res) {
   // answers list is finished saving.
   async function updateDBAnswersList(categoryAnswers, userId) {
     // Find the relevant answers list in the DB
-    const dbAnsList = new dbHelpers.CategoryAnswersList();
+    const dbAnsList = new DBCategoryAnswersList();
     await dbAnsList.initAndCreateIfNeeded(categoryAnswers.catType, 
       categoryAnswers.cat, userId);
   

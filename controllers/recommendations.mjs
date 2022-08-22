@@ -1,19 +1,20 @@
 import express from "express";
-import * as models from "../models/models.mjs";
-import * as similarity from "../lib/similarity.mjs";
+import { CategoryType } from "../models/categoryType.mjs";
+import { CategoryAnswersList } from "../models/categoryAnswersList.mjs";
 import { CategoryInfo } from "../public/sharedJs/categoryInfo.mjs";
-import * as recommendations from "../lib/recommendations.mjs";
+import { RecommendationList } from "../lib/similarity/recommendationList/recommendationList.mjs";
+import { getSelectableUserCategories } from "../lib/similarity/getSelectableUserCategories.mjs";
 
 
 
 export const recommendationsRouter = express.Router();
 
 recommendationsRouter.get("/", async function(req, res){
-  const allCategoryTypes = await models.CategoryType.find({}).exec();
-  const userCategoryAnswers = await models.CategoryAnswersList.find(
+  const allCategoryTypes = await CategoryType.find({}).exec();
+  const userCategoryAnswers = await CategoryAnswersList.find(
     {userId: req.user._id}).exec();
 
-  const selectableCategories = similarity.getSelectableUserCategories(
+  const selectableCategories = getSelectableUserCategories(
     userCategoryAnswers);
 
   res.render("recommendations", {
@@ -27,7 +28,7 @@ recommendationsRouter.post("/", async function(req, res){
   const resultCategoryInfo = new CategoryInfo(allCategoryInfo.recommendationsFor);
   const basedOnCategoryInfo = new CategoryInfo(allCategoryInfo.basedOn);
 
-  const thisRecommendationList = new recommendations.RecommendationList(req.user);
+  const thisRecommendationList = new RecommendationList(req.user);
   await thisRecommendationList.initRecommendationList(basedOnCategoryInfo,
     resultCategoryInfo);
 

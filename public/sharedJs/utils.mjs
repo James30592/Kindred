@@ -1,5 +1,7 @@
 // Clamp number between two values.
-export const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+export function clamp(num, min, max) {
+  return Math.min(Math.max(num, min), max);
+}
 
 // Searches for a newItem in an array given an elemCompFunc that determines 
 // whether it is present or not (eg. to find based on question ID). If present, 

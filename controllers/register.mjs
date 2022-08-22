@@ -1,5 +1,5 @@
 import express from "express";
-import * as models from "../models/models.mjs";
+import { User } from "../models/user.mjs";
 import passport from "passport";
 
 
@@ -15,7 +15,7 @@ registerRouter.post("/", function(req, res) {
 
   const thisLoc = getLocObj(req.body);
 
-  models.User.register(
+  User.register(
     {
       email: req.body.email,
       profileName: req.body["profile-name"],
