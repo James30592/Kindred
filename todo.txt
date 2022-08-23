@@ -6,6 +6,16 @@ To do:
 
 
 
+-	change front end code of findKindred and recommendations pages to grey out the "find kindred" and "get recommendations" buttons when checkboxes haven't changed since it was last clicked (and when no new answers have been done in recommendations page). need to be able to compare categoryCheckboxes objects, save copy of one when button was last clicked and compare current to this.
+
+-	edit account settings (email, password, location) feature.
+
+-	"forgot your password" feature.
+
+-	make it give error message when registering with email that already exists - prompt for "forgot your password".
+
+-	account / email verification when registering / changing email.
+
 -	protect api keys (and restrict for google one)
 
 -	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results
@@ -15,6 +25,8 @@ To do:
 -	for api queries, include only stuff that has already been released
 
 -	change questions queue back end to work in number of pages rather than getting a set number of items (get minimum that number of items but get every item up to the last page it iterates for)
+
+-	make tab name update
 
 
 
@@ -48,6 +60,9 @@ research psychology for doing the personality questions
 import feature for importing likes on films, tv, books etc.
 
 make it so can answer some questions and make a profile without yet creating an account, then prompt to create an account to save progress
+
+bookmark list of things you want to watch / do
+
 
 
 Personality		General

@@ -52,21 +52,15 @@ questionsPage.init();
 // Event listeners for mode change buttons, maybe put this inside QuestionsPage 
 // init method later.
 document.querySelector(".auto-queue-mode-btn").addEventListener("click", 
-  async () => {
-    await questionsPage.switchQMode(autoQMode);
-  }
+  async () => await questionsPage.switchQMode(autoQMode)
 );
 
 document.querySelector(".search-mode-btn").addEventListener("click", 
-  async () => {
-    await questionsPage.switchQMode(searchQMode);
-  }
+  async () => await questionsPage.switchQMode(searchQMode)
 );
 
 document.querySelector(".prev-answers-mode-btn").addEventListener("click", 
-  async () => {
-    await questionsPage.switchQMode(prevAnswerQMode);
-  }
+  async () => await questionsPage.switchQMode(prevAnswerQMode)
 );
 
 
