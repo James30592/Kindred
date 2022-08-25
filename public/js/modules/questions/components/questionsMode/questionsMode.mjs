@@ -34,17 +34,16 @@ export class QuestionsMode extends EventTarget {
   // Updates the displayed question in the answer UI panel with the new first 
   // queue item. 
   _showCurrQ(inclAlreadyAnswered = true) {
-    // Gets information on whether queue is now empty, or what the new current 
-    // question text (and user answer, if necessary) should be.
+    // Gets information on whether queue is now empty, or what the next 10 
+    // queue items (and first question user answer, if necessary) should be.
     const newCurrQInfo = this.questionsQueue.getCurrQInfo();
 
     this.answerUiPanel.displayCurrQ(newCurrQInfo, inclAlreadyAnswered);
   }
 
   // Gets current answer to current question as an object for DB.
-  getAnswerObj(event) {
+  getAnswerObj(event, currQuestion) {
     const userSkipped = (event.currentTarget === this.answerUiPanel.skipBtn);
-    const currQuestion = this.questionsQueue.queue.shift();
     const thisScore = (userSkipped ? null : Number(this.answerUiPanel.
       ratingScore.innerText));
       

@@ -28,6 +28,8 @@ To do:
 
 -	make tab name update
 
+-	make it so that say, once a day, the top 1000 items for each category are downloaded from api and stored in DB and used on back end for auto queue, to reduce API requests (eg. IGDB only allows 4 requests per second)
+
 
 
 
@@ -151,3 +153,35 @@ just need to make it so when filters are changed in front end code that isNewQue
 -	at the moment, questions page is set up to query DB every time a user's questions queue needs adding to. db will be queried and questions in this category will be checked. alternative could be to use another repository object to store all DB questions here if I know there won't be that many, would save many queries to the database.
 
 -	made it so answers are submitted every 10 mins or on leaving the questions page (async using sendBeacon). More efficient, fewer interactions with server / db than doing it every answer.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TMDB poster sizes:
+"w92",
+"w154",
+"w185",
+"w342",
+"w500",
+"w780"

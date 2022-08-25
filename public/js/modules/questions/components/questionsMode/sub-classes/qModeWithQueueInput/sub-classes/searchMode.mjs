@@ -13,7 +13,7 @@ export class SearchMode extends QModeWithQueueInput {
 
   constructor(mainDiv, categoryType, category) {
     super(mainDiv);
-    this.questionsQueue = new SearchQuestionsQueue(categoryType, category);
+    this.questionsQueue = new SearchQuestionsQueue(mainDiv, categoryType, category);
     this.queueInputPanel = new SearchQueueInputPanel(mainDiv);
   }
 

@@ -7,12 +7,14 @@ export class QModeWithQueueInput extends QuestionsMode {
 
   // Save answer information, update the queue if necessary.
   async answerQuestion(event) {
+    const currQuestion = this.questionsQueue.removeQueueItem(0);
+
     // Get the answer object as it should be stored in the DB.
-    const answerObj = this.getAnswerObj(event);
+    const answerObj = this.getAnswerObj(event, currQuestion);
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
-    this._showCurrQ();    
+    this._showCurrQ();
 
     // Adds more questions to the questions queue if necessary.
     let queueUpdated = await this.questionsQueue.update();

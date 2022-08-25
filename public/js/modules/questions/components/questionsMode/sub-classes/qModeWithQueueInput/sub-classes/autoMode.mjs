@@ -13,7 +13,7 @@ export class AutoMode extends QModeWithQueueInput {
 
   constructor(mainDiv, categoryType, category) {
     super(mainDiv);
-    this.questionsQueue = new AutoQuestionsQueue(categoryType, category);
+    this.questionsQueue = new AutoQuestionsQueue(mainDiv, categoryType, category);
     this.queueInputPanel = new AutoQueueInputPanel(mainDiv);
   }
 

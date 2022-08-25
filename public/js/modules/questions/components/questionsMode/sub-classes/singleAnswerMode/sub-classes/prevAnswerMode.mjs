@@ -9,9 +9,8 @@ export class PrevAnswerMode extends SingleAnswerMode {
   name = "prevAns";
 
   constructor(mainDiv, qSource, catTypeName, catName) {
-    super(mainDiv);
-    this.questionsQueue = new SingleQuestionQueue(catTypeName, catName);
-    this._qSource = qSource;
+    super(mainDiv, qSource);
+    this.questionsQueue = new SingleQuestionQueue(mainDiv, catTypeName, catName);
   }
 
   // Passes the latestSession answers on to the qSource.

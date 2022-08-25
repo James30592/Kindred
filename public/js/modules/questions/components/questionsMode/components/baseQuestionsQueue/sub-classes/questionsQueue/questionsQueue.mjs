@@ -41,7 +41,8 @@ export class QuestionsQueue extends BaseQuestionsQueue {
         currQueueIds, startApiPage);
 
       this._endOfQSource = newQuestionsObj.endOfQSource;
-      this.queue = this.queue.concat(newQuestionsObj.results);
+
+      this._addToQueue(newQuestionsObj.results);
       updated = true;
     };
 
@@ -88,7 +89,7 @@ export class QuestionsQueue extends BaseQuestionsQueue {
     }
     // Otherwise, remove this now answered question from the queue.
     else {
-      this.queue.splice(queueIndex, 1);
+      this.removeQueueItem(queueIndex);
     };
   }
 
@@ -128,7 +129,7 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   // Resets the search queue, ready for a new search query and update call or a 
   // new queue after toggling "include already answered".
   reset() {
-    this.queue = [];
+    this._resetQueue();
     this._endOfQSource = false;
     this._currentlyUpdating = false;
   }

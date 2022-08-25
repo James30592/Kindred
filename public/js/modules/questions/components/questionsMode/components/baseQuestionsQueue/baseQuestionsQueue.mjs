@@ -1,12 +1,18 @@
+import { DomQueue } from "./components/domQueue.mjs";
+
+
+
 export class BaseQuestionsQueue {
   _categoryTypeName;
   _categoryName;
   queue = [];
   queueType;
+  _domQueue;
 
-  constructor(categoryType = null, category = null) {
+  constructor(qModeMainDiv, categoryType = null, category = null) {
     this._categoryTypeName = categoryType;
     this._categoryName = category;
+    this._domQueue = new DomQueue(qModeMainDiv, categoryType, category);
   }
 
   // Gets the text to display of the current first item in the questions queue.
@@ -21,7 +27,7 @@ export class BaseQuestionsQueue {
       endOfQueue = true;
     }
     else {
-      const [catTypeName, catName] = this._getCurrQCategory(this.queue[0]);
+      const [catTypeName, catName] = this._getQCategory(this.queue[0]);
 
       currQText = BaseQuestionsQueue._getQuestionText(catTypeName, catName, 
         this.queue[0]);
@@ -32,15 +38,38 @@ export class BaseQuestionsQueue {
     return {endOfQueue, currQText, currQAns};
   }
 
+  // Removes an item from the queue and the corresponding item from the DOM 
+  // queue. Returns the removed queue item.
+  removeQueueItem(idx) {
+    const thisQueueItem = this.queue[idx];
+    this.queue.splice(idx, 1);
+    this._domQueue.removeQueueItem(idx);
+
+    return thisQueueItem;
+  }
+
+  // Adds array of questions to queue and adds corresponding new elements to 
+  // DOM queue too.
+  _addToQueue(qs) {
+    this.queue = this.queue.concat(qs);
+    this._domQueue.addToQueue(qs);
+  }
+
+  // Clears the DOM items queue.
+  _resetQueue() {
+    this.queue = [];
+    this._domQueue.resetQueue();
+  }
+
   // If the queue has a category / category type assigned then use this,
   //  otherwise the queue contains items of various categories so check what 
   //  category the current question has.
-  _getCurrQCategory(currQ) {
+  _getQCategory(q) {
     if (this._categoryName) {
       return [this._categoryTypeName, this._categoryName];
     }
     else {
-      return [currQ.categoryTypeName, currQ.categoryName];
+      return [q.categoryTypeName, q.categoryName];
     };
   }
 

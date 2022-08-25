@@ -11,7 +11,7 @@ export class SingleAnswerMode extends QuestionsMode {
 
   constructor(mainDiv, qSource) {
     super(mainDiv);
-    this.questionsQueue = new SingleQuestionQueue();
+    this.questionsQueue = new SingleQuestionQueue(mainDiv);
     this._qSource = qSource;
   }
 
@@ -25,8 +25,10 @@ export class SingleAnswerMode extends QuestionsMode {
 
   // Save answer information.
   async answerQuestion(event) {
+    const currQuestion = this.questionsQueue.removeQueueItem(0);
+
     // Get the answer object as it should be stored in the DB.
-    const answerObj = this.getAnswerObj(event); 
+    const answerObj = this.getAnswerObj(event, currQuestion); 
 
     // Emit event to be picked up by the questions page.
     this.dispatchEvent(
