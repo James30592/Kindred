@@ -33,16 +33,33 @@ export class DomQueue {
     };    
   }
 
-  // Create DOM queue images from list of questions.
+  // Create DOM queue images and audio (where present) from list of questions.
   addToQueue(qs) {
     for (let q of qs) {
       const [catTypeName, catName] = this.#getQCategory(q);
 
-      const newDomQ = document.createElement("img");
-      const imgPath = this.#getImgPath(q, catTypeName, catName);
-      newDomQ.setAttribute("src", imgPath);
+      let newDomQ = null;
 
-      this.#queue.appendChild(newDomQ);
+      const imgPath = this.#getImgPath(q, catTypeName, catName);
+      
+      if (imgPath) {
+        newDomQ = document.createElement("div");
+        const domImg = document.createElement("img");
+        domImg.setAttribute("src", imgPath);
+        newDomQ.appendChild(domImg);
+      };
+
+      if (q.previewUrl) {
+        newDomQ = newDomQ ?? document.createElement("div");
+        const domMusicPlayer = document.createElement("audio");
+        domMusicPlayer.setAttribute("controls", "true");
+        domMusicPlayer.setAttribute("src", q.previewUrl);
+        newDomQ.appendChild(domMusicPlayer);
+      };
+      
+      if (newDomQ) {
+        this.#queue.appendChild(newDomQ);
+      };
     };
   }
 
@@ -96,27 +113,27 @@ export class DomQueue {
     switch(catTypeName, catName) {
   
       case ("Interests", "Films") :
-        imgPath = `https://image.tmdb.org/t/p/w185/${q.posterPath}`;
+        imgPath = q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null;
         break;
   
       case ("Interests", "TV") :
-        imgPath = `https://image.tmdb.org/t/p/w185/${q.posterPath}`;
+        imgPath = q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null;
         break;
 
       case ("Interests", "Music"):
-        imgPath = `${q.image}`;
+        imgPath = q?.image;
         break;
   
       case ("Interests", "Video Games"):
-        imgPath = `https://images.igdb.com/igdb/image/upload/t_cover_big/${q.image}.jpg`;
+        imgPath = q?.image ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${q.image}.jpg` : null;
         break;
   
       case ("Interests", "Books"):
-        imgPath = `https://covers.openlibrary.org/b/id/${q.image}-M.jpg`;
+        imgPath = q?.image ? `https://covers.openlibrary.org/b/id/${q.image}-M.jpg` : null;
         break;
   
       default:
-        imgPath = `${q.image}`;
+        imgPath = null;
     };
     
     return imgPath;

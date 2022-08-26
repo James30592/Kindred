@@ -32,34 +32,53 @@ body {
 
 
 
+
+
 .queue-imgs {
   position: relative;
   left: 0px;
-  
-  /* transition: 0.5s all; */
 }
 
-.queue-imgs img {
+.queue-imgs div {
   width: 120px;
   height: 180px;
-  
-  /* transition: 0.5s all; */
+  display: inline-block;
+  position: relative;
 }
 
-.queue-imgs img:nth-child(2) {
+.queue-imgs div img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.queue-imgs div audio {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  z-index: 1000;
+  transition: opacity 1s;
+}
+
+.queue-imgs div:nth-child(2) {
   opacity: var(--2nd-queue-transp);
 }
 
-.queue-imgs img:nth-child(3) {
+.queue-imgs div:nth-child(3) {
   opacity: var(--3rd-queue-transp);
 }
 
-.queue-imgs img:nth-child(4) {
+.queue-imgs div:nth-child(4) {
   opacity: 0;
 }
 
-.queue-imgs img:nth-child(n + 5) {
+.queue-imgs div:nth-child(n + 5) {
   display: none;
+}
+
+.queue-imgs div:nth-child(n + 2) audio {
+  opacity: 0;
+  pointer-events: none;
 }
 
 
@@ -71,19 +90,23 @@ body {
   left: -120px;
 }
 
-.queue-imgs-transitioning img {
+.queue-imgs-transitioning div {
   transition: 0.5s all;
 }
 
-.queue-imgs-transitioning img:nth-child(1) {
+.queue-imgs-transitioning div:nth-child(1) {
   opacity: 0;
 }
-.queue-imgs-transitioning img:nth-child(2) {
+.queue-imgs-transitioning div:nth-child(2) {
   opacity: 1;
 }
-.queue-imgs-transitioning img:nth-child(3) {
+.queue-imgs-transitioning div:nth-child(3) {
   opacity: var(--2nd-queue-transp);
 }
-.queue-imgs-transitioning img:nth-child(4) {
+.queue-imgs-transitioning div:nth-child(4) {
   opacity: var(--3rd-queue-transp);
+}
+
+.queue-imgs-transitioning div:nth-child(2) audio {
+  opacity: 1;
 }
