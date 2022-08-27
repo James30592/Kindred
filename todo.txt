@@ -1,7 +1,9 @@
 To do:
 
 
-
+-	make it so can press enter to search when in search box and can use keyboard to answer questions easily from queue
+-	redo how each one is rated, use a slider (line for desktop, circle for mobile?)
+-	make auto, search and prev answers different tabs and have it transition by moving sideways between them. Remove header from next section and make tab names the headers.
 
 
 
@@ -29,6 +31,8 @@ To do:
 -	make tab name update
 
 -	make it so that say, once a day, the top 1000 items for each category are downloaded from api and stored in DB and used on back end for auto queue, to reduce API requests (eg. IGDB only allows 4 requests per second)
+
+-	profanity filter on usernames
 
 
 

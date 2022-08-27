@@ -3,9 +3,15 @@ import { QuestionsQueue } from "../questionsQueue.mjs";
 
 
 export class SearchQuestionsQueue extends QuestionsQueue {
-  endQueueMsg = "You have answered all questions for this search query, try another!";
+  endQueueMsg = "No results for this search term (or you answered them all already), try another!";
+  noSearchTermMsg = "Enter a search term!";
   queueType = "search";
   searchQuery = "";
+
+  _getEndQueueMsg() {
+    let endQueueMsg = (this.searchQuery === "") ? this.noSearchTermMsg : this.endQueueMsg;
+    return endQueueMsg;
+  }
 
   // Checks if the queue needs and can be extended.
   checkQueueToBeUpdated() {

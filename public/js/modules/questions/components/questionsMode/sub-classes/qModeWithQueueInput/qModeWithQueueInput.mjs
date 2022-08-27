@@ -44,7 +44,9 @@ export class QModeWithQueueInput extends QuestionsMode {
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
   async updateQueueAndShowFirst() {
+    this.answerUiPanel.showLoader();
     await this.updateQueue();
+    this.answerUiPanel.hideLoader();
     this._showCurrQ();
   }
 

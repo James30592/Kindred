@@ -21,9 +21,11 @@ export class SearchMode extends QModeWithQueueInput {
   // called when switching to this questions mode.
   async updateQueueAndShowFirst() {
     if (this.queueInputPanel.searchInput.value !== "") {
+      this.answerUiPanel.showLoader();
       await super.updateQueue();
     };
   
+    this.answerUiPanel.hideLoader();
     this._showCurrQ();
   }
 

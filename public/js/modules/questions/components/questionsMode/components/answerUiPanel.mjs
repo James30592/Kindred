@@ -8,6 +8,7 @@ export class AnswerUIPanel {
   ratingScore;
   prevAnsDiv;
   prevAnsVal;
+  loader;
 
   constructor(qModeDiv) {
     this.mainDiv = qModeDiv.querySelector(".answer-panel");
@@ -19,6 +20,7 @@ export class AnswerUIPanel {
     this.ratingScore = this.mainDiv.querySelector(".rating-score");
     this.prevAnsDiv = this.mainDiv.querySelector(".prev-ans-info");
     this.prevAnsVal = this.mainDiv.querySelector(".prev-ans-val");
+    this.loader = this.mainDiv.querySelector(".loader");
   }
 
   // Sets up the change score button event listeners.
@@ -73,5 +75,13 @@ export class AnswerUIPanel {
     else {
       this.prevAnsDiv.style.visibility = "hidden";
     };
+  }
+
+  showLoader() {
+    this.loader.classList.remove("fully-hidden");
+  }
+
+  hideLoader() {
+    this.loader.classList.add("fully-hidden");
   }
 }

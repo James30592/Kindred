@@ -23,7 +23,7 @@ export class BaseQuestionsQueue {
 
     // Hide question answer panel if run out of questions and display a message.
     if (this.queue.length === 0) {
-      currQText = this.endQueueMsg;
+      currQText = this._getEndQueueMsg();
       endOfQueue = true;
     }
     else {
@@ -36,6 +36,10 @@ export class BaseQuestionsQueue {
     };
 
     return {endOfQueue, currQText, currQAns};
+  }
+
+  _getEndQueueMsg() {
+    return this.endQueueMsg;
   }
 
   // Removes an item from the queue and the corresponding item from the DOM 
