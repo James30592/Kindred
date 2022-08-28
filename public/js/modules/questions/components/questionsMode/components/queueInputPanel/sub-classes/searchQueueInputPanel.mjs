@@ -13,4 +13,14 @@ export class SearchQueueInputPanel extends QueueInputPanel {
     this.searchInput = this.mainDiv.querySelector(".search-input");
     this.searchBtn = this.mainDiv.querySelector(".search-btn");
   }
+
+  init() {
+    // Pressing enter in search input carries out the search.
+    this.searchInput.addEventListener("keyup", event => {
+      if (event.keyCode === 13) {
+          event.preventDefault();
+          this.searchBtn.click();
+      };
+    });
+  }
 }

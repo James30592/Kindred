@@ -33,6 +33,7 @@ export class SearchMode extends QModeWithQueueInput {
   init() {
     super.init();
     this.questionsQueue.inputPanel = this.queueInputPanel;
+    this.questionsQueue.inputPanel.init();
 
     this.queueInputPanel.searchBtn.addEventListener("click", async () => {
       const searchTermChanged = this.questionsQueue.newSearch();
