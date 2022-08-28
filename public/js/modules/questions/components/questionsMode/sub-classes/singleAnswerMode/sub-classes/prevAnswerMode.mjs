@@ -25,6 +25,7 @@ export class PrevAnswerMode extends SingleAnswerMode {
 
   deactivate() {
     this._qSource.deactivate();
+    super.deactivate();
 
     // Hide the answer ui panel.
     this.answerUiPanel.mainDiv.classList.add("fully-hidden");

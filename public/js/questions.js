@@ -36,34 +36,23 @@ const searchQMode = new SearchMode(searchQModeDiv, categoryTypeName, categoryNam
 const prevAnswerQMode = new PrevAnswerMode(singleAnswerQModeDiv, 
   prevAnswersList, categoryTypeName, categoryName);
 
+// Create the questions mode switcher.
+  const autoModeBtn = document.querySelector(".auto-queue-mode-btn");
+  const searchModeBtn = document.querySelector(".search-mode-btn");
+  const prevAnswersModeBtn = document.querySelector(".prev-answers-mode-btn");
+  const qModeSwitcher = [
+    {mode: autoQMode, btn: autoModeBtn},
+    {mode: searchQMode, btn: searchModeBtn},
+    {mode: prevAnswerQMode, btn: prevAnswersModeBtn}
+  ];
+
 const allQModes = [autoQMode, searchQMode, prevAnswerQMode];
 
 // Create the questions page.
-const questionsPage = new FullQuestionsPage(allQModes, categoryTypeName, 
-  categoryName);
+const questionsPage = new FullQuestionsPage(allQModes, qModeSwitcher, 
+  categoryTypeName, categoryName);
 
 questionsPage.init();
-
-
-
-// Think put these addEventListeners inside a qModeSwitcher object (with the 3 
-// buttons at the top) later.
-
-// Event listeners for mode change buttons, maybe put this inside QuestionsPage 
-// init method later.
-document.querySelector(".auto-queue-mode-btn").addEventListener("click", 
-  async () => await questionsPage.switchQMode(autoQMode)
-);
-
-document.querySelector(".search-mode-btn").addEventListener("click", 
-  async () => await questionsPage.switchQMode(searchQMode)
-);
-
-document.querySelector(".prev-answers-mode-btn").addEventListener("click", 
-  async () => await questionsPage.switchQMode(prevAnswerQMode)
-);
-
-
 
 // On page load, update the questions queue and show the first question.
 window.onload = async () => {

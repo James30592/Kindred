@@ -1,3 +1,7 @@
+import { fadeIn, fadeOut, finishFadeOut } from "../../../../../../sharedJs/utils.mjs";
+
+
+
 export class AnswerUIPanel {
   mainDiv;
   ratePanel;
@@ -9,6 +13,7 @@ export class AnswerUIPanel {
   prevAnsDiv;
   prevAnsVal;
   loader;
+  details;
 
   constructor(qModeDiv) {
     this.mainDiv = qModeDiv.querySelector(".answer-panel");
@@ -21,6 +26,7 @@ export class AnswerUIPanel {
     this.prevAnsDiv = this.mainDiv.querySelector(".prev-ans-info");
     this.prevAnsVal = this.mainDiv.querySelector(".prev-ans-val");
     this.loader = this.mainDiv.querySelector(".loader");
+    this.details = this.mainDiv.querySelector(".details");
   }
 
   // Sets up the change score button event listeners.
@@ -77,11 +83,13 @@ export class AnswerUIPanel {
     };
   }
 
-  showLoader() {
+  async showLoader() {
     this.loader.classList.remove("fully-hidden");
+    this.details.classList.add("fully-hidden");
   }
 
-  hideLoader() {
+  async hideLoader() {
     this.loader.classList.add("fully-hidden");
+    this.details.classList.remove("fully-hidden");
   }
 }

@@ -21,6 +21,10 @@ body {
   background-color: #000;
 }
 
+.transparent {
+  opacity: 0;
+}
+
 .hidden {
   visibility: hidden;
 }
@@ -123,4 +127,14 @@ body {
 
 .queue-imgs-transitioning div:nth-child(2) audio {
   opacity: 1;
+}
+
+
+
+
+
+
+/* Question modes */
+.fade-trans {
+  transition: opacity 0.2s;
 }

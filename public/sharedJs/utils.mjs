@@ -20,7 +20,36 @@ export function findAndOverwriteElsePush(array, newItem, elemCompFunc) {
   };
 }
 
+// Fade transition helper functions, used with transparent, fully-hidden and 
+// fade-trans css classes.
+// Makes display property visible and then removes transparency.
+export function fadeIn(elem) {
+  elem.classList.remove("fully-hidden");
+  setTimeout(() => elem.classList.remove("transparent"), 10);
+}
 
+export function fadeOut(elem) {
+  elem.classList.add("transparent");
+}
+
+// Function that returns a promise that resolves when opacity transition on the 
+// given element is completed. Also fully hides the element.
+export async function finishFadeOut(elem) {
+  return new Promise(resolve => {
+    elem.addEventListener('transitionend', evt => {
+      if (evt.propertyName === "opacity") {
+        elem.classList.add("fully-hidden");
+        resolve();
+      };
+    }, {once: true});
+  })
+};
+
+// Fade out and fully hide the given element.
+export function fullyFadeOut(elem) {
+  fadeOut(elem);
+  finishFadeOut(elem);
+}
 
 
 

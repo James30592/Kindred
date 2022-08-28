@@ -1,10 +1,14 @@
 To do:
 
 
+-	on questions page, remove message text while loader is present
+-	when answering questions on recommendations page, if answer is skip, dont remove from list
+
+
 -	make it so can use keyboard to answer questions easily
 -	redo how each one is rated, use a slider (line for desktop, circle for mobile?)
 
--	make auto, search and prev answers different tabs and have it transition by moving sideways between them. Remove header from next section and make tab names the headers.
+
 
 
 
@@ -109,7 +113,7 @@ use validation on any user submitted data to make sure it can't mess up anything
 
 Recommendations:
 
-recommendations is working now, think about making it on the same page as findKindred in the end, since it's just an extension of that and is doing a similar find kindred thing first (although slightly different variant of findKindred)
+recommendations is working now.
 
 Other options for the recommendation algorithm:
 - change the threshold value. actually better to do a more complex way of getting the kindred list, like only using very similar users if possible, otherwise widening it a little maybe.

@@ -1,4 +1,4 @@
-import { findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
+import { finishFadeOut, findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
 
 import { QModeWithQueueInput } from "../components/questionsMode/sub-classes/\
 qModeWithQueueInput/qModeWithQueueInput.mjs";
@@ -6,7 +6,9 @@ qModeWithQueueInput/qModeWithQueueInput.mjs";
 
 
 export class QuestionsPage {
+  #switchingMode = false;
   questionsModes;
+  qModeSwitcher;
   currQuestionMode;
   categoryTypeName;
   categoryName;
@@ -17,8 +19,11 @@ export class QuestionsPage {
   allRecentAnswers = [];
   static #submitAnswersInterval = 600000; // 10 mins
 
-  constructor(qModes, categoryTypeName = null, categoryName = null) {
+  constructor(qModes, qModeSwitcher = [], categoryTypeName = null, 
+    categoryName = null) {
+
     this.questionsModes = qModes;
+    this.qModeSwitcher = qModeSwitcher;
     this.categoryTypeName = categoryTypeName;
     this.categoryName = categoryName;
   }
@@ -48,8 +53,28 @@ export class QuestionsPage {
         this._handleNewAnswer(answerObj);
       });
     };
+
+    // Init the qModeSwitcher.
+    this.#initQModeSwitcher();
   }
 
+  // Add event listeners for q mode switch buttons.
+  #initQModeSwitcher() {
+    for (let modeBtnLink of this.qModeSwitcher) {
+      const qModeBtn = modeBtnLink.btn;
+      const qMode = modeBtnLink.mode;
+
+      qModeBtn.addEventListener("click", async () => {
+        // Don't try to switch mode if already transitioning between two.
+        if (this.#switchingMode) return;
+
+        this.#switchingMode = true;
+        await this.switchQMode(qMode)
+        this.#switchingMode = false;
+      });
+    };
+  }
+  
   // Saves (or overwrites) new answer to notYetPosted and allRecentAnswers and 
   // then sends the updated recent answers array to the current questions mode.
   _handleNewAnswer(answerObj) {
@@ -97,6 +122,7 @@ export class QuestionsPage {
   // Switch between question modes.
   async switchQMode(newQMode) {
     this.removeQmode();
+    await finishFadeOut(this.currQuestionMode.mainDiv);
     await this.setQMode(newQMode);
   }
   

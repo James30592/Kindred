@@ -1,3 +1,4 @@
+import { fadeIn, fullyFadeOut } from "../../../../../../sharedJs/utils.mjs";
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 
 
@@ -27,7 +28,12 @@ export class PreviousAnswers extends SingleModeQSource {
       this.#notYetActivated = false;
     };
 
-    this._listDiv.classList.remove("fully-hidden");
+    fadeIn(this._listDiv);
+  }
+
+  // Hides the list.
+  deactivate() {
+    fullyFadeOut(this._listDiv);
   }
 
   // Updates this #prevAnswers and the div list on a change.
@@ -70,10 +76,5 @@ export class PreviousAnswers extends SingleModeQSource {
   
   _getRateBtnText() {
     return "Re-rate it!";
-  }
-
-  // Hides the list.
-  deactivate() {
-    this._listDiv.classList.add("fully-hidden");
   }
 }

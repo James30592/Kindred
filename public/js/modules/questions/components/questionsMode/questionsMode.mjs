@@ -1,3 +1,4 @@
+import { fadeIn, fadeOut } from "../../../../../sharedJs/utils.mjs";
 import { AnswerUIPanel } from "./components/answerUiPanel.mjs";
 
 
@@ -79,10 +80,10 @@ export class QuestionsMode extends EventTarget {
   }
 
   activate() {
-    this.mainDiv.classList.remove("fully-hidden");
+    fadeIn(this.mainDiv);
   }
 
   deactivate() {
-    this.mainDiv.classList.add("fully-hidden");
+    fadeOut(this.mainDiv);
   }
 }
