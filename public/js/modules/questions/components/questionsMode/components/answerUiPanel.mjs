@@ -1,7 +1,3 @@
-import { fadeIn, fadeOut, finishFadeOut } from "../../../../../../sharedJs/utils.mjs";
-
-
-
 export class AnswerUIPanel {
   mainDiv;
   ratePanel;
@@ -86,10 +82,12 @@ export class AnswerUIPanel {
   async showLoader() {
     this.loader.classList.remove("fully-hidden");
     this.details.classList.add("fully-hidden");
+    this.details.classList.add("transparent");
   }
 
   async hideLoader() {
     this.loader.classList.add("fully-hidden");
     this.details.classList.remove("fully-hidden");
+    setTimeout(() => this.details.classList.remove("transparent"), 10);
   }
 }

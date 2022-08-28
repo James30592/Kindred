@@ -20,13 +20,15 @@ export class SearchQuestionsQueue extends QuestionsQueue {
     return canBeUpdated && isValidSearch;
   }
 
-  // Resets this search queue and then sets the search query. Returns whether 
-  // search query has changed or not.
-  newSearch() {
-    this.reset();
+  // Returns whether search query has changed or not.
+  checkSearchTermChanged() {
     const prevSearchTerm = this.searchQuery;
-    this.searchQuery = encodeURI(this.inputPanel.searchInput.value);
+    this.setSearchQuery();
     return this.searchQuery !== prevSearchTerm;
+  }
+
+  setSearchQuery() {
+    this.searchQuery = encodeURI(this.inputPanel.searchInput.value);
   }
 
   // Search queue version of the making the post object for updating the queue, 

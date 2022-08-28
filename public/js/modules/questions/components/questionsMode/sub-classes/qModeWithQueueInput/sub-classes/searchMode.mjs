@@ -36,15 +36,21 @@ export class SearchMode extends QModeWithQueueInput {
     this.questionsQueue.inputPanel.init();
 
     this.queueInputPanel.searchBtn.addEventListener("click", async () => {
-      const searchTermChanged = this.questionsQueue.newSearch();
-      if (searchTermChanged) await this.updateQueueAndShowFirst();
+      const searchTermChanged = this.questionsQueue.checkSearchTermChanged();
+      if (searchTermChanged) {
+        this.#resetQueueAndUpdate();
+      };
     });
 
     this.queueInputPanel.includeAlreadyAnsweredCheckbox.addEventListener(
       "click", async () => {
-
-      this.questionsQueue.newSearch();
-      await this.updateQueueAndShowFirst();
+      this.#resetQueueAndUpdate();
     });
+  }
+
+  async #resetQueueAndUpdate() {
+    this.questionsQueue.reset();
+    this.questionsQueue.setSearchQuery();
+    await this.updateQueueAndShowFirst();
   }
 }
