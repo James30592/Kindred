@@ -1,17 +1,17 @@
 // Helper class for the base questions queue, to represent the DOM queue items 
 // (eg. poster images) and handle their transitions when answering questions.
 export class DomQueue {
-  #queue = [];
+  _queue = [];
   #numTransitions = 0;
   #categoryTypeName;
   #categoryName;
 
   constructor(qModeMainDiv, categoryType, category) {
-    this.#queue = qModeMainDiv.querySelector(".queue-imgs");
+    this._queue = qModeMainDiv.querySelector(".queue-imgs");
     this.#categoryTypeName = categoryType;
     this.#categoryName = category;
 
-    this.#queue.addEventListener("transitionend", evt => {
+    this._queue.addEventListener("transitionend", evt => {
       this.#endTransition(evt);
     });
   }
@@ -23,8 +23,8 @@ export class DomQueue {
     if (evt.propertyName !== "left") return;
 
     this.#numTransitions--;
-    this.#deleteDomQ(0);
-    this.#queue.classList.remove("queue-imgs-transitioning");
+    this._deleteDomQ(0);
+    this._queue.classList.remove("queue-imgs-transitioning");
     
     // If user has clicked multiple answers quickly, then carry out any 
     // queued transitions for further answers.
@@ -58,14 +58,14 @@ export class DomQueue {
       };
       
       if (newDomQ) {
-        this.#queue.appendChild(newDomQ);
+        this._queue.appendChild(newDomQ);
       };
     };
   }
 
   // Remove an item from the DOM images queue and handle the transition.
   removeQueueItem(idx) {
-    if (this.#queue.hasChildNodes()) {
+    if (this._queue.hasChildNodes()) {
       // If first item in queue (ie. have answered a question), then need to 
       // handle the transition of images.
       if (idx === 0) {
@@ -75,23 +75,23 @@ export class DomQueue {
 
       // Otherwise just delete the DOM queue item.
       else {
-        this.#deleteDomQ(idx);
+        this._deleteDomQ(idx);
       };
     };
   }
 
   // Deletes an individual DOM queue item.
-  #deleteDomQ(idx) {
-    this.#queue.removeChild(this.#queue.children[idx]);
+  _deleteDomQ(idx) {
+    this._queue.removeChild(this._queue.children[idx]);
   }
 
   // Causes transitioning of poster images when answering a question.
   #doTransition() {
-    this.#queue.classList.add("queue-imgs-transitioning");
+    this._queue.classList.add("queue-imgs-transitioning");
   }
 
   resetQueue() {
-    this.#queue.innerText = "";
+    this._queue.innerText = "";
   }
 
   // If the queue has a category / category type assigned then use this,

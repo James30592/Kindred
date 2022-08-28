@@ -1,8 +1,7 @@
 To do:
 
 
--	on questions page, remove message text while loader is present
--	when answering questions on recommendations page, if answer is skip, dont remove from list
+-	in single answer mode (recs and prev answers) images are gone after first answer submitted
 
 
 -	make it so can use keyboard to answer questions easily

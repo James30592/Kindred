@@ -7,10 +7,13 @@ export class RecommendationsMode extends SingleAnswerMode {
 
   // Also remove the answered question from the recommendations list.
   answerQuestion(event) {
-    super.answerQuestion(event);
+    const thisAns = super.answerQuestion(event);
 
-    // Remove this answered question from the recommendations list.
-    this._qSource.removeAnsweredQ();
+    // Remove this answered question from the recommendations list, if user 
+    // didn't skip it.
+    if (!thisAns.skip) {
+      this._qSource.removeAnsweredQ();
+    };
   }
 
   // Makes a question, ready to be shown in the answerUiPanel, from the clicked 

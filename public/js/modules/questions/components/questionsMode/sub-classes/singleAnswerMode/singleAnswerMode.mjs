@@ -24,7 +24,7 @@ export class SingleAnswerMode extends QuestionsMode {
   }
 
   // Save answer information.
-  async answerQuestion(event) {
+  answerQuestion(event) {
     const currQuestion = this.questionsQueue.removeQueueItem(0);
 
     // Get the answer object as it should be stored in the DB.
@@ -37,6 +37,8 @@ export class SingleAnswerMode extends QuestionsMode {
 
     // Hide the answer ui panel.
     this.answerUiPanel.mainDiv.classList.add("fully-hidden");
+
+    return answerObj;
   }
 
   _handleClickSingleQ(evt) {
