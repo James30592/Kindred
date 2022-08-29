@@ -67,7 +67,7 @@ export class AnswerUIPanel {
     // If current question has a previous answer by the user, show the previous 
     // answer details.
     if (includeAlreadyAnswered && newQInfo.currQAns) {
-      this.prevAnsDiv.style.visibility = "visible";
+      this.prevAnsDiv.classList.remove("hidden");
 
       const prevAnsDisplayVal = newQInfo.currQAns.skip ? "Skipped" 
         : newQInfo.currQAns.answerVal;
@@ -75,7 +75,7 @@ export class AnswerUIPanel {
       this.prevAnsVal.innerText = prevAnsDisplayVal;
     }
     else {
-      this.prevAnsDiv.style.visibility = "hidden";
+      this.prevAnsDiv.classList.add("hidden");
     };
   }
 

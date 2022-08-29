@@ -1,8 +1,6 @@
-<!-- <div class="loader fade-trans transparent fully-hidden"></div> -->
 <div class="loader fully-hidden"></div>
 
 <div class="details fade-trans">
-<!-- <div class="details fade-trans"> -->
     <div class="curr-question-div">
         <p class="curr-question"></p>
     </div>
@@ -13,12 +11,19 @@
     </div>
     
     <div class="rate-panel">
+        <div class="range-slider grad score-slider" style='--min:0; --max:10; --step:0.5; --value:5; --text-value:"5";'>
+            <input type="range" min="0" max="10" step="0.5" value="5" oninput="this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify((+this.value).toLocaleString()))">
+            <output></output>
+            <div class='range-slider__progress'></div>
+        </div>
+
         <button class="change-score-btn big-change-btn down-btn"><<</button>
         <button class="change-score-btn small-change-btn down-btn"><</button>
         <span class="rating-score">5</span>
         <button class="change-score-btn small-change-btn up-btn">></button>
         <button class="change-score-btn big-change-btn up-btn">>></button>
         <br>
+
         <button class="skip-btn">Skip this one</button>
         <button class="rate-btn">Rate it!</button>
     </div>
