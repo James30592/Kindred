@@ -65,8 +65,10 @@ export class QuestionsPage {
       const qMode = modeBtnLink.mode;
 
       qModeBtn.addEventListener("click", async () => {
-        // Don't try to switch mode if already transitioning between two.
-        if (this.#switchingMode) return;
+        // Don't try to switch mode if already transitioning between two or if 
+        // clicked on current qMode.
+        const dontSwitchMode = this.#switchingMode || (this.currQuestionMode === qMode);
+        if (dontSwitchMode) return;
 
         this.#switchingMode = true;
         await this.switchQMode(qMode)
