@@ -2,8 +2,6 @@ To do:
 
 
 
--	make it so when question is already answered it is obvious and score is pre-set to prev value on slider
--	redo how each one is rated, use a slider (line for desktop, circle for mobile?)
 
 
 

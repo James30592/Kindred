@@ -16,9 +16,6 @@ export class QuestionsMode extends EventTarget {
 
   // Sets up the answer UI panel button event listeners.
   init() {
-    // Sets up the change score buttons event listeners.
-    this.answerUiPanel.init();
-
     this.answerUiPanel.rateBtn.addEventListener("click", evt => {
       this.answerQuestion(evt);
     });
@@ -46,7 +43,7 @@ export class QuestionsMode extends EventTarget {
   getAnswerObj(event, currQuestion) {
     const userSkipped = (event.currentTarget === this.answerUiPanel.skipBtn);
     const thisScore = (userSkipped ? null : Number(this.answerUiPanel.
-      ratingScore.innerText));
+      scoreSliderInput.value));
       
     const questionDetails = this._getQuestionDetails(currQuestion);
 
