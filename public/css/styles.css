@@ -4,6 +4,39 @@
   --3rd-queue-transp: 0.3;
 }
 
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 4px solid blue;
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border-left: 4px solid #FF3D00;
+  border-bottom: 4px solid transparent;
+  animation: rotation 0.5s linear infinite reverse;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 body {
   background-color: #E8ECEF;
 }
@@ -32,39 +65,33 @@ body {
   display: none;
 }
 
-.loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
 /* Questions page queues. */
 .queue-imgs {
   position: relative;
   left: 0px;
 }
 
-.queue-imgs div {
+.queue-imgs > div {
   width: 120px;
   height: 180px;
   display: inline-block;
   position: relative;
+  vertical-align: bottom;
 }
-
-.queue-imgs div img {
+.queue-imgs > div img {
   width: 100%;
   object-fit: contain;
+}
+
+.placeholder-img {
+  background-color: black;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.placeholder-img span {
+  color: white;
+  position: absolute;
 }
 
 .queue-imgs div audio {
@@ -394,6 +421,43 @@ body {
 }
 .score-slider output::after {
   font-size: 20px !important;
+}
+
+.q-source > div {
+  display: inline-block;
+  width: 200px;
+  height: 300px;
+}
+.q-source > div img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.centre-modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.centre-modal-wrapper .centre-modal-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.centre-modal-wrapper .centre-modal {
+  position: relative;
+  display: inline-block;
+  top: 25vh;
+  left: 25vw;
+  background-color: white;
+  z-index: 10;
+}
+.centre-modal-wrapper .centre-modal > .close {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 /*# sourceMappingURL=styles.css.map */

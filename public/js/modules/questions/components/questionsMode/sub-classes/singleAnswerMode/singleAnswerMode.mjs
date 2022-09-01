@@ -3,16 +3,22 @@ import { QuestionsMode } from "../../questionsMode.mjs";
 import { SingleQuestionQueue } from "../../components/baseQuestionsQueue/\
 sub-classes/singleQuestionQueue.mjs";
 
+import { CentreModal } from "../../../../../centreModal.mjs";
+
 
 
 export class SingleAnswerMode extends QuestionsMode {
   name = "single";
   _qSource;
+  _answerUiModal;
 
   constructor(mainDiv, qSource) {
     super(mainDiv);
     this.questionsQueue = new SingleQuestionQueue(mainDiv);
     this._qSource = qSource;
+
+    const modalWrapper = mainDiv.querySelector(".centre-modal-wrapper");
+    this._answerUiModal = new CentreModal(modalWrapper);
   }
 
   init() {
@@ -21,6 +27,8 @@ export class SingleAnswerMode extends QuestionsMode {
     this._qSource.addEventListener("answerSingleQ", evt => {
       this._handleClickSingleQ(evt);
     });
+
+    this._answerUiModal.init();
   }
 
   // Save answer information.
@@ -36,7 +44,7 @@ export class SingleAnswerMode extends QuestionsMode {
     );
 
     // Hide the answer ui panel.
-    this.answerUiPanel.mainDiv.classList.add("fully-hidden");
+    this._answerUiModal.hide();
 
     return answerObj;
   }
@@ -48,7 +56,7 @@ export class SingleAnswerMode extends QuestionsMode {
     this.questionsQueue.update(thisQuestion);
 
     // Show the answer ui panel.
-    this.answerUiPanel.mainDiv.classList.remove("fully-hidden");
+    this._answerUiModal.show();
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.

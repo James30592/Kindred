@@ -1,6 +1,6 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
-
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
+import { getQInfo } from "../../../../../../sharedJs/utils.mjs";
 
 
 
@@ -55,8 +55,8 @@ export class RecsQSource extends SingleModeQSource {
   }
 
   _getQText(rec) {
-    const thisQText = this._getAnswerDisplayText(rec?.questionDetails, 
-      rec.categoryType, rec.category);
+    const thisQText = getQInfo(prevAns?.questionDetails, "qSourceDisplayText", 
+      this._categoryTypeName, this._categoryName);
     
     return `${rec.rating.strength.toFixed(0)} - ${thisQText} - ${rec.category} - ${rec.categoryType} - ${rec.rating.numUsersAnswered}`;
   }
@@ -68,12 +68,16 @@ export class RecsQSource extends SingleModeQSource {
   // Set the currQRow to the question that is now being rated, so it can be 
   // easily removed once answered.
   _handleRateBtnClick(evt, question) {
-    this.#currQRow  = evt.currentTarget.parentNode;
+    this.#currQRow  = evt.currentTarget;
     super._handleRateBtnClick(evt, question);
   }
 
   // Remove the newly answered question from the recommendations list.
   removeAnsweredQ() {
     this._listDiv.removeChild(this.#currQRow);
+  }
+
+  _getScoreText(rec) {
+    return rec.rating.strength.toFixed(0);
   }
 }

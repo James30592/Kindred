@@ -28,7 +28,7 @@ export class PrevAnswerMode extends SingleAnswerMode {
     super.deactivate();
 
     // Hide the answer ui panel.
-    this.answerUiPanel.mainDiv.classList.add("fully-hidden");
+    this._answerUiModal.hide();
   }
 
   // Makes a question, ready to be shown in the answerUiPanel, from the clicked 

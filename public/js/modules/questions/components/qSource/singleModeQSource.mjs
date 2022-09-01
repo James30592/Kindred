@@ -1,3 +1,7 @@
+import { createQDomItem, getQCategory, getQInfo } from "../../../../../sharedJs/utils.mjs";
+
+
+
 export class SingleModeQSource extends EventTarget {
   _listDiv;
 
@@ -7,22 +11,29 @@ export class SingleModeQSource extends EventTarget {
   }
 
   // Create a div with information for a question item.
-  _createRow(question) {
-    const rowDiv = document.createElement("div");
-    const qText = document.createElement("span");
-    const rateBtn = document.createElement("button");
+  _createQDiv(q) {
+    const [catTypeName, catName] = getQCategory(q, this._categoryTypeName, 
+      this._categoryName);
 
-    rateBtn.addEventListener("click", evt => {
-      this._handleRateBtnClick(evt, question);
+    const qSourceItem = createQDomItem(q.questionDetails, catTypeName, catName);
+
+    const qText = document.createElement("span");
+    const qScore = document.createElement("span");
+
+    qSourceItem.addEventListener("click", evt => {
+      this._handleRateBtnClick(evt, q);
     });
 
-    qText.innerText = this._getQText(question);
-    rateBtn.innerText = this._getRateBtnText();
+    qText.innerText = getQInfo(q.questionDetails, "qSourceDisplayText", 
+    catTypeName, catName);
     
-    rowDiv.appendChild(qText);
-    rowDiv.appendChild(rateBtn);
+    qScore.innerText = this._getScoreText(q);
 
-    return rowDiv;
+    qSourceItem.appendChild(qText);
+    qSourceItem.appendChild(qScore);
+
+    // rateBtn.innerText = this._getRateBtnText();
+    return qSourceItem;
   }
 
   _handleRateBtnClick(evt, question) {
@@ -34,41 +45,8 @@ export class SingleModeQSource extends EventTarget {
   // Builds the list div with all the questions.
   _buildListDiv(questions) {
     for (let question of questions) {
-      const rowDiv = this._createRow(question);
+      const rowDiv = this._createQDiv(question);
       this._listDiv.appendChild(rowDiv);
     };
-  }
-
-  // Get the string to show as the question text, depending on the category.
-  _getAnswerDisplayText(questionDetails, categoryTypeName, categoryName) {
-    let displayText;
-  
-    switch(categoryTypeName, categoryName) {
-  
-      case ("Interests", "Films") :
-        displayText = `${questionDetails?.title}`;
-        break;
-  
-      case ("Interests", "TV") :
-        displayText = `${questionDetails?.title}`;
-        break;
-
-      case ("Interests", "Music"):
-        displayText = `${questionDetails?.trackName} - ${questionDetails?.artist}`;
-        break;
-  
-      case ("Interests", "Video Games"):
-        displayText = `${questionDetails?.title}`;
-        break;
-  
-      case ("Interests", "Books"):
-        displayText = `${questionDetails?.title} (${questionDetails?.author})`;
-        break;
-  
-      default:
-        displayText = questionDetails?.text;
-    };
-    
-    return displayText;
   }
 }

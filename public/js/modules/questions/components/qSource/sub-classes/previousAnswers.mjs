@@ -1,4 +1,4 @@
-import { fadeIn, fullyFadeOut } from "../../../../../../sharedJs/utils.mjs";
+import { fadeIn, fullyFadeOut, getQInfo } from "../../../../../../sharedJs/utils.mjs";
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 
 
@@ -45,7 +45,7 @@ export class PreviousAnswers extends SingleModeQSource {
         return prevAns.questionId === newAnswer.questionId
       });
 
-      const newAnsRowDiv = this._createRow(newAnswer);
+      const newAnsRowDiv = this._createQDiv(newAnswer);
 
       // If found, overwrite with new answer.
       if (foundIndex > -1) {
@@ -68,7 +68,7 @@ export class PreviousAnswers extends SingleModeQSource {
   }
 
   _getQText(prevAns) {
-    const thisQText = this._getAnswerDisplayText(prevAns?.questionDetails, 
+    const thisQText = getQInfo(prevAns?.questionDetails, "qSourceDisplayText", 
       this._categoryTypeName, this._categoryName);
     
     return `${thisQText}. Skipped: ${prevAns.skip}. Answer Percentage: ${prevAns?.answerPercentile}.`;
@@ -76,5 +76,9 @@ export class PreviousAnswers extends SingleModeQSource {
   
   _getRateBtnText() {
     return "Re-rate it!";
+  }
+
+  _getScoreText(prevAns) {
+    return prevAns.skip ? "Skipped" : prevAns.answerPercentile;
   }
 }

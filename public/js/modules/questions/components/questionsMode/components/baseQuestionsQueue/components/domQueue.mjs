@@ -1,4 +1,8 @@
-// Helper class for the base questions queue, to represent the DOM queue items 
+// Helper class for the base questions queue, to represent the DOM queue items.
+import { createQDomItem, getQCategory } from "../../../../../../../../sharedJs/utils.mjs";
+
+
+
 // (eg. poster images) and handle their transitions when answering questions.
 export class DomQueue {
   _queue = [];
@@ -36,30 +40,11 @@ export class DomQueue {
   // Create DOM queue images and audio (where present) from list of questions.
   addToQueue(qs) {
     for (let q of qs) {
-      const [catTypeName, catName] = this.#getQCategory(q);
-
-      let newDomQ = null;
-
-      const imgPath = this.#getImgPath(q, catTypeName, catName);
+      const [catTypeName, catName] = getQCategory(q, 
+        this.#categoryTypeName, this.#categoryName);
       
-      if (imgPath) {
-        newDomQ = document.createElement("div");
-        const domImg = document.createElement("img");
-        domImg.setAttribute("src", imgPath);
-        newDomQ.appendChild(domImg);
-      };
-
-      if (q.previewUrl) {
-        newDomQ = newDomQ ?? document.createElement("div");
-        const domMusicPlayer = document.createElement("audio");
-        domMusicPlayer.setAttribute("controls", "true");
-        domMusicPlayer.setAttribute("src", q.previewUrl);
-        newDomQ.appendChild(domMusicPlayer);
-      };
-      
-      if (newDomQ) {
-        this._queue.appendChild(newDomQ);
-      };
+      const newDomQ = createQDomItem(q, catTypeName, catName);
+      this._queue.appendChild(newDomQ);
     };
   }
 
@@ -92,50 +77,5 @@ export class DomQueue {
 
   resetQueue() {
     this._queue.innerText = "";
-  }
-
-  // If the queue has a category / category type assigned then use this,
-  //  otherwise the queue contains items of various categories so check what 
-  //  category the current question has.
-  #getQCategory(q) {
-    if (this.#categoryName) {
-      return [this.#categoryTypeName, this.#categoryName];
-    }
-    else {
-      return [q.categoryTypeName, q.categoryName];
-    };
-  }
-
-  // Gets the correct image path, depending on the category.
-  #getImgPath(q, catTypeName, catName) {
-    let imgPath;
-
-    switch(catTypeName, catName) {
-  
-      case ("Interests", "Films") :
-        imgPath = q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null;
-        break;
-  
-      case ("Interests", "TV") :
-        imgPath = q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null;
-        break;
-
-      case ("Interests", "Music"):
-        imgPath = q?.image;
-        break;
-  
-      case ("Interests", "Video Games"):
-        imgPath = q?.image ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${q.image}.jpg` : null;
-        break;
-  
-      case ("Interests", "Books"):
-        imgPath = q?.image ? `https://covers.openlibrary.org/b/id/${q.image}-M.jpg` : null;
-        break;
-  
-      default:
-        imgPath = null;
-    };
-    
-    return imgPath;
   }
 }

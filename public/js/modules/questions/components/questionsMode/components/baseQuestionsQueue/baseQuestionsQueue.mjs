@@ -1,3 +1,4 @@
+import { getQCategory, getQInfo } from "../../../../../../../sharedJs/utils.mjs";
 import { DomQueue } from "./components/domQueue.mjs";
 
 
@@ -27,12 +28,12 @@ export class BaseQuestionsQueue {
       endOfQueue = true;
     }
     else {
-      const [catTypeName, catName] = this._getQCategory(this.queue[0]);
-
-      currQText = BaseQuestionsQueue._getQuestionText(catTypeName, catName, 
-        this.queue[0]);
-      
-      currQAns = this.queue[0].currAns;
+      const currQ = this.queue[0];
+      const [catTypeName, catName] = getQCategory(currQ, this._categoryTypeName, 
+        this._categoryName);
+        
+      currQText = getQInfo(currQ, "qDisplayText", catTypeName, catName);
+      currQAns = currQ.currAns;
     };
 
     return {endOfQueue, currQText, currQAns};
@@ -63,50 +64,5 @@ export class BaseQuestionsQueue {
   _resetQueue() {
     this.queue = [];
     this._domQueue.resetQueue();
-  }
-
-  // If the queue has a category / category type assigned then use this,
-  //  otherwise the queue contains items of various categories so check what 
-  //  category the current question has.
-  _getQCategory(q) {
-    if (this._categoryName) {
-      return [this._categoryTypeName, this._categoryName];
-    }
-    else {
-      return [q.categoryTypeName, q.categoryName];
-    };
-  }
-
-  // Get the string to show as the question text, depending on the category.
-  static _getQuestionText(catTypeName, catName, currQuestion) {
-    let displayText;
-
-    switch(catTypeName, catName) {
-  
-      case ("Interests", "Films") :
-        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
-        break;
-  
-      case ("Interests", "TV") :
-        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
-        break;
-
-      case ("Interests", "Music"):
-        displayText = `${currQuestion?.trackName} - ${currQuestion?.artist} (${currQuestion?.album} - ${currQuestion?.releaseDate})`;
-        break;
-  
-      case ("Interests", "Video Games"):
-        displayText = `${currQuestion?.title} (${currQuestion?.releaseDate})`;
-        break;
-  
-      case ("Interests", "Books"):
-        displayText = `${currQuestion?.title} (${currQuestion?.author})`;
-        break;
-  
-      default:
-        displayText = currQuestion?.text;
-    };
-    
-    return displayText;
   }
 }

@@ -4,8 +4,8 @@ import { BaseQuestionsQueue } from "../../baseQuestionsQueue.mjs";
 
 // For retreiving new questions from server.
 export class QuestionsQueue extends BaseQuestionsQueue {
-  static #QUEUE_DESIRED_SIZE = 40;
-  _QUEUE_REFRESH_THRESHOLD = 20;
+  static #QUEUE_REFRESH_AMOUNT = 20;
+  _QUEUE_REFRESH_THRESHOLD = 10;
   #filters;
   _endOfQSource = false;
   _currentlyUpdating = false;
@@ -27,7 +27,7 @@ export class QuestionsQueue extends BaseQuestionsQueue {
 
     if (queueToBeUpdated) {
       // Queue needs to and can be extended.
-      const numNewQs = QuestionsQueue.#QUEUE_DESIRED_SIZE - this.queue.length;
+      const numNewQs = QuestionsQueue.#QUEUE_REFRESH_AMOUNT;
       const currQueueIds = this.queue.map(q => q._id);
 
       let startApiPage = 1;
