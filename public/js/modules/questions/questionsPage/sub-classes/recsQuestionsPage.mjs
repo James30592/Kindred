@@ -17,7 +17,9 @@ export class RecsQuestionsPage extends QuestionsPage {
   // Wait for any just answered answers to be submitted and saved before 
   // refreshing the recommendations.
   async #handleGetRecsClick() {
+    this.currQuestionMode.showLoader();
     await this._postAnswers();
-    this.currQuestionMode.refreshRecs();
+    await this.currQuestionMode.refreshRecs();
+    this.currQuestionMode.hideLoader();
   }
 }

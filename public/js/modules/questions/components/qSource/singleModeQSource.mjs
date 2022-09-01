@@ -4,10 +4,12 @@ import { createQDomItem, getQCategory, getQInfo } from "../../../../../sharedJs/
 
 export class SingleModeQSource extends EventTarget {
   _listDiv;
+  _contentDiv;
 
   constructor(listDiv) {
     super();
     this._listDiv = listDiv;
+    this._contentDiv = listDiv.querySelector(".content");
   }
 
   // Create a div with information for a question item.
@@ -16,6 +18,7 @@ export class SingleModeQSource extends EventTarget {
       this._categoryName);
 
     const qSourceItem = createQDomItem(q.questionDetails, catTypeName, catName);
+    qSourceItem.classList.add("q-source-item");
 
     const qText = document.createElement("span");
     const qScore = document.createElement("span");
@@ -42,11 +45,11 @@ export class SingleModeQSource extends EventTarget {
     );
   }
 
-  // Builds the list div with all the questions.
-  _buildListDiv(questions) {
+  // Builds the content div with all the questions.
+  _buildContentDiv(questions) {
     for (let question of questions) {
-      const rowDiv = this._createQDiv(question);
-      this._listDiv.appendChild(rowDiv);
+      const qSourceItem = this._createQDiv(question);
+      this._contentDiv.appendChild(qSourceItem);
     };
   }
 }

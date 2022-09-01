@@ -24,7 +24,7 @@ export class PreviousAnswers extends SingleModeQSource {
     // running, and populate the DOM list.
     if (this.#notYetActivated) {
       this.#prevAnswers = await this.#getDBAnswers();
-      this._buildListDiv(this.#prevAnswers);
+      this._buildContentDiv(this.#prevAnswers);
       this.#notYetActivated = false;
     };
 
@@ -50,12 +50,12 @@ export class PreviousAnswers extends SingleModeQSource {
       // If found, overwrite with new answer.
       if (foundIndex > -1) {
         this.#prevAnswers.splice(foundIndex, 1, newAnswer);
-        this._listDiv.replaceChild(newAnsRowDiv, this._listDiv.children[foundIndex]);
+        this._contentDiv.replaceChild(newAnsRowDiv, this._contentDiv.children[foundIndex]);
       }
-      // Otherwise add new row to end of the listDiv.
+      // Otherwise add new row to end of the contentDiv.
       else {
         this.#prevAnswers.push(newAnswer);
-        this._listDiv.appendChild(newAnsRowDiv);
+        this._contentDiv.appendChild(newAnsRowDiv);
       };
     };
   }

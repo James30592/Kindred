@@ -46,9 +46,9 @@ export async function finishFadeOut(elem) {
 };
 
 // Fade out and fully hide the given element.
-export function fullyFadeOut(elem) {
+export async function fullyFadeOut(elem) {
   fadeOut(elem);
-  finishFadeOut(elem);
+  await finishFadeOut(elem);
 }
 
 

@@ -33,6 +33,7 @@ recommendationsRouter.post("/", async function(req, res){
     resultCategoryInfo);
 
   thisRecommendationList.getRecommendations();
-
+  
+  await new Promise(resolve => setTimeout(resolve, 2000));
   res.json(thisRecommendationList);
 });

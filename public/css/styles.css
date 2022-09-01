@@ -423,12 +423,12 @@ body {
   font-size: 20px !important;
 }
 
-.q-source > div {
+.q-source-item {
   display: inline-block;
   width: 200px;
   height: 300px;
 }
-.q-source > div img {
+.q-source-item img {
   width: 100%;
   object-fit: contain;
 }

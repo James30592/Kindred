@@ -1,6 +1,6 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { fadeIn, fadeOut, finishFadeOut, fullyFadeOut, getQInfo } from "../../../../../../sharedJs/utils.mjs";
 
 
 
@@ -9,9 +9,12 @@ export class RecsQSource extends SingleModeQSource {
   #currQRow = null;
   #recForCategoryCheckboxes;
   #basedOnCategoryCheckboxes;
+  #loader;
 
   constructor(listDiv) {
     super(listDiv);
+
+    this.#loader = listDiv.querySelector(".loader");
 
     const recsForDiv = document.querySelector(".recommendations-for");
     const basedOnDiv = document.querySelector(".based-on");
@@ -25,14 +28,13 @@ export class RecsQSource extends SingleModeQSource {
   // Clear the recommendations list and rebuild with latest recommendations.
   async refreshRecs() {
     const recs = await this._getRecs();
-    this.#clearListDiv();
-    this._buildListDiv(recs.recommendList);
+    this.#clearContentDiv();
+    this._buildContentDiv(recs.recommendList);
   }
 
   // Clear the content in the list div.
-  #clearListDiv() {
-    this._listDiv.textContent = "Estimated liking - Item - Category - Category Type - No. of recommends";
-    this._listDiv.appendChild(document.createElement("hr"));
+  #clearContentDiv() {
+    this._contentDiv.replaceChildren();
   }
 
   // Get the latest recommendations from the back end.
@@ -74,10 +76,20 @@ export class RecsQSource extends SingleModeQSource {
 
   // Remove the newly answered question from the recommendations list.
   removeAnsweredQ() {
-    this._listDiv.removeChild(this.#currQRow);
+    this._contentDiv.removeChild(this.#currQRow);
   }
 
   _getScoreText(rec) {
     return rec.rating.strength.toFixed(0);
+  }
+
+  async showLoader() {
+    await fullyFadeOut(this._contentDiv);
+    fadeIn(this.#loader);
+  }
+
+  async hideLoader() {
+    await fullyFadeOut(this.#loader);
+    fadeIn(this._contentDiv);
   }
 }
