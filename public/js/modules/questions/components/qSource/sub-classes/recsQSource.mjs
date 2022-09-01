@@ -1,6 +1,6 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { fadeIn, fadeOut, finishFadeOut, fullyFadeOut, getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { fadeIn, fadeOut, finishFadeIn, finishFadeOut, fullyFadeOut, getQInfo } from "../../../../../../sharedJs/utils.mjs";
 
 
 
@@ -25,11 +25,9 @@ export class RecsQSource extends SingleModeQSource {
     this.#basedOnCategoryCheckboxes = new CategoryCheckboxes(basedOnCheckboxesArr);
   }
 
-  // Clear the recommendations list and rebuild with latest recommendations.
-  async refreshRecs() {
-    const recs = await this._getRecs();
+  rebuildContentDiv(recs) {
     this.#clearContentDiv();
-    this._buildContentDiv(recs.recommendList);
+    this._buildContentDiv(recs);
   }
 
   // Clear the content in the list div.
@@ -38,7 +36,7 @@ export class RecsQSource extends SingleModeQSource {
   }
 
   // Get the latest recommendations from the back end.
-  async _getRecs() {
+  async getRecs() {
     const recForCategoryInfo = this.#recForCategoryCheckboxes.getSelectedCategoryInfo();
     const basedOnCategoryInfo = this.#basedOnCategoryCheckboxes.getSelectedCategoryInfo();
 
@@ -53,7 +51,8 @@ export class RecsQSource extends SingleModeQSource {
       body: JSON.stringify(allCategoryInfo)
     });
     
-    return await fetchResponse.json();
+    const recsInfo = await fetchResponse.json();
+    return recsInfo.recommendList;
   }
 
   _getQText(rec) {
@@ -86,6 +85,7 @@ export class RecsQSource extends SingleModeQSource {
   async showLoader() {
     await fullyFadeOut(this._contentDiv);
     fadeIn(this.#loader);
+    await finishFadeIn(this.#loader);
   }
 
   async hideLoader() {

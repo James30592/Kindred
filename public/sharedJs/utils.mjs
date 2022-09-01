@@ -28,6 +28,16 @@ export function fadeIn(elem) {
   setTimeout(() => elem.classList.remove("transparent"), 10);
 }
 
+export async function finishFadeIn(elem) {
+  return new Promise(resolve => {
+    elem.addEventListener('transitionend', evt => {
+      if (evt.propertyName === "opacity") {
+        resolve();
+      };
+    }, {once: true});
+  })
+};
+
 export function fadeOut(elem) {
   elem.classList.add("transparent");
 }

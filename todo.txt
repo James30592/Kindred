@@ -1,7 +1,8 @@
 To do:
 
 
--	add loader for when getting recommendations / find kindred (add timer to backend to test)
+
+-	done loader and transitions for recommendations, now just need to do same thing for find kindred (add timer to backend to test)
 -	make recommendations list slightly different format, to include category (and type?)
 -	change scores / recommends to all be out of 10
 

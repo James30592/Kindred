@@ -32,12 +32,16 @@ export class RecommendationsMode extends SingleAnswerMode {
     return thisQ;
   }
 
-  async refreshRecs() {
-    await this._qSource.refreshRecs();
+  async getRecs() {
+    return await this._qSource.getRecs();
   }
 
-  showLoader() {
-    this._qSource.showLoader();
+  rebuildContentDiv(recs) {
+    this._qSource.rebuildContentDiv(recs);
+  }
+
+  async showLoader() {
+    await this._qSource.showLoader();
   }
 
   hideLoader() {
