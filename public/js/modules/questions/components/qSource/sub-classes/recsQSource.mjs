@@ -1,6 +1,7 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { fadeIn, fadeOut, finishFadeIn, finishFadeOut, fullyFadeOut, getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { fadeContentMixin } from "../../../../../fadeContentMixin.mjs";
 
 
 
@@ -9,12 +10,13 @@ export class RecsQSource extends SingleModeQSource {
   #currQRow = null;
   #recForCategoryCheckboxes;
   #basedOnCategoryCheckboxes;
-  #loader;
+  _loader;
+  #getRecsBtn;
 
   constructor(listDiv) {
     super(listDiv);
 
-    this.#loader = listDiv.querySelector(".loader");
+    this._loader = listDiv.querySelector(".loader");
 
     const recsForDiv = document.querySelector(".recommendations-for");
     const basedOnDiv = document.querySelector(".based-on");
@@ -23,15 +25,16 @@ export class RecsQSource extends SingleModeQSource {
     
     this.#recForCategoryCheckboxes = new CategoryCheckboxes(recForCheckboxesArr);
     this.#basedOnCategoryCheckboxes = new CategoryCheckboxes(basedOnCheckboxesArr);
-  }
 
-  rebuildContentDiv(recs) {
-    this.#clearContentDiv();
-    this._buildContentDiv(recs);
+    this.#getRecsBtn = document.querySelector(".get-recommendations");
+
+    this.#getRecsBtn.addEventListener("click", async () => {
+      this.handleUpdateBtnClick();
+    });
   }
 
   // Clear the content in the list div.
-  #clearContentDiv() {
+  _clearContentDiv() {
     this._contentDiv.replaceChildren();
   }
 
@@ -81,15 +84,24 @@ export class RecsQSource extends SingleModeQSource {
   _getScoreText(rec) {
     return rec.rating.strength.toFixed(0);
   }
+  
+  // POSTS any new answers then gets the latest recommendations.
+  async #getLatestRecs() {
+    this.dispatchEvent(new CustomEvent(`getRecsClick`));
 
-  async showLoader() {
-    await fullyFadeOut(this._contentDiv);
-    fadeIn(this.#loader);
-    await finishFadeIn(this.#loader);
+    // Wait for post answers to complete before refreshing recommendations.
+    await new Promise(resolve => {
+      this.addEventListener('postAnswersComplete', resolve(), {once: true});
+    });
+
+    const latestRecs = await this.getRecs();
+    return latestRecs;
   }
 
-  async hideLoader() {
-    await fullyFadeOut(this.#loader);
-    fadeIn(this._contentDiv);
+  // Used by the mixin to get latest recommendations.
+  async _getUpdatedSourceData() {
+    return await this.#getLatestRecs();  
   }
 }
+
+Object.assign(RecsQSource.prototype, fadeContentMixin);

@@ -38,6 +38,12 @@ export async function finishFadeIn(elem) {
   })
 };
 
+// Finishes when fade in is completed.
+export async function fullyFadeIn(elem) {
+  fadeIn(elem);
+  await finishFadeIn(elem);
+}
+
 export function fadeOut(elem) {
   elem.classList.add("transparent");
 }
@@ -59,6 +65,18 @@ export async function finishFadeOut(elem) {
 export async function fullyFadeOut(elem) {
   fadeOut(elem);
   await finishFadeOut(elem);
+}
+
+// Fades out elem1 and fades in elem2 once transition completed, doesn't finish 
+// until elem2 fully faded in. Returns promise.
+export function fadeFromTo(elem1, elem2) {
+  const fadeCompletePromise = new Promise(async resolve => {
+    await fullyFadeOut(elem1);
+    await fullyFadeIn(elem2);
+    resolve();
+  });
+
+  return fadeCompletePromise;
 }
 
 
@@ -163,4 +181,4 @@ export function createQDomItem(q, catTypeName, catName) {
 }
 
 // For testing long running functions.
-// await new Promise(resolve => setTimeout(resolve, 5000)); //........................................................
+// await new Promise(resolve => setTimeout(resolve, 3000)); //........................................................
