@@ -34,6 +34,5 @@ recommendationsRouter.post("/", async function(req, res){
 
   thisRecommendationList.getRecommendations();
   
-  // await new Promise(resolve => setTimeout(resolve, 3000));
   res.json(thisRecommendationList);
 });

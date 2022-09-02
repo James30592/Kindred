@@ -140,6 +140,7 @@ export function createQDomItem(q, catTypeName, catName) {
   if (imgPath) {
     const domImg = document.createElement("img");
     domImg.setAttribute("src", imgPath);
+    domImg.setAttribute("loading", "lazy");
     newDomQ.appendChild(domImg);
   }
   else {

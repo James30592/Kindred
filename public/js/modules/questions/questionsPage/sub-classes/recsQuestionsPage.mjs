@@ -17,12 +17,12 @@ export class RecsQuestionsPage extends QuestionsPage {
   // Wait for any just answered answers to be submitted and saved before 
   // refreshing the recommendations.
   async #handleGetRecsClick() {
-    const loaderShown = new Promise(async res => {
+    const loaderShown = new Promise(async resolve => {
       await this.currQuestionMode.showLoader();
-      res();
+      resolve();
     });
 
-    const recsUpdated = new Promise(async res => {
+    const recsUpdated = new Promise(async resolve => {
       await this._postAnswers();
       const recs = await this.currQuestionMode.getRecs();
       // Only rebuild content div once new recs have been received AND loader 
@@ -30,7 +30,7 @@ export class RecsQuestionsPage extends QuestionsPage {
       //   this content appears immediately before content div has faded out).
       loaderShown.then(() => {
         this.currQuestionMode.rebuildContentDiv(recs);
-        res();
+        resolve();
       });
     });
 
