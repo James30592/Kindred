@@ -5,7 +5,6 @@ import { fadeFromTo } from "../sharedJs/utils.mjs";
 // Used by the recommendations and find kindred pages to fade between loaders 
 // and new content when refreshing recommendations / kindred.
 export const fadeContentMixin = {
-
   _rebuildContentDiv(data) {
     this._clearContentDiv();
     this._buildContentDiv(data);
@@ -30,5 +29,4 @@ export const fadeContentMixin = {
       this._hideLoader();
     });
   }
-
 }
