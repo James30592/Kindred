@@ -165,7 +165,11 @@ export function createQDomItem(q, catTypeName, catName) {
     const noImgDiv = document.createElement("div");
     noImgDiv.classList.add("placeholder-img");
     const noImgText = document.createElement("span");
-    noImgText.innerText = "No image available";
+    
+    // noImgText.innerText = "No image available";
+    const placeholderText = getQInfo(q, "qSourceDisplayText", catTypeName, catName);
+    noImgText.innerText = placeholderText;
+
     noImgDiv.appendChild(noImgText);
     newDomQ.appendChild(noImgDiv);
   };

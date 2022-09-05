@@ -18,20 +18,24 @@ export class SingleModeQSource extends EventTarget {
     const [catTypeName, catName] = getQCategory(q, this._categoryTypeName, 
       this._categoryName);
 
-    const qSourceItem = createQDomItem(q.questionDetails, catTypeName, catName);
+    const qSourceItem = createQDomItem(q.questionDetails, catTypeName, 
+      catName);
+
     qSourceItem.classList.add(this._qDivClass);
 
     const qText = document.createElement("span");
     const qScore = document.createElement("span");
 
-    qSourceItem.addEventListener("click", evt => {
+    const qImg = qSourceItem.querySelector("img") ?? 
+      qSourceItem.querySelector(".placeholder-img");
+
+    qImg.addEventListener("click", evt => {
       this._handleRateBtnClick(evt, q);
     });
-
-    qText.innerText = getQInfo(q.questionDetails, "qSourceDisplayText", 
-      catTypeName, catName);
     
     qScore.innerText = this._getScoreText(q);
+    qText.innerText = getQInfo(q.questionDetails, "qSourceDisplayText", 
+    catTypeName, catName);
 
     const qInfo = {
       qSourceItem: qSourceItem,

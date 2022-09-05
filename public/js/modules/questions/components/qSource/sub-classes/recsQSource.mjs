@@ -1,6 +1,6 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { createQDomItem, getQCategory, getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { getQInfo } from "../../../../../../sharedJs/utils.mjs";
 import { fadeContentMixin } from "../../../../../fadeContentMixin.mjs";
 
 
@@ -35,8 +35,8 @@ export class RecsQSource extends SingleModeQSource {
   }
 
   _addToQDiv(qInfo) {
-    qInfo.qSourceItem.insertBefore(qInfo.qScore, qInfo.qSourceItem.children[0]);
     qInfo.qSourceItem.appendChild(qInfo.qText);
+    qInfo.qSourceItem.insertBefore(qInfo.qScore, qInfo.qSourceItem.children[0]);
 
     const catTypeText = document.createElement("span");
     const catText = document.createElement("span");
