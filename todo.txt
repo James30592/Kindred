@@ -13,6 +13,8 @@ To do:
 
 
 
+-	find kindred on a map instead of list
+
 -	change front end code of findKindred and recommendations pages to grey out the "find kindred" and "get recommendations" buttons when checkboxes haven't changed since it was last clicked (and when no new answers have been done in recommendations page). need to be able to compare categoryCheckboxes objects, save copy of one when button was last clicked and compare current to this.
 
 -	edit account settings (email, password, location) feature.
