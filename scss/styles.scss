@@ -195,13 +195,30 @@ body {
 
 
 // Question source items.
-.q-source-item {
+.prev-ans-item {
   display: inline-block;
   width: 200px;
   height: 300px;
 
   img {
     width: 100%;
+    object-fit: contain;
+  }
+}
+
+.rec-item {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  // gap: 20px;
+
+  > * {
+    flex-basis: 20%;
+  }
+
+  img {
+    max-height: 100%;
+    width: 20%;
     object-fit: contain;
   }
 }

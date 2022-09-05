@@ -3,7 +3,6 @@ To do:
 
 
 
--	make recommendations list slightly different format, to include category (and type?)
 -	change scores / recommends to all be out of 10
 
 

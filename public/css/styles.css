@@ -423,13 +423,27 @@ body {
   font-size: 20px !important;
 }
 
-.q-source-item {
+.prev-ans-item {
   display: inline-block;
   width: 200px;
   height: 300px;
 }
-.q-source-item img {
+.prev-ans-item img {
   width: 100%;
+  object-fit: contain;
+}
+
+.rec-item {
+  height: 300px;
+  display: flex;
+  align-items: center;
+}
+.rec-item > * {
+  flex-basis: 20%;
+}
+.rec-item img {
+  max-height: 100%;
+  width: 20%;
   object-fit: contain;
 }
 

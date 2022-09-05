@@ -10,6 +10,7 @@ export class PreviousAnswers extends SingleModeQSource {
   #prevAnswers = [];
   _categoryTypeName;
   _categoryName;
+  _qDivClass = "prev-ans-item";
 
   constructor(listDiv, categoryTypeName, categoryName) {
     super(listDiv);
@@ -73,12 +74,14 @@ export class PreviousAnswers extends SingleModeQSource {
     
     return `${thisQText}. Skipped: ${prevAns.skip}. Answer Percentage: ${prevAns?.answerPercentile}.`;
   }
-  
-  _getRateBtnText() {
-    return "Re-rate it!";
-  }
 
   _getScoreText(prevAns) {
     return prevAns.skip ? "Skipped" : prevAns.answerPercentile;
+  }
+
+  _addToQDiv(qInfo) {
+    qInfo.qSourceItem.appendChild(qInfo.qText);
+    qInfo.qSourceItem.appendChild(qInfo.qScore);
+    return qInfo.qSourceItem;
   }
 }

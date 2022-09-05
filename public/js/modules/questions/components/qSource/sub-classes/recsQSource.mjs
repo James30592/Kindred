@@ -1,6 +1,6 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { createQDomItem, getQCategory, getQInfo } from "../../../../../../sharedJs/utils.mjs";
 import { fadeContentMixin } from "../../../../../fadeContentMixin.mjs";
 
 
@@ -12,6 +12,7 @@ export class RecsQSource extends SingleModeQSource {
   #basedOnCategoryCheckboxes;
   _loader;
   #getRecsBtn;
+  _qDivClass = "rec-item";
 
   constructor(listDiv) {
     super(listDiv);
@@ -31,6 +32,21 @@ export class RecsQSource extends SingleModeQSource {
     this.#getRecsBtn.addEventListener("click", async () => {
       this.handleUpdateBtnClick();
     });
+  }
+
+  _addToQDiv(qInfo) {
+    qInfo.qSourceItem.insertBefore(qInfo.qScore, qInfo.qSourceItem.children[0]);
+    qInfo.qSourceItem.appendChild(qInfo.qText);
+
+    const catTypeText = document.createElement("span");
+    const catText = document.createElement("span");
+
+    [catTypeText.innerText, catText.innerText] = [qInfo.catTypeName, qInfo.catName];
+
+    qInfo.qSourceItem.appendChild(catTypeText);
+    qInfo.qSourceItem.appendChild(catText);
+
+    return qInfo.qSourceItem;
   }
 
   // Clear the content in the list div.
@@ -65,10 +81,6 @@ export class RecsQSource extends SingleModeQSource {
     return `${rec.rating.strength.toFixed(0)} - ${thisQText} - ${rec.category} - ${rec.categoryType} - ${rec.rating.numUsersAnswered}`;
   }
 
-  _getRateBtnText() {
-    return "Rate it!";
-  }
-
   // Set the currQRow to the question that is now being rated, so it can be 
   // easily removed once answered.
   _handleRateBtnClick(evt, question) {
@@ -100,7 +112,7 @@ export class RecsQSource extends SingleModeQSource {
 
   // Used by the mixin to get latest recommendations.
   async _getUpdatedSourceData() {
-    return await this.#getLatestRecs();  
+    return await this.#getLatestRecs();
   }
 }
 
