@@ -7,10 +7,28 @@ export class QModeWithQueueInput extends QuestionsMode {
 
   // Save answer information, update the queue if necessary.
   async answerQuestion(event) {
-    const currQuestion = this.questionsQueue.removeQueueItem(0);
+    const currQuestion = this.questionsQueue.removeQueueItem(0, true);
 
     // Get the answer object as it should be stored in the DB.
     const answerObj = this.getAnswerObj(event, currQuestion);
+
+    // Emit event to be picked up by the questions page.
+    this.dispatchEvent(
+      new CustomEvent("answeredQ", {detail: {answerObj: answerObj}})
+    );
+
+    console.log("----------------------------------------------------");
+    console.log("Answering question:");
+    console.log(answerObj);
+    console.log("current queue:");
+    console.log(this.questionsQueue.queue.slice());
+    console.log("current allRecentAnswers:");
+    console.log(this.questionsQueue.allRecentAnswers.slice());
+    console.log("current DOM queue:");
+    const domQueueAsArray = Array.prototype.slice.call(this.questionsQueue._domQueue._queue.children);
+    const domQueueIds = domQueueAsArray.map(itm => itm.getAttribute("data-id"));
+    console.log(domQueueIds);
+    console.log("----------------------------------------------------");
 
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
@@ -19,13 +37,8 @@ export class QModeWithQueueInput extends QuestionsMode {
     // Adds more questions to the questions queue if necessary.
     let queueUpdated = await this.questionsQueue.update();
     if (queueUpdated) {
-      this.questionsQueue.checkForOutdatedQs();
+      this.questionsQueue.checkForOutdatedQs(true);
     };
-
-    // Emit event to be picked up by the questions page.
-    this.dispatchEvent(
-      new CustomEvent("answeredQ", {detail: {answerObj: answerObj}})
-    );
   }
 
   // Updates the displayed question in the answer UI panel with the new first 
@@ -43,17 +56,17 @@ export class QModeWithQueueInput extends QuestionsMode {
 
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
-  async updateQueueAndShowFirst() {
+  async updateQueueAndShowFirst(isNewQueue = false) {
     this.answerUiPanel.showLoader();
-    await this.updateQueue();
+    await this.updateQueue(isNewQueue);
     this.answerUiPanel.hideLoader();
     this._showCurrQ();
   }
 
   // Updates the questions queue.
-  async updateQueue() {
+  async updateQueue(isNewQueue) {
     // Queue will only update if it's short on answers.
-    await this.questionsQueue.update();
+    await this.questionsQueue.update(isNewQueue);
 
     // Checks the queue to see if any questions in it are now outdated based on 
     // recently POSTed answers or recent answers from other questions modes that 

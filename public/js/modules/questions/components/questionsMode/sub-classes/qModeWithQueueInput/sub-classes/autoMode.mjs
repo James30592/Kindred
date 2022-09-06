@@ -26,7 +26,7 @@ export class AutoMode extends QModeWithQueueInput {
       "click", async () => {
 
       this.questionsQueue.reset();
-      await this.updateQueueAndShowFirst();
+      await this.updateQueueAndShowFirst(true);
     });
   }
 }

@@ -18,6 +18,8 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   // whether queue should be started from scratch, used when the queue input 
   // criteria have changed eg. new search term.
   async update(isNewQueue = false) {
+    isNewQueue = false;
+    // console.log(`Updating queue, isNewQueue = ${isNewQueue}`);
     let updated = false;
 
     // If already waiting for fetch on a previous update call, don't update.
@@ -65,20 +67,21 @@ export class QuestionsQueue extends BaseQuestionsQueue {
 
   // Checks each question in the queue to see if it has recently been answered 
   // (and therefore should no longer be in the queue, or should be there with a 
-  // newer answer value) and handles this.
-  checkForOutdatedQs() {
+  // newer answer value) and handles this. answerQ is true only if this was 
+  // triggered from answering a question, so in this case the transitions should be done.
+  checkForOutdatedQs(answerQ = false) {
     for (let ans of this.allRecentAnswers) {
       const queueIndex = this.queue.findIndex(q => q._id === ans.questionId);
 
       if (queueIndex > -1) {
-        this.handleOutdatedQueueItem(queueIndex, ans);
+        this.handleOutdatedQueueItem(queueIndex, ans, answerQ);
       };
     };
   }
 
   // If question in the queue has been answered recently and data isn't 
   // reflected on server yet, update answer info with latest local answer info.
-  handleOutdatedQueueItem(queueIndex, recentAnswer) {
+  handleOutdatedQueueItem(queueIndex, recentAnswer, doTrans) {
     // If want to include already answered questions, then just updated the 
     // queue question currAns to the latest local answer info.
     if (this.inputPanel?.includeAlreadyAnsweredCheckbox?.checked) {
@@ -89,7 +92,7 @@ export class QuestionsQueue extends BaseQuestionsQueue {
     }
     // Otherwise, remove this now answered question from the queue.
     else {
-      this.removeQueueItem(queueIndex);
+      this.removeQueueItem(queueIndex, doTrans);
     };
   }
 

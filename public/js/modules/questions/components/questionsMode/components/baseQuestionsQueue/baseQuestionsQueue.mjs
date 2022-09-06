@@ -45,10 +45,10 @@ export class BaseQuestionsQueue {
 
   // Removes an item from the queue and the corresponding item from the DOM 
   // queue. Returns the removed queue item.
-  removeQueueItem(idx) {
+  removeQueueItem(idx, doTrans) {
     const thisQueueItem = this.queue[idx];
     this.queue.splice(idx, 1);
-    this._domQueue.removeQueueItem(idx);
+    this._domQueue.removeQueueItem(idx, doTrans);
 
     return thisQueueItem;
   }

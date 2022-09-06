@@ -27,6 +27,7 @@ export class DomQueue {
     if (evt.propertyName !== "left") return;
 
     this.#numTransitions--;
+    console.log("doing end transition dom delete of element 0");
     this._deleteDomQ(0);
     this._queue.classList.remove("queue-imgs-transitioning");
     
@@ -44,16 +45,17 @@ export class DomQueue {
         this.#categoryTypeName, this.#categoryName);
       
       const newDomQ = createQDomItem(q, catTypeName, catName);
+      newDomQ.setAttribute("data-id", q._id);
       this._queue.appendChild(newDomQ);
     };
   }
 
   // Remove an item from the DOM images queue and handle the transition.
-  removeQueueItem(idx) {
+  removeQueueItem(idx, doTrans) {
     if (this._queue.hasChildNodes()) {
       // If first item in queue (ie. have answered a question), then need to 
       // handle the transition of images.
-      if (idx === 0) {
+      if (idx === 0 && doTrans) {
         this.#numTransitions++;
         this.#doTransition();
       }
@@ -67,6 +69,16 @@ export class DomQueue {
 
   // Deletes an individual DOM queue item.
   _deleteDomQ(idx) {
+    // If removing outdated queue items from middle of queue but queue is still 
+    // transitioning, boost the index by 1 to factor in that the previously 
+    // answered q will have been removed from the queue but not the dom queue yet 
+    // as the transition hasn't yet completed.
+    if (this._queue.classList.contains("queue-imgs-transitioning") && idx > 0) {
+      console.log("boosting idx for delete by 1");
+      idx++;
+    };
+
+    console.log(`Removing from DOM queue element at position: ${idx}.`);
     this._queue.removeChild(this._queue.children[idx]);
   }
 

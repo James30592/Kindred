@@ -33,7 +33,7 @@ export class SingleAnswerMode extends QuestionsMode {
 
   // Save answer information.
   answerQuestion(event) {
-    const currQuestion = this.questionsQueue.removeQueueItem(0);
+    const currQuestion = this.questionsQueue.removeQueueItem(0, true);
 
     // Get the answer object as it should be stored in the DB.
     const answerObj = this.getAnswerObj(event, currQuestion); 

@@ -1,6 +1,10 @@
 To do:
 
 
+perhaps apply a class called "dead" or something to the leftmost queue item once answered and use index as normal on the remaining ones.
+
+test auto queue with include already answered ticked...
+
 
 
 -	change scores / recommends to all be out of 10
