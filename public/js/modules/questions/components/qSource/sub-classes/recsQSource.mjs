@@ -84,7 +84,7 @@ export class RecsQSource extends SingleModeQSource {
   // Set the currQRow to the question that is now being rated, so it can be 
   // easily removed once answered.
   _handleRateBtnClick(evt, question) {
-    this.#currQRow  = evt.currentTarget;
+    this.#currQRow  = evt.currentTarget.parentNode;
     super._handleRateBtnClick(evt, question);
   }
 

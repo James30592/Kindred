@@ -9,7 +9,9 @@ bug3: queue when include already answers is ticked will populate with early ques
 
 FIXED	bug4: seems to be introduced from fixing bug1 and bug2 - on prevAnswers page first click to open modal instantly closes it again, also messes up when trying to answer the question. fixed by making deactivate questions mode NOT hide the answer ui panel
 
-bug5: answering question in prev answer mode now doesnt close the answer ui modal
+FIXED	bug5: answering question in prev answer mode now doesnt close the answer ui modal. fixed, this was because code was erroring on singleDomQueue trying to remove the queue item twice, corrected it and fine now.
+
+FIXED	bug6: answering q in recs mode didn't remove from list. just needed to set currqrow to parent div since changing event listener to be on the img
 
 
 
