@@ -1,6 +1,21 @@
 To do:
 
 
+bug1: queue and dom queue get out of sync when updating questions queue and removing outdated answers (10 questions in) then the 10th question gets messed up. fixed with a situational +1 when removing dom item.
+
+bug2: when answering questions, then click incl already answered, then untick, domqueue will remove first elements using outdated method with allrecent answers but will transition when doing so which looks weird. fixed by passing an argument for if answeringQ when removing dom items and only transitioning when this is true.
+
+bug3: queue when include already answers is ticked will populate with early questions again
+
+
+
+bug4: seems to be introduced from fixing bug1 and bug2 - on prevAnswers page first click to open modal instantly closes it again, also messes up when trying to answer the question.
+
+
+
+
+test auto queue with include already answered ticked...
+
 
 
 -	change scores / recommends to all be out of 10
