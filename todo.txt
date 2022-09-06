@@ -2,12 +2,6 @@ To do:
 
 
 
-
-
-
-
-
--	change scores / recommends to all be out of 10, done but test, value shown on findkindred is still out of 100
 -	make placeholder images for db qs show an abbreviated version of the qtext rather than the full text
 
 

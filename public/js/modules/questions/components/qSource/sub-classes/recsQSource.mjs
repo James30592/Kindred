@@ -94,7 +94,7 @@ export class RecsQSource extends SingleModeQSource {
   }
 
   _getScoreText(rec) {
-    return rec.rating.strength.toFixed(0);
+    return rec.rating.strength.toFixed(1);
   }
   
   // POSTS any new answers then gets the latest recommendations.
