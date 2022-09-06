@@ -19,21 +19,6 @@ export class QModeWithQueueInput extends QuestionsMode {
       new CustomEvent("answeredQ", {detail: {answerObj: answerObj}})
     );
 
-    console.log("----------------------------------------------------");
-    console.log("Answering question:");
-    console.log(answerObj);
-    console.log("current queue:");
-    console.log(this.questionsQueue.queue.slice());
-    console.log("current allRecentAnswers:");
-    console.log(this.questionsQueue.allRecentAnswers.slice());
-    console.log("current DOM queue:");
-    const domQueueAsArray = Array.prototype.slice.call(this.questionsQueue._domQueue._queue.children);
-    const domQueueIds = domQueueAsArray.map(itm => itm.getAttribute("data-id"));
-    console.log(domQueueIds);
-    console.log("Current queue prev Qs:");
-    console.log(this.questionsQueue._queuePrevQs);
-    console.log("----------------------------------------------------");
-
     // Updates the displayed question in the answer UI panel with the new first 
     // queue item.
     this._showCurrQ();

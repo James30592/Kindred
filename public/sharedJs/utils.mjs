@@ -101,7 +101,8 @@ export function getQInfo(q, detail, catTypeName, catName) {
       info = {
         imgPath: q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null,
         qDisplayText: `${q?.title} (${q?.releaseDate})`,
-        qSourceDisplayText: `${q?.title}`
+        qSourceDisplayText: `${q?.title}`,
+        imgPlaceHolderTxt: `${q?.title}`
       };
       break;
 
@@ -109,7 +110,8 @@ export function getQInfo(q, detail, catTypeName, catName) {
       info = {
         imgPath: q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null,
         qDisplayText: `${q?.title} (${q?.releaseDate})`,
-        qSourceDisplayText: `${q?.title}`
+        qSourceDisplayText: `${q?.title}`,
+        imgPlaceHolderTxt: `${q?.title}`
       };
       break;
 
@@ -117,7 +119,8 @@ export function getQInfo(q, detail, catTypeName, catName) {
       info = {
         imgPath: q?.image,
         qDisplayText: `${q?.trackName} - ${q?.artist} (${q?.album} - ${q?.releaseDate})`,
-        qSourceDisplayText: `${q?.trackName} - ${q?.artist}`
+        qSourceDisplayText: `${q?.trackName} - ${q?.artist}`,
+        imgPlaceHolderTxt: `${q?.trackName}`
       };
       break;
 
@@ -125,7 +128,8 @@ export function getQInfo(q, detail, catTypeName, catName) {
       info = {
         imgPath: q?.image ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${q.image}.jpg` : null,
         qDisplayText: `${q?.title} (${q?.releaseDate}) (${q.platforms})`,
-        qSourceDisplayText: `${q?.title}`
+        qSourceDisplayText: `${q?.title}`,
+        imgPlaceHolderTxt: `${q?.title}`
       };
       break;
 
@@ -133,7 +137,8 @@ export function getQInfo(q, detail, catTypeName, catName) {
       info = {
         imgPath: q?.image ? `https://covers.openlibrary.org/b/id/${q.image}-M.jpg` : null,
         qDisplayText: `${q?.title} (${q?.author})`,
-        qSourceDisplayText: `${q?.title}`
+        qSourceDisplayText: `${q?.title}`,
+        imgPlaceHolderTxt: `${q?.title}`
       };
       break;
 
@@ -141,7 +146,8 @@ export function getQInfo(q, detail, catTypeName, catName) {
       info = {
         imgPath: null,
         qDisplayText: q?.text,
-        qSourceDisplayText: q?.text
+        qSourceDisplayText: q?.text,
+        imgPlaceHolderTxt: q?.shortText ?? q.text
       };
   };
 
@@ -165,9 +171,7 @@ export function createQDomItem(q, catTypeName, catName) {
     const noImgDiv = document.createElement("div");
     noImgDiv.classList.add("placeholder-img");
     const noImgText = document.createElement("span");
-    
-    // noImgText.innerText = "No image available";
-    const placeholderText = getQInfo(q, "qSourceDisplayText", catTypeName, catName);
+    const placeholderText = getQInfo(q, "imgPlaceHolderTxt", catTypeName, catName);
     noImgText.innerText = placeholderText;
 
     noImgDiv.appendChild(noImgText);

@@ -27,7 +27,6 @@ export class DomQueue {
     if (evt.propertyName !== "left") return;
 
     this.#numTransitions--;
-    console.log("doing end transition dom delete of element 0");
     this._deleteDomQ(0);
     this._queue.classList.remove("queue-imgs-transitioning");
     
@@ -74,11 +73,9 @@ export class DomQueue {
     // answered q will have been removed from the queue but not the dom queue yet 
     // as the transition hasn't yet completed.
     if (this._queue.classList.contains("queue-imgs-transitioning") && idx > 0) {
-      console.log("boosting idx for delete by 1");
       idx++;
     };
 
-    console.log(`Removing from DOM queue element at position: ${idx}.`);
     this._queue.removeChild(this._queue.children[idx]);
   }
 

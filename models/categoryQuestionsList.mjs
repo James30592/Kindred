@@ -24,6 +24,12 @@ const questionSchema = new mongoose.Schema({
     type: String, 
     required: false
   },
+
+  shortText: {
+    type: String, 
+    required: false
+  }
+  
   // possAnswers: [possAnswerSchema]                  - removed for now to just do 0 - 10 numeric answers
 }, {strict: false});
 
