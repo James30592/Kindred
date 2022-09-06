@@ -27,7 +27,7 @@ export class FindKindredList {
   // Clears content for just headings and hr elem.
   _clearContentDiv() {
     const headings = document.createElement("p");
-    headings.textContent = "Profile name - Location - Similarity score - Common answers - Perc Diff";
+    headings.textContent = "Profile name - Location - Similarity score - Common answers - Score Diff";
     const hr = document.createElement("hr");
     this._contentDiv.replaceChildren(headings);
     this._contentDiv.appendChild(hr);
@@ -46,7 +46,7 @@ export class FindKindredList {
 
     kindredRow.innerText = `${kindred.profileName} - ${loc.placeName}, \
       ${loc.country.long} - ${kindred.simInfo.simScore.toFixed(1)} - \
-      ${kindred.simInfo.numCommonAnswers} - ${kindred.simInfo.percDiff.toFixed(1)}`;
+      ${kindred.simInfo.numCommonAnswers} - ${kindred.simInfo.scoreDiff.toFixed(1)}`;
 
     return kindredRow;
   }

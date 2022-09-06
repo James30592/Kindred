@@ -30,7 +30,7 @@ export class QuestionsMode extends EventTarget {
   }
 
   // Updates the displayed question in the answer UI panel with the new first 
-  // queue item. 
+  // queue item.
   _showCurrQ(inclAlreadyAnswered = true) {
     // Gets information on whether queue is now empty, or what the next 10 
     // queue items (and first question user answer, if necessary) should be.
@@ -55,7 +55,6 @@ export class QuestionsMode extends EventTarget {
   
     if (!userSkipped) {
       answerInfo.answerVal = thisScore;
-      answerInfo.answerPercentile = thisScore * 10
     };
 
     return answerInfo;

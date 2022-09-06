@@ -72,11 +72,11 @@ export class PreviousAnswers extends SingleModeQSource {
     const thisQText = getQInfo(prevAns?.questionDetails, "qSourceDisplayText", 
       this._categoryTypeName, this._categoryName);
     
-    return `${thisQText}. Skipped: ${prevAns.skip}. Answer Percentage: ${prevAns?.answerPercentile}.`;
+    return `${thisQText}. Skipped: ${prevAns.skip}. Answer: ${prevAns?.answerVal}.`;
   }
 
   _getScoreText(prevAns) {
-    return prevAns.skip ? "Skipped" : prevAns.answerPercentile;
+    return prevAns.skip ? "Skipped" : prevAns.answerVal;
   }
 
   _addToQDiv(qInfo) {

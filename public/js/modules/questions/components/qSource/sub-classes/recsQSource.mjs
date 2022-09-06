@@ -1,6 +1,6 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { createQDomItem, getQCategory, getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { getQInfo } from "../../../../../../sharedJs/utils.mjs";
 import { fadeContentMixin } from "../../../../../fadeContentMixin.mjs";
 
 
@@ -35,8 +35,8 @@ export class RecsQSource extends SingleModeQSource {
   }
 
   _addToQDiv(qInfo) {
-    qInfo.qSourceItem.insertBefore(qInfo.qScore, qInfo.qSourceItem.children[0]);
     qInfo.qSourceItem.appendChild(qInfo.qText);
+    qInfo.qSourceItem.insertBefore(qInfo.qScore, qInfo.qSourceItem.children[0]);
 
     const catTypeText = document.createElement("span");
     const catText = document.createElement("span");
@@ -84,7 +84,7 @@ export class RecsQSource extends SingleModeQSource {
   // Set the currQRow to the question that is now being rated, so it can be 
   // easily removed once answered.
   _handleRateBtnClick(evt, question) {
-    this.#currQRow  = evt.currentTarget;
+    this.#currQRow  = evt.currentTarget.parentNode;
     super._handleRateBtnClick(evt, question);
   }
 
@@ -94,7 +94,7 @@ export class RecsQSource extends SingleModeQSource {
   }
 
   _getScoreText(rec) {
-    return rec.rating.strength.toFixed(0);
+    return rec.rating.strength.toFixed(1);
   }
   
   // POSTS any new answers then gets the latest recommendations.

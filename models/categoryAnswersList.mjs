@@ -26,7 +26,6 @@ const answerDetailSchema = new mongoose.Schema({
     max: [10, "Score must be at most 10."]
   },
 
-  answerPercentile: Number,
   questionDetails: answerQuestionDetails
 }, {_id: false});
 

@@ -19,10 +19,10 @@ export class SearchMode extends QModeWithQueueInput {
 
   // Updates the questions queue and then displays the first question of it, 
   // called when switching to this questions mode.
-  async updateQueueAndShowFirst() {
+  async updateQueueAndShowFirst(isNewQueue = false) {
     if (this.queueInputPanel.searchInput.value !== "") {
       this.answerUiPanel.showLoader();
-      await super.updateQueue();
+      await super.updateQueue(isNewQueue);
     };
   
     this.answerUiPanel.hideLoader();
@@ -51,6 +51,6 @@ export class SearchMode extends QModeWithQueueInput {
   async #resetQueueAndUpdate() {
     this.questionsQueue.reset();
     this.questionsQueue.setSearchQuery();
-    await this.updateQueueAndShowFirst();
+    await this.updateQueueAndShowFirst(true);
   }
 }

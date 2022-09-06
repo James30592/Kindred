@@ -9,6 +9,7 @@ export class BaseQuestionsQueue {
   queue = [];
   queueType;
   _domQueue;
+  _queuePrevQs = [];
 
   constructor(qModeMainDiv, categoryType = null, category = null) {
     this._categoryTypeName = categoryType;
@@ -45,10 +46,10 @@ export class BaseQuestionsQueue {
 
   // Removes an item from the queue and the corresponding item from the DOM 
   // queue. Returns the removed queue item.
-  removeQueueItem(idx) {
+  removeQueueItem(idx, doTrans) {
     const thisQueueItem = this.queue[idx];
     this.queue.splice(idx, 1);
-    this._domQueue.removeQueueItem(idx);
+    this._domQueue.removeQueueItem(idx, doTrans);
 
     return thisQueueItem;
   }
@@ -64,5 +65,10 @@ export class BaseQuestionsQueue {
   _resetQueue() {
     this.queue = [];
     this._domQueue.resetQueue();
+    this._queuePrevQs = [];
+  }
+
+  savePrevQ(qId) {
+    this._queuePrevQs.push(qId);
   }
 }
