@@ -9,7 +9,6 @@ export class SingleDomQueue extends DomQueue {
       if (idx === 0) {
         this._deleteDomQ(idx);
       };
-      this._deleteDomQ(0);
     };
   }
 }
