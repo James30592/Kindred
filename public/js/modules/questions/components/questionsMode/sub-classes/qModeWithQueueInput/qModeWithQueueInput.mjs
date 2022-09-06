@@ -9,6 +9,8 @@ export class QModeWithQueueInput extends QuestionsMode {
   async answerQuestion(event) {
     const currQuestion = this.questionsQueue.removeQueueItem(0, true);
 
+    this.questionsQueue.savePrevQ(currQuestion._id);
+
     // Get the answer object as it should be stored in the DB.
     const answerObj = this.getAnswerObj(event, currQuestion);
 
@@ -28,6 +30,8 @@ export class QModeWithQueueInput extends QuestionsMode {
     const domQueueAsArray = Array.prototype.slice.call(this.questionsQueue._domQueue._queue.children);
     const domQueueIds = domQueueAsArray.map(itm => itm.getAttribute("data-id"));
     console.log(domQueueIds);
+    console.log("Current queue prev Qs:");
+    console.log(this.questionsQueue._queuePrevQs);
     console.log("----------------------------------------------------");
 
     // Updates the displayed question in the answer UI panel with the new first 

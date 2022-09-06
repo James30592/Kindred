@@ -4,7 +4,7 @@ import { BaseQuestionsQueue } from "../../baseQuestionsQueue.mjs";
 
 // For retreiving new questions from server.
 export class QuestionsQueue extends BaseQuestionsQueue {
-  static #QUEUE_REFRESH_AMOUNT = 20;
+  static #QUEUE_REFRESH_AMOUNT = 30;
   _QUEUE_REFRESH_THRESHOLD = 10;
   #filters;
   _endOfQSource = false;
@@ -18,8 +18,8 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   // whether queue should be started from scratch, used when the queue input 
   // criteria have changed eg. new search term.
   async update(isNewQueue = false) {
-    isNewQueue = false;
-    // console.log(`Updating queue, isNewQueue = ${isNewQueue}`);
+    this._updateQueuePrevQs(isNewQueue);
+
     let updated = false;
 
     // If already waiting for fetch on a previous update call, don't update.
@@ -49,6 +49,14 @@ export class QuestionsQueue extends BaseQuestionsQueue {
     };
 
     return updated;
+  }
+
+  // If a new queue (eg. changing incl. already answered tickbox or new search 
+  // term) then reset this queuePrevQs.
+  _updateQueuePrevQs(isNewQueue) {
+    if (isNewQueue) {
+      this._queuePrevQs = [];
+    };
   }
 
   // Checks if the queue needs and can be updated.
@@ -82,9 +90,12 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   // If question in the queue has been answered recently and data isn't 
   // reflected on server yet, update answer info with latest local answer info.
   handleOutdatedQueueItem(queueIndex, recentAnswer, doTrans) {
-    // If want to include already answered questions, then just updated the 
+    const inclPrevAnswers = this.inputPanel?.includeAlreadyAnsweredCheckbox?.checked;
+    const previouslyInThisQueue = this._queuePrevQs.includes(this.queue[queueIndex]._id);
+    console.log(`Previously in this queue: ${previouslyInThisQueue}`);
+    // If want to include already answered questions, then just update the 
     // queue question currAns to the latest local answer info.
-    if (this.inputPanel?.includeAlreadyAnsweredCheckbox?.checked) {
+    if (inclPrevAnswers && !previouslyInThisQueue) {
       this.queue[queueIndex].currAns = {
         skip: recentAnswer.skip,
         answerVal: recentAnswer?.answerVal

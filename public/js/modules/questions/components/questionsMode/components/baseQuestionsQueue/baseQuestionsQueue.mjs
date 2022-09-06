@@ -9,6 +9,7 @@ export class BaseQuestionsQueue {
   queue = [];
   queueType;
   _domQueue;
+  _queuePrevQs = [];
 
   constructor(qModeMainDiv, categoryType = null, category = null) {
     this._categoryTypeName = categoryType;
@@ -64,5 +65,10 @@ export class BaseQuestionsQueue {
   _resetQueue() {
     this.queue = [];
     this._domQueue.resetQueue();
+    this._queuePrevQs = [];
+  }
+
+  savePrevQ(qId) {
+    this._queuePrevQs.push(qId);
   }
 }
