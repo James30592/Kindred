@@ -26,9 +26,6 @@ export class PrevAnswerMode extends SingleAnswerMode {
   deactivate() {
     this._qSource.deactivate();
     super.deactivate();
-
-    // Hide the answer ui panel.
-    this._answerUiModal.hide();
   }
 
   // Makes a question, ready to be shown in the answerUiPanel, from the clicked 
