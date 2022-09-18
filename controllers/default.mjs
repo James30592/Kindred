@@ -12,6 +12,7 @@ const NO_LOGIN_ROUTES = [
 
 defaultRouter.get("*", function(req, res, next) {
   if (NO_LOGIN_ROUTES.includes(req.originalUrl) || req.isAuthenticated()) {
+    res.locals.user = req.user;
     return next();
   }
   else {

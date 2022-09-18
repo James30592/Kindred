@@ -1,0 +1,90 @@
+/* Questions page queues. */
+$num2-queue-transp: 0.6;
+$num3-queue-transp: 0.3;
+
+.queue-imgs {
+    position: relative;
+    left: 0px;
+}
+  
+.queue-imgs > div {
+    width: 120px;
+    height: 180px;
+    display: inline-block;
+    position: relative;
+    vertical-align: bottom;
+
+    img {
+        width: 100%;
+        object-fit: contain;
+    }
+}
+  
+.placeholder-img {
+    background-color: black;
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    span {
+        color: white;
+        position: absolute;
+    }
+}
+  
+.queue-imgs div audio {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    z-index: 1000;
+    transition: opacity 1s;
+}
+  
+.queue-imgs div:nth-child(2) {
+    opacity: $num2-queue-transp;
+}
+  
+.queue-imgs div:nth-child(3) {
+    opacity: $num3-queue-transp;
+}
+  
+.queue-imgs div:nth-child(4) {
+    opacity: 0;
+}
+  
+.queue-imgs div:nth-child(n + 5) {
+    display: none;
+}
+  
+.queue-imgs div:nth-child(n + 2) audio {
+    opacity: 0;
+    pointer-events: none;
+}
+  
+/* Questions page queue transitions. */
+.queue-imgs-transitioning {
+    transition: 0.5s all;
+    left: -120px;
+}
+  
+.queue-imgs-transitioning div {
+    transition: 0.5s all;
+}
+  
+.queue-imgs-transitioning div:nth-child(1) {
+    opacity: 0;
+}
+.queue-imgs-transitioning div:nth-child(2) {
+    opacity: 1;
+}
+.queue-imgs-transitioning div:nth-child(3) {
+    opacity: $num2-queue-transp;
+}
+.queue-imgs-transitioning div:nth-child(4) {
+    opacity: $num3-queue-transp;
+}
+  
+.queue-imgs-transitioning div:nth-child(2) audio {
+    opacity: 1;
+}

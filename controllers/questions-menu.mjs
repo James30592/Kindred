@@ -6,5 +6,7 @@ export const questionsMenuRouter = express.Router();
 
 questionsMenuRouter.get("/", async function(req, res){
   const allCategoryTypes = await CategoryType.find().exec();
-  res.render("questions-menu", {allCategoryTypes: allCategoryTypes});
+
+  res.locals.allCategoryTypes = allCategoryTypes;
+  res.render("questions-menu");
 });

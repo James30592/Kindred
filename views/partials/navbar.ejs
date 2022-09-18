@@ -1,0 +1,22 @@
+<nav>
+    <div class="logo-container">
+        <a href="/profile">
+            <img class="nav-logo-img" src="images/logoWhite.svg" alt="">
+        </a>
+    </div>
+
+    <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-menu-btn-normal"><%= user.profileName %></span>
+            <i class="fa-solid fa-user nav-menu-btn-small"></i>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/profile">Profile</a>
+            <a class="dropdown-item" href="/questions-menu">Questions</a>
+            <a class="dropdown-item" href="/find-kindred">Find Kindred</a>
+            <a class="dropdown-item" href="/recommendations">Recommendations</a>
+            <a class="dropdown-item" href="/logout">Log out</a>
+        </div>
+    </div>
+</nav>

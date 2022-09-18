@@ -1,29 +1,33 @@
 <%- include('partials/header') %>
+  <title>Kindred | Questions</title>
+</head>
+<body>
+  <%- include('partials/navbar') %>
 
-<div class="container mt-5">
-  <h1>Questions</h1>
+  <div class="container mt-5">
+    <h1>Questions</h1>
 
-  <div class="row">
-    <div class="col-sm-8">
-      <div class="card">
-        <div class="card-body">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-body">
 
-            <% allCategoryTypes.forEach(function(categoryType){ %>
-              <h2><%= categoryType.name %></h2>
-            <%  categoryType.categories.forEach(function(category){ %>
-                <a class="btn btn-light btn-lg"
-                href="/questions/<%= categoryType.name %>/<%= category.name %>
-                " role="button"><%= category.name %></a>
-            <%  }); %>
-            <% }); %>
+              <% allCategoryTypes.forEach(function(categoryType){ %>
+                <h2><%= categoryType.name %></h2>
+              <%  categoryType.categories.forEach(function(category){ %>
+                  <a class="btn btn-light btn-lg"
+                  href="/questions/<%= categoryType.name %>/<%= category.name %>
+                  " role="button"><%= category.name %></a>
+              <%  }); %>
+              <% }); %>
 
-          <hr>
-          <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
+            <hr>
+            <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
+          </div>
         </div>
       </div>
+
     </div>
-
   </div>
-</div>
-
+  
 <%- include('partials/footer') %>

@@ -1,6 +1,19 @@
 To do:
 
 
+-	get rid of followingperppath
+
+-	still managed to get a lone pattern seg, at pos 0
+
+-	make stroke width proportional to length - maybe
+
+
+
+
+
+
+
+-	make yellow background a gradient
 
 
 
@@ -25,13 +38,11 @@ To do:
 
 -	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results
 
--	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one).
+-	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one). - make 404 page content not found for if url has unrecognised endpoint, use res.sendStatus
 
 -	for api queries, include only stuff that has already been released
 
 -	change questions queue back end to work in number of pages rather than getting a set number of items (get minimum that number of items but get every item up to the last page it iterates for)
-
--	make tab name update
 
 -	make it so that say, once a day, the top 1000 items for each category are downloaded from api and stored in DB and used on back end for auto queue, to reduce API requests (eg. IGDB only allows 4 requests per second)
 
@@ -40,6 +51,12 @@ To do:
 -	need to link to way to watch / play / listen / do for each suggestion, also show more detailed info (such as blurb, trailer) for each one.
 
 -	bookmark feature like taste.io?
+
+-	cookie message
+
+-	make it so as soon as you release the slider it rates it, does animation
+
+-	use oAuth for signup
 
 
 
@@ -184,7 +201,7 @@ FIXED	bug6: answering q in recs mode didn't remove from list. just needed to set
 
 FIXED	bug3: queue when include already answers is ticked will populate with early questions again. fixed by increasing queue refresh amount to 30 from 20 and keeping record of isNewQueue and queuePrevQs for each queue.
 
-
+NOT FIXED - placeholder images doing weird transition...
 
 
 

@@ -1,0 +1,32 @@
+@use "../abstracts/variables" as vars;
+
+
+
+.loc-details {
+    padding: 6% 0 4% 0;
+}
+
+.loc-detail-wrapper {
+    padding: 2% 0;
+
+    > * {
+        vertical-align: top;
+        color: vars.$secondary-grey;
+    }
+
+    span {
+        padding-right: 20px;
+        font-weight: 600;
+    }
+
+    > textarea {
+        overflow: auto;
+        resize: none;
+    }
+}
+
+.loc-detail {
+    background-color: vars.$primary-yellow;
+    border: 0;
+    width: 70%;
+}

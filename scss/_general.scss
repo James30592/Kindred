@@ -1,0 +1,77 @@
+/* General. */
+@use "abstracts/variables" as vars;
+
+
+
+// Elements
+* {
+  font-family: vars.$sansSerif;
+}
+
+body {
+  background-color: vars.$primary-yellow;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.75) 10%, rgba(0, 0, 0, 0) 100%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: vars.$cursive;
+  color: vars.$primary-grey;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: vars.$fontSize1;
+}
+
+h4 {
+  font-size: vars.$fontSize4;
+}
+  
+// Transition
+.fade-trans {
+  transition: opacity 0.3s;
+}
+
+// Visibility
+.transparent {
+  opacity: 0 !important;
+}
+
+.hidden {
+  visibility: hidden !important;
+}
+
+.fully-hidden {
+  display: none !important;
+}
+
+// Positioning
+.centre-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+  .register-content {
+      display: block;
+      margin: 20%;
+  }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+  .register-content {
+      display: block;
+      margin: 15% 7%;
+  }
+}

@@ -1,0 +1,22 @@
+// Colours
+$primary-yellow: rgb(247, 237, 176);
+$primary-grey: rgb(54, 54, 54);
+$secondary-grey: rgb(110, 110, 110);
+
+// Fonts
+$cursive: 'Merienda', cursive;
+$sansSerif: 'Catamaran', sans-serif;
+$serif: 'Metal', cursive;
+
+$fontSize9: calc(0.3rem + 0.225vw);
+$fontSize8: calc(0.4rem + 0.3vw);
+$fontSize7: calc(0.5rem + 0.375vw);
+$fontSize6: calc(0.6rem + 0.45vw);
+$fontSize5: calc(0.7rem + 0.5vw);
+$fontSize4: calc(0.8rem + 0.6vw);
+$fontSize3: calc(1.2rem + 0.9vw);
+$fontSize2: calc(1.6rem + 1.2vw);
+$fontSize1: calc(2rem + 1.5vw);
+
+// Drawing SVG connections
+$svgAnimDrawTime: 1.5s;

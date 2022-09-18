@@ -1,69 +1,69 @@
 <%- include('partials/header') %>
+  <title>Kindred | Register</title>
+</head>
+<body>
 
-<div class="container mt-5">
-  <h1>Register</h1>
+  <div class="full-page-content">
+    <h1 class="page-heading">Register</h1>
 
-  <div class="row">
-    <div class="col-sm-8">
-      <div class="card">
-        <div class="card-body">
+    <div class="content-wrapper">
+      <%- include('partials/borders') %>
+
+      <div class="content">
 
           <!-- Makes POST request to /register route -->
-          <form class="reg-form" action="/register" method="POST">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" name="email" required>
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" name="password" required>
-            </div>
-            <div class="form-group">
-              <label for="profile-name">Profile Name</label>
-              <input type="text" class="form-control" name="profile-name" required>
-            </div>
-            <div class="form-group location-group">
-              <label for="loc-input">Location</label>
-              <input class="form-control loc-input" type="text" placeholder="Search for a place...">
-              <input name="formattedAddress" class="loc-detail" required onfocus="blur();"></input>
-              <input name="countryLong" class="loc-detail" required onfocus="blur();"></input>
-              
-              <div class="full-address fully hidden"></div>
-              <input class="fully-hidden loc-detail" name="googlePlaceId"></input>
-              <input class="fully-hidden loc-detail" name="lat"></input>
-              <input class="fully-hidden loc-detail" name="lng"></input>
-              <input class="fully-hidden loc-detail" name="countryShort"></input>
-              <input class="fully-hidden loc-detail" name="placeName"></input>
+        <form class="reg-form" action="/register" method="POST">
 
-            </div>
-            <button type="submit" class="submit-btn btn btn-dark">Register</button>
-          </form>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" required>
+          </div>
 
-        </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="profile-name">Profile Name</label>
+            <input type="text" class="form-control" name="profile-name" required>
+          </div>
+
+          <div class="form-group location-group">
+            <label for="loc-input">Location</label>
+            <input class="form-control loc-input" type="text" placeholder="Search for a place...">
+            
+            <!-- Chosen Google location -->
+            <div class="loc-details">
+              <div class="loc-detail-wrapper">
+                <span>Place:</span>
+                <textarea name="formattedAddress" class="loc-detail" required onfocus="blur();"></textarea>
+              </div>
+              <div class="loc-detail-wrapper">
+                <span>Country:</span>
+                <input name="countryLong" class="loc-detail" required onfocus="blur();"></input>
+              </div>
+            </div>
+            
+            <!-- Used to submit calculated address information from Google API -->
+            <div class="full-address fully hidden"></div>
+            <input class="fully-hidden loc-detail" name="googlePlaceId"></input>
+            <input class="fully-hidden loc-detail" name="lat"></input>
+            <input class="fully-hidden loc-detail" name="lng"></input>
+            <input class="fully-hidden loc-detail" name="countryShort"></input>
+            <input class="fully-hidden loc-detail" name="placeName"></input>
+          </div>
+
+          <button type="submit" class="submit-btn btn btn-dark">Register</button>
+          
+        </form>
+
       </div>
     </div>
 
-    <!-- <div class="col-sm-4">
-      <div class="card social-block">
-        <div class="card-body">
-          <a class="btn btn-block btn-social btn-google" href="/auth/google" role="button">
-            <i class="fab fa-google"></i>
-            Sign Up with Google
-          </a>
-        </div>
-        <div class="card-body">
-          <a class="btn btn-block btn-social btn-facebook" href="/auth/facebook" role="button">
-            <i class="fab fa-facebook"></i>
-            Sign Up with Facebook
-          </a>
-        </div>
-      </div>
-    </div> -->
-
   </div>
-</div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBupuPl_TCETkPatiOhkFxBV53iCO72IHY&libraries=places"></script>
-<script type="module" src="js/register.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBupuPl_TCETkPatiOhkFxBV53iCO72IHY&libraries=places"></script>
+  <script type="module" src="js/register.js"></script>
 
 <%- include('partials/footer') %>

@@ -16,11 +16,11 @@ findKindredRouter.get("/", async function(req, res) {
 
   const selectableCategories = getSelectableUserCategories(
     userCategoryAnswers);
+  
+  res.locals.allCategoryTypes = allCategoryTypes;
+  res.locals.selectableCategories = selectableCategories;
 
-  res.render("find-kindred", {
-    allCategoryTypes: allCategoryTypes,
-    selectableCategories: selectableCategories
-  });
+  res.render("find-kindred");
 });
 
 findKindredRouter.post("/", async function(req, res){

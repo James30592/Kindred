@@ -1,0 +1,48 @@
+// Borders
+.content-wrapper {
+    position: relative;
+}
+
+.content {
+    padding: 7%;
+}
+
+.borders {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+@mixin border-gen {
+    content: "";
+    position: absolute;
+}
+
+.t-b-borders {
+    &::before, &::after {
+        @include border-gen;
+        width: 100%;
+        height: 2px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 95%);
+    }
+
+    &::after {
+        bottom: 0;
+        background-image: linear-gradient(to left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 95%);
+    }
+}
+
+.l-r-borders {
+    &::before, &::after {
+        @include border-gen;
+        width: 2px;
+        height: 100%;
+        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 95%);
+    }
+
+    &::after {
+        right: 0;
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 95%);
+    }
+}

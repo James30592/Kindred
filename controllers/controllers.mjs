@@ -18,7 +18,7 @@ export const router = express.Router();
 
 router.use("*", defaultRouter);
 router.use("/", homeRouter);
-router.use("/register", registerRouter)
+router.use("/register", registerRouter);
 router.use("/login", loginRouter);
 router.use("/profile", profileRouter);
 router.use("/logout", logoutRouter);

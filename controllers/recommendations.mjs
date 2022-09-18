@@ -17,10 +17,10 @@ recommendationsRouter.get("/", async function(req, res){
   const selectableCategories = getSelectableUserCategories(
     userCategoryAnswers);
 
-  res.render("recommendations", {
-    allCategoryTypes: allCategoryTypes,
-    selectableCategories: selectableCategories
-  });
+  res.locals.allCategoryTypes = allCategoryTypes;
+  res.locals.selectableCategories = selectableCategories;
+
+  res.render("recommendations");
 });
 
 recommendationsRouter.post("/", async function(req, res){

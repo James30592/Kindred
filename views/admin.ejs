@@ -1,24 +1,28 @@
 <%- include('partials/header') %>
+  <title>Kindred | Admin</title>
+</head>
+<body>
+  <%- include('partials/navbar') %>
 
-<div class="jumbotron text-center">
-  <div class="container">
-    <i class="fas fa-key fa-6x"></i>
-    <h1 class="display-3">Admin</h1>
-    <form class="" action="" method="">
-      <input type="text" name="create-users-num" value="" placeholder="Enter number...">
-      <button type="button" class="create-users btn btn-dark">Create users</button>
-    </form>
+  <div class="jumbotron text-center">
+    <div class="container">
+      <i class="fas fa-key fa-6x"></i>
+      <h1 class="display-3">Admin</h1>
+      <form class="" action="" method="">
+        <input type="text" name="create-users-num" value="" placeholder="Enter number...">
+        <button type="button" class="create-users btn btn-dark">Create users</button>
+      </form>
+      <hr>
+    </div>
+
+    <div class="card">
+      <div class="card-body admin-log"></div>
+    </div>
+
     <hr>
+    <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
   </div>
 
-  <div class="card">
-    <div class="card-body admin-log"></div>
-  </div>
-
-  <hr>
-  <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
-</div>
-
-<script type="module" src="js/admin.js"></script>
+  <script type="module" src="js/admin.js"></script>
 
 <%- include('partials/footer') %>

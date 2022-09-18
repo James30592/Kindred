@@ -1,0 +1,26 @@
+// Used for register and login pages.
+.full-page-content {
+    display: inline-block;
+    margin: 13vh auto auto 15vw;
+    min-width: 25%;
+}
+
+.page-heading {
+    margin-bottom: 8%;
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+    .full-page-content {
+        display: block;
+        margin: 20%;
+    }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+    .full-page-content {
+        display: block;
+        margin: 10% 7%;
+    }
+}

@@ -1,0 +1,7 @@
+@use "../abstracts/variables" as vars;
+
+
+
+.draw-svg-path {
+    transition: stroke-dashoffset vars.$svgAnimDrawTime;
+}

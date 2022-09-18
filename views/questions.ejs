@@ -1,51 +1,55 @@
 <%- include('partials/header') %>
+  <title>Find Kindred</title>
+</head>
+<body>
+  <%- include('partials/navbar') %>
 
-<div class="container mt-5">
-  <h1>Questions</h1>
+  <div class="container mt-5">
+    <h1>Questions</h1>
 
-  <div class="row">
-    <div class="col-sm-8">
-      <div class="card">
-        <div class="card-body">
-          
-          <h2 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
-            data-cat="<%= categoryName %>">
-            <%= categoryTypeName %> - <%= categoryName %></h2>
-          
-          <!-- Questions mode select -->
-          <hr>
-          <div class="q-mode-selector">
-            <button class="auto-queue-mode-btn">Auto Queue</button>
-            <button class="search-mode-btn">Search</button>
-            <button class="prev-answers-mode-btn">Previous Answers</button>
-          </div>
-          <hr>
-          
-          <!-- Prev answers list -->
-          <div class="prev-answers-list q-source fade-trans fully-hidden transparent">
-            <div class="content"></div>
-          </div>
-
-          <div class="question-modes">
-            <!-- Auto mode -->
-            <%- include("partials/questions/autoMode") %>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-body">
             
-            <!-- Search mode -->
-            <%- include("partials/questions/searchMode") %>
+            <h2 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
+              data-cat="<%= categoryName %>">
+              <%= categoryTypeName %> - <%= categoryName %></h2>
+            
+            <!-- Questions mode select -->
+            <hr>
+            <div class="q-mode-selector">
+              <button class="auto-queue-mode-btn">Auto Queue</button>
+              <button class="search-mode-btn">Search</button>
+              <button class="prev-answers-mode-btn">Previous Answers</button>
+            </div>
+            <hr>
+            
+            <!-- Prev answers list -->
+            <div class="prev-answers-list q-source fade-trans fully-hidden transparent">
+              <div class="content"></div>
+            </div>
 
-            <!-- Previous answers mode -->
-            <%- include("partials/questions/singleAnswerMode") %>
+            <div class="question-modes">
+              <!-- Auto mode -->
+              <%- include("partials/questions/autoMode") %>
+              
+              <!-- Search mode -->
+              <%- include("partials/questions/searchMode") %>
+
+              <!-- Previous answers mode -->
+              <%- include("partials/questions/singleAnswerMode") %>
+            </div>
+            
+            <a class="btn btn-light" href="/questions-menu" role="button">Back to questions menu</a>
+            <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
           </div>
-          
-          <a class="btn btn-light" href="/questions-menu" role="button">Back to questions menu</a>
-          <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
- 
-<script type="module" src="/js/questions.js"></script>
+  
+  <script type="module" src="/js/questions.js"></script>
 
 <%- include('partials/footer') %>
