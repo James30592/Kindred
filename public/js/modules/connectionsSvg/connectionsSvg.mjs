@@ -1,12 +1,16 @@
-import { drawAnimSvg } from "../../drawAnimSvgs.js";
 import { Vector2 } from "../vector2.mjs";
 import { SingleConnection } from "./singleConnection.mjs";
 
 
-
+// 
+// data-connects-to should always be written on the element that the connection 
+// should start from (for animated drawing purposes).
 export class ConnectionsSvg {
   elemsToJoin;
   connectPts;
+  connections = [];
+  svg;
+  #drawOriginId;
 
   constructor(elemsToJoin) {
     this.elemsToJoin = elemsToJoin;
@@ -14,14 +18,41 @@ export class ConnectionsSvg {
 
   // 
   createAndDraw() {
-    const svgConnects = this.createSvg(this.elemsToJoin);
-    // drawAnimSvg(svgConnects);
+    this.svg = this.createSvg(this.elemsToJoin);
+    this.startDrawing();
   }
- 
+
+  // Hide all the paths, add event listeners for when a connection has finished 
+  // drawing to start drawing subsequent ones and start drawing from the origin element.
+  startDrawing() {
+    this.connections.forEach(connection => {
+      connection.hidePaths();
+      connection.addEventListener("connectionDrawn", evt => {
+        this.draw(evt.detail.endId);
+      });
+    });
+
+    this.draw(this.#drawOriginId);
+  }
+
+  // Draws all the connections that start from a given elemend id.
+  // justConnectedId is the element Id (from the data attribute) of the element 
+  // that has just finished having a connection drawn to it.
+  draw(justConnectedId) {
+    this.connections.forEach(connection => {
+      if (connection.startId === justConnectedId) {
+        connection.draw();
+      };
+    });
+  }
+
   // 
   createSvg(elems) {
     const parentElem = document.querySelector(".svg-connects-wrapper");
     const parentElemRect = parentElem.getBoundingClientRect();
+
+    const originElem = parentElem.querySelector('[data-draw-origin="true"');
+    this.#drawOriginId = originElem.dataset.connectId;
     
     const parentOffset = new Vector2(parentElemRect.left, parentElemRect.top);
   
@@ -29,16 +60,7 @@ export class ConnectionsSvg {
     const viewBoxHeight = parentElemRect.height;
   
     const elemsConnectInfos = this.getElemConnectInfos(elems, parentOffset);
-  
-    // Do this later, use the data attribute for ids of which other elements each should connect to.............
-    // const connectPaths = getConnectPaths()
-    const connectPathsIds = [
-      ["0", "1"],
-      ["0", "2"],
-      ["1", "2"]
-    ];
-  
-    const connectCoords = this.getConnectCoords(connectPathsIds, elemsConnectInfos);
+    const connectionInfos = this.getConnectionInfos(elemsConnectInfos);
   
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   
@@ -46,52 +68,54 @@ export class ConnectionsSvg {
     svg.setAttribute("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`);
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svg.setAttribute("preserveAspectRatio", "none");
-  
-    this.createSvgPaths(svg, connectCoords);
-  
+    
+    this.createConnections(connectionInfos);
+    this.createSvgPaths(svg);
+
     parentElem.appendChild(svg);
     return svg;
   }
 
   // 
-  createSvgPaths(svg, connectCoords) {
-    connectCoords.forEach(connectCoordsPair => {
-      const connection = new SingleConnection(connectCoordsPair);
-      const connectionPaths = connection.createPaths();
-      svg.append(...connectionPaths);
+  createSvgPaths(svg) {
+    this.connections.forEach(connection => {
+      svg.append(...connection.pathElems);
+    });
+  }
 
-
-
-      // const thisPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
-      // const dValInfo = getDVal(connectCoordsPair);
-  
-      // thisPath.setAttribute("d", getDVal(connectCoordsPair));
-      // svg.appendChild(thisPath);
-  
-      
-  
-      // const thisPath2 = document.createElementNS("http://www.w3.org/2000/svg", "path")
-      // thisPath2.setAttribute("d", `M 200,200 v 500`);
-      // svg.appendChild(thisPath2);
+  // Create a connections object for each coords pair and add set the paths for 
+  // each connection.
+  createConnections(connectionInfos) {
+    connectionInfos.forEach(connectionInfo => {
+      const connection = new SingleConnection(connectionInfo);
+      connection.createPaths();
+      this.connections.push(connection);
     });
   }
 
   // 
-  getConnectCoords(connectPathsIds, elemsConnectInfos) {
-    const connectPathsCoords = connectPathsIds.map(connectPathIds => {
-  
-      const connectPathCoords = connectPathIds.map(thisElemId => {
-        const elemConnectInfo = elemsConnectInfos.find(elem => {
-          return elem.elemId === thisElemId;
+  getConnectionInfos(elemsConnectInfos) {
+    const connectionInfos = [];
+
+    elemsConnectInfos.forEach(elem => {
+      elem?.connectsTo?.forEach((connection, idx) => {
+        const startCoords = elem.posn;
+        const endConnectElem = elemsConnectInfos.find(elem => {
+          return elem.elemId === connection;
         });
-  
-        return elemConnectInfo.posn;
+
+        const endCoords = endConnectElem.posn;
+        const connectCoords = [startCoords, endCoords];
+        // const connectPriority = Number(elem?.connectsPriorities[idx]);
+        const elemIds = [elem.elemId, connection];
+        const connectionInfo = {coords: connectCoords, elemIds: elemIds};
+        // const connectionInfo = {coords: connectCoords, priorities: connectPriority};
+
+        connectionInfos.push(connectionInfo);
       });
-  
-      return connectPathCoords;
     });
-  
-    return connectPathsCoords;
+
+    return connectionInfos;
   }
 
   // 
@@ -107,6 +131,8 @@ export class ConnectionsSvg {
       const elemConnectId = elem.dataset.connectId;
       connectInfo.elemId = elemConnectId;
       connectInfo.posn = connectPsn;
+      connectInfo.connectsTo = elem.dataset?.connectsTo?.split(",");
+      // connectInfo.connectsPriorities = elem.dataset?.connectsPriorities?.split(",");
   
       elemsConnectInfos.push(connectInfo);
     });

@@ -1,10 +1,13 @@
 import { randBetween, testRandom } from "../../../sharedJs/utils.mjs";
+import { drawSimulPaths } from "../../drawAnimSvgs.js";
 import { Vector2 } from "../vector2.mjs";
 import { Segment } from "./segment.mjs";
 
 
 
-export class SingleConnection {
+export class SingleConnection extends EventTarget {
+  startId;
+  endId;
   pathElems = [];
   #startCoords;
   #endCoords;
@@ -14,21 +17,33 @@ export class SingleConnection {
   #perpUnitVect;
   #numSegments;
   #probSegPattern;
-  #drawPriority;
+  drawPriority;
   #blocksizeDecreaseProb;
+  #standardSegLen;
+  #segments;
+  #startedDrawing = false;
 
+  // Standard size of segment (before randomising) as percentage of viewport width).
+  static #STANDARD_SEG_LEN_RATIO = 7;
   static #COMMON_PTS_MAIN_RAND = 0.02;
   static #COMMON_PTS_PERP_RAND = 0.01;
 
-  constructor(connectCoordsPair, drawPriority = 0) {
-    this.#startCoords = connectCoordsPair[0];
-    this.#endCoords = connectCoordsPair[1];
-    this.#drawPriority = drawPriority;
+  constructor(connectionInfo) {
+    super();
+
+    this.startId = connectionInfo.elemIds[0];
+    this.endId = connectionInfo.elemIds[1];
+    this.#startCoords = connectionInfo.coords[0];
+    this.#endCoords = connectionInfo.coords[1];
+    // this.drawPriority = connectionInfo.priority;
 
     this.#mainVect = this.#startCoords.vectorTo(this.#endCoords);
     this.#totalD = this.#mainVect.getMag();
 
-    this.#numSegments = 10;
+    this.#standardSegLen = (SingleConnection.#STANDARD_SEG_LEN_RATIO / 100) 
+      * window.innerWidth;
+
+    this.#numSegments = Math.round(this.#totalD / this.#standardSegLen);
     this.#probSegPattern = 0.4;
     this.#blocksizeDecreaseProb = 0.9;
 
@@ -40,21 +55,42 @@ export class SingleConnection {
     this.#perpUnitVect = perpVect.getUnitVector();
   }
 
+  // Draws all the paths of each segment, in order and emits event when all 
+  // paths of all segments have been drawn.
+  async draw() {
+    if (this.#startedDrawing) return;
+    this.#startedDrawing = true;
+
+    for (let seg of this.#segments) {
+      const segPaths = seg.allPaths.map(pathObj => pathObj.pathElem);
+      await drawSimulPaths(segPaths);
+    };
+    
+    this.dispatchEvent(
+      new CustomEvent("connectionDrawn", {detail: {endId: this.endId}})
+    );
+  }
+
+  // Hide all paths, used at start of drawing animation for svg.
+  hidePaths() {
+    this.pathElems.forEach(path => {
+      path.classList.add("hidden");
+    });
+  }
+
   // Procedurally builds connection of svg path curves between two points.
   createPaths() {
     const commonPts = this.getCommonPts();
     const segPatternMap = this.buildSegPatternMap();
-    const segList = this.getSegDetails(segPatternMap, commonPts);
-    this.setPathsAndDVals(segList);
-    this.createPathElems(segList);
+    this.#segments = this.getSegDetails(segPatternMap, commonPts);
+    this.setPathsAndDVals(this.#segments);
+    this.createPathElems(this.#segments);
     this.addConnectionDrawPriority();
-
-    return this.pathElems;
   }
 
   addConnectionDrawPriority() {
     this.pathElems.forEach(path => {
-      path.dataset.connectDrawPriority = this.#drawPriority;
+      path.dataset.drawIdx = this.drawPriority;
     });
   }
 
@@ -115,8 +151,9 @@ export class SingleConnection {
     for (let segNum = 0; segNum < this.#numSegments; segNum++) {
       let probIsPattern = this.#probSegPattern;
 
-      const prevSegHasPattern = segMap[segNum - 1] !== "g";
-      const prevSeg2HasPattern = segMap[segNum - 2] !== "g";
+      const [prevSeg, prevSeg2] = [segMap[segNum - 1], segMap[segNum - 2]];
+      const prevSegHasPattern = prevSeg ? prevSeg !== "g" : false;
+      const prevSeg2HasPattern = prevSeg2 ? prevSeg2 !== "g" : false;
 
       // Reduce odds of long patterned sections, make impossible to get just one 
       // patterned section alone though.
@@ -131,10 +168,8 @@ export class SingleConnection {
       }
       // If last segment, then make sure it can't have pattern, to prevent 
       // isolated pattern block.
-      else {
-        if (segNum === this.#numSegments - 1) {
-          probIsPattern = 0;
-        };
+      else if (segNum === this.#numSegments - 1) {
+        probIsPattern = 0;
       };
 
       const thisSeg = testRandom(probIsPattern) ? 1 : "g";

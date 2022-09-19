@@ -1,11 +1,8 @@
 To do:
 
 
--	get rid of followingperppath
+-	tidy up all code
 
--	still managed to get a lone pattern seg, at pos 0
-
--	make stroke width proportional to length - maybe
 
 
 

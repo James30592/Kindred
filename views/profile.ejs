@@ -5,10 +5,9 @@
   <%- include('partials/navbar') %>
   
   <div class="svg-connects-wrapper">
-    <a class="btn btn-light btn-lg connect-elem qs-btn" data-connect-id="0" data-connects-info="[1,0], [2,0]" href="/questions-menu" role="button">Questions</a>
-    <a class="btn btn-light btn-lg connect-elem kindred-btn" data-connect-id="1" data-connects-info="[0,0], [2,0]" href="/find-kindred" role="button">Find Kindred</a>
-    <a class="btn btn-light btn-lg connect-elem recs-btn" data-connect-id="2" data-connects-info="[0,0], [1,0]" href="/recommendations" role="button">Recommendations</a>
-    <a class="btn btn-light btn-lg admin-btn fully-hidden" href="/admin" role="button">Admin</a>
+    <a class="btn btn-light btn-lg connect-elem qs-btn" data-connect-id="0" data-connects-to="1,2" data-draw-origin="true" href="/questions-menu" role="button">Questions</a>
+    <a class="btn btn-light btn-lg connect-elem kindred-btn" data-connect-id="1" data-connects-to="2" href="/find-kindred" role="button">Find Kindred</a>
+    <a class="btn btn-light btn-lg connect-elem recs-btn" data-connect-id="2" href="/recommendations" role="button">Recommendations</a>
   </div>
 
   

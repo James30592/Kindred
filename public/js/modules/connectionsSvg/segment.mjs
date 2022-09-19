@@ -1,3 +1,4 @@
+import { testRandom } from "../../../sharedJs/utils.mjs";
 import { CorePath } from "./connectSubPath/subClasses/corePath.mjs";
 import { ExtraPath } from "./connectSubPath/subClasses/extraPath.mjs";
 
@@ -15,8 +16,9 @@ export class Segment {
   corePath;
   extraPaths = [];
   allPaths = [];
+  extraPathsBothEndPerp = false;
 
-  static #EXTRA_BOTH_PERP_PROB = 0.5;
+  static #PROB_BOTH_EXTRA_END_PERP = 0.4;
 
   constructor(idx, hasPattern, start, end) {
     this.idx = idx;
@@ -41,15 +43,19 @@ export class Segment {
   setExtraPaths(prevSeg, nextSeg) {
     if (!this.hasPattern) return;
 
+    // Dont allow a segment to have both ends be perpendicular for both extra 
+    // paths or looks like fat bubble.
+    const prevSegBothEndPerp = prevSeg?.extraPathsBothEndPerp;
+    this.extraPathsBothEndPerp = prevSegBothEndPerp ? false 
+      : testRandom(Segment.#PROB_BOTH_EXTRA_END_PERP);
+
     for (let extraPathNum = 0; extraPathNum < 2; extraPathNum++) {
 
       this.extraPaths[extraPathNum] = new ExtraPath(this.start, this.end, 
         this.idx, extraPathNum);
 
-      const otherExtraPath = this.extraPaths[1 - extraPathNum];
-
       this.extraPaths[extraPathNum].getCtrlPts(this.vectMag, this.start, 
-        this.end, prevSeg, nextSeg, this.corePath, otherExtraPath);
+        this.end, prevSeg, nextSeg, this.corePath, this.extraPathsBothEndPerp);
     };
   }
 

@@ -8,14 +8,11 @@ export class CorePath extends ConnectSubPath {
 
   // These are used for getting 1st control point if the segment is the very 
   // first one in the connection. Mag factor is as a proportion of the segments 
-  // d and angle is from the overall connection main vector.
+  // d and angle is from the overall connection main vector. In the end it 
+  // looked best just fixed at these values I think.
   static #RAND_VECT_LIMS = { 
-    // minAngleDiff: 20 * (Math.PI / 180),
-    // maxAngleDiff: 60 * (Math.PI / 180),
-    // minMagFact: 0.2,
-    // maxMagFact: 0.4
-    minAngleDiff: 30 * (Math.PI / 180),
-    maxAngleDiff: 31 * (Math.PI / 180),
+    minAngleDiff: 25 * (Math.PI / 180),
+    maxAngleDiff: 25 * (Math.PI / 180),
     minMagFact: 0.3,
     maxMagFact: 0.3
   }

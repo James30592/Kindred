@@ -68,6 +68,17 @@ export function findAndOverwriteElsePush(array, newItem, elemCompFunc) {
   };
 }
 
+// 
+export function awaitTransition(elem, propName) {
+  return new Promise(resolve => {
+    elem.addEventListener("transitionend", evt => {
+      if (evt.propertyName === propName) {
+        resolve();
+      };
+    }, {once: true});
+  })
+}
+
 // Fade transition helper functions, used with transparent, fully-hidden and 
 // fade-trans css classes.
 // Makes display property visible and then removes transparency.

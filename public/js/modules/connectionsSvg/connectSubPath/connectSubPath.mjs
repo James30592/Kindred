@@ -9,6 +9,7 @@ export class ConnectSubPath {
   ctrlPt2;
   dVal;
   segIdx;
+  pathElem;
 
   constructor(segStart, segEnd, segIdx) {
     this.start = segStart;
@@ -23,8 +24,6 @@ export class ConnectSubPath {
     const segStartToCtrlPt1 = segStartToPrevCtrlPt2.getRotatedVector(Math.PI);
     const ctrlPt1 = segStart.addVector(segStartToCtrlPt1);
     return ctrlPt1;
-
-    // return segStartToPrevCtrlPt2.getRotatedVector(Math.PI, segStart);
   }
 
   // Takes direction (1 for clockwise, -1 for anticlockwise), unitdirection vector, 
@@ -36,7 +35,6 @@ export class ConnectSubPath {
 
     // Get random proportion of segment distance.
     const scaleFactor = randBetween(randLims.minMagFact, randLims.maxMagFact);
-    console.log(`segIdx: ${this.segIdx}, extraPathId: ${this?.extraPathId}, angle:${angle * 180 / Math.PI}, scale factor: ${scaleFactor}`);
     
     const scale = segVectMag * scaleFactor;
     return unscaledVect.getScaledVector(scale);
@@ -51,7 +49,8 @@ export class ConnectSubPath {
   createPathElem() {
     const thisPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
     thisPath.setAttribute("d", this.dVal);
-    thisPath.dataset.segIdx = this.segIdx;
-    return thisPath;
+    thisPath.dataset.subDrawIdx = this.segIdx;
+    this.pathElem = thisPath;
+    return this.pathElem;
   }
 }
