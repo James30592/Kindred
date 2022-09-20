@@ -1,11 +1,8 @@
-import { RecommendationsMode } from "./modules/questions/components/\
-questionsMode/sub-classes/singleAnswerMode/sub-classes/recommendationsMode.mjs";
+import { RecommendationsMode } from "../modules/questions/components/questionsMode/sub-classes/singleAnswerMode/sub-classes/recommendationsMode.mjs";
 
-import { RecsQSource } from "./modules/questions/components/qSource/\
-sub-classes/recsQSource.mjs";
+import { RecsQSource } from "../modules/questions/components/qSource/sub-classes/recsQSource.mjs";
 
-import { RecsQuestionsPage } from "./modules/questions/questionsPage/\
-sub-classes/recsQuestionsPage.mjs";
+import { RecsQuestionsPage } from "../modules/questions/questionsPage/sub-classes/recsQuestionsPage.mjs";
 
 
 

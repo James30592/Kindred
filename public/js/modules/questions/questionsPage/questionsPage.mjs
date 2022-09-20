@@ -1,4 +1,5 @@
-import { finishFadeOut, findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
+import { finishFadeOut } from "../../fadeTransitions.mjs";
+import { findAndOverwriteElsePush } from "../../../../sharedJs/utils.mjs";
 
 import { QModeWithQueueInput } from "../components/questionsMode/sub-classes/\
 qModeWithQueueInput/qModeWithQueueInput.mjs";

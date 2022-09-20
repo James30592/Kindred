@@ -55,6 +55,8 @@ To do:
 
 -	use oAuth for signup
 
+-	add message if dont find any kindred / recommendations - "you don't have any kindred for these selections, try answering more questions or selecting different categories"
+
 
 
 

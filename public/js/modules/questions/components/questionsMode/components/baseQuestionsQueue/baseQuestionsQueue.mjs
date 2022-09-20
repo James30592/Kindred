@@ -1,4 +1,4 @@
-import { getQCategory, getQInfo } from "../../../../../../../sharedJs/utils.mjs";
+import { getQCategory, getQInfo } from "../../../../questionsHelpers.mjs";
 import { DomQueue } from "./components/domQueue.mjs";
 
 

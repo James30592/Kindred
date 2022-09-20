@@ -1,5 +1,5 @@
 // Helper class for the base questions queue, to represent the DOM queue items.
-import { createQDomItem, getQCategory } from "../../../../../../../../sharedJs/utils.mjs";
+import { createQDomItem, getQCategory } from "../../../../../questionsHelpers.mjs";
 
 
 

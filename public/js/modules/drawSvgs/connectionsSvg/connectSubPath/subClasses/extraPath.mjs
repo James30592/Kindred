@@ -1,11 +1,11 @@
-import { testRandom } from "../../../../../sharedJs/utils.mjs";
+import { testRandom } from "../../../../../../sharedJs/utils.mjs";
 import { ConnectSubPath } from "../connectSubPath.mjs";
 
 
 
 export class ExtraPath extends ConnectSubPath{
+  #extraPathId;
   rotDirToCorePath;
-  extraPathId;
   insideCore;
 
   // For the extra path that runs outside of the core path.
@@ -37,36 +37,36 @@ export class ExtraPath extends ConnectSubPath{
 
   constructor(segStart, segEnd, segIdx, extraPathId) {
     super(segStart, segEnd, segIdx);
-    this.extraPathId = extraPathId;
+    this.#extraPathId = extraPathId;
   }
 
   getCtrlPts(segVectMag, segStart, segEnd, prevSeg, nextSeg, segCorePath, bothExtraPathsEndPerp) {
-    this.ctrlPt1 = this.getCtrlPt1(segVectMag, prevSeg, segStart, segCorePath);
-    this.ctrlPt2 = this.getCtrlPt2(segEnd, nextSeg, segVectMag, segCorePath, bothExtraPathsEndPerp);
+    this.ctrlPt1 = this.#getCtrlPt1(segVectMag, prevSeg, segStart, segCorePath);
+    this.ctrlPt2 = this.#getCtrlPt2(segEnd, nextSeg, segVectMag, segCorePath, bothExtraPathsEndPerp);
   }
 
   // Generate a random vector to each side of the core path for each extra path, 
   // or continue the previous extra paths if there were any.
-  getCtrlPt1(segVectMag, prevSeg, segStart, segCorePath) {
+  #getCtrlPt1(segVectMag, prevSeg, segStart, segCorePath) {
     let ctrlPt1;
 
     // Is a following extra path, need first ctrlPt to be opposite of last 
     // seg's extra paths' 2nd ctrlPts.
     if (prevSeg?.hasPattern) {
-      const followingPath = prevSeg.extraPaths[this.extraPathId];
+      const followingPath = prevSeg.extraPaths[this.#extraPathId];
       this.insideCore = followingPath.insideCore;
 
       // Extra path will have crossed over the core path do rot dir is now opposite.
       this.rotDirToCorePath = -followingPath.rotDirToCorePath;
       const prevCtrlPt2 = followingPath.ctrlPt2;
-      ctrlPt1 = this.getContinuingCtrlPt1(prevCtrlPt2, segStart);
+      ctrlPt1 = this._getContinuingCtrlPt1(prevCtrlPt2, segStart);
     }
 
     // Otherwise, start new extra paths, slightly either side of core path.
     else {
       // ExtraPathId 0 always goes anticlockwise of core path, ExtraPathId 1 
       // always starts clockwise.
-      this.rotDirToCorePath = (this.extraPathId === 1) ? 1 : -1;
+      this.rotDirToCorePath = (this.#extraPathId === 1) ? 1 : -1;
 
       // True if this extra path is cutting inside the core path as the core 
       // path curves out.
@@ -76,7 +76,7 @@ export class ExtraPath extends ConnectSubPath{
       const randLims = insideCore ? ExtraPath.#RAND_INSIDE_VECT_LIMS : ExtraPath.#RAND_OUTSIDE_VECT_LIMS;
       const thisCoreStartVect = segStart.vectorTo(segCorePath.ctrlPt1).getUnitVector();
 
-      const translateVect = this.getRandVect(this.rotDirToCorePath, 
+      const translateVect = this._getRandVect(this.rotDirToCorePath, 
         thisCoreStartVect, segVectMag, randLims);
 
       ctrlPt1 = segStart.addVector(translateVect);
@@ -89,20 +89,20 @@ export class ExtraPath extends ConnectSubPath{
   // to the core path. If the next segment has extra paths then give it a good 
   // chance of rejoining the core path at a roughly perpendicular angle so this 
   // line can be continued on in the next segment for an interesting patterN.
-  getCtrlPt2(segEnd, nextSeg, segVectMag, segCorePath, bothExtraPathsEndPerp) {
+  #getCtrlPt2(segEnd, nextSeg, segVectMag, segCorePath, bothExtraPathsEndPerp) {
     let ctrlPt2;
 
     const thisCoreEndVect = segEnd.vectorTo(segCorePath.ctrlPt2).getUnitVector();
 
     let randLims = this.insideCore ? ExtraPath.#RAND_INSIDE_VECT_LIMS : ExtraPath.#RAND_OUTSIDE_VECT_LIMS;
 
-    const perpRejoin = this.getIsPerpRejoin(nextSeg, bothExtraPathsEndPerp);
+    const perpRejoin = this.#getIsPerpRejoin(nextSeg, bothExtraPathsEndPerp);
 
     if (perpRejoin) {
       randLims = ExtraPath.#RAND_PERP_VECT_LIMS;
     };
         
-    const translateVect = this.getRandVect(-this.rotDirToCorePath, 
+    const translateVect = this._getRandVect(-this.rotDirToCorePath, 
       thisCoreEndVect, segVectMag, randLims);
 
     ctrlPt2 = segEnd.addVector(translateVect);
@@ -111,7 +111,7 @@ export class ExtraPath extends ConnectSubPath{
 
   // For getting the 2nd control point, works out if this extra path should 
   // rejoin at perpendicular to core path.
-  getIsPerpRejoin(nextSeg, bothExtraPathsEndPerp) {
+  #getIsPerpRejoin(nextSeg, bothExtraPathsEndPerp) {
     let probPerpRejoin = 0;
     // Don't rejoin at perp if next seg has no pattern.
     if (nextSeg?.hasPattern) {

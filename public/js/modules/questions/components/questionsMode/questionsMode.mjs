@@ -1,4 +1,4 @@
-import { fadeIn, fadeOut } from "../../../../../sharedJs/utils.mjs";
+import { fadeIn, fadeOut } from "../../../fadeTransitions.mjs";
 import { AnswerUIPanel } from "./components/answerUiPanel.mjs";
 
 

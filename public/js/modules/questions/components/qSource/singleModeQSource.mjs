@@ -1,4 +1,4 @@
-import { createQDomItem, getQCategory, getQInfo } from "../../../../../sharedJs/utils.mjs";
+import { createQDomItem, getQCategory, getQInfo } from "../../questionsHelpers.mjs";
 
 
 

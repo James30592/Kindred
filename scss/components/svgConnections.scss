@@ -1,0 +1,26 @@
+@use "../abstracts/variables" as vars;
+
+
+
+.draw-svg-path {
+    transition: stroke-dashoffset vars.$svgAnimDrawTime;
+}
+
+.svg-connects-wrapper {
+    position: relative;
+}
+
+.connections-svg {
+    width: 100%;
+    height: 100%;
+
+    path {
+        stroke: black;
+        fill: none;
+        stroke-width: 1;
+    }
+}
+
+.connect-elem {
+    position: absolute;
+}

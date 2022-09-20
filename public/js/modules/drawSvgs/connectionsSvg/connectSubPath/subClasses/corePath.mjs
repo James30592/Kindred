@@ -1,4 +1,4 @@
-import { testRandom } from "../../../../../sharedJs/utils.mjs";
+import { testRandom } from "../../../../../../sharedJs/utils.mjs";
 import { ConnectSubPath } from "../connectSubPath.mjs";
 
 
@@ -18,12 +18,12 @@ export class CorePath extends ConnectSubPath {
   }
 
   getCtrlPts(idx, segVectMag, segStart, segEnd, segUnitVect, prevSeg) {
-    this.ctrlPt1 = this.getCtrlPt1(idx, segVectMag, segStart, segUnitVect, prevSeg);
-    this.ctrlPt2 = this.getCtrlPt2(segEnd, segUnitVect, segVectMag);
+    this.ctrlPt1 = this.#getCtrlPt1(idx, segVectMag, segStart, segUnitVect, prevSeg);
+    this.ctrlPt2 = this.#getCtrlPt2(segEnd, segUnitVect, segVectMag);
   }
 
   // Gets the first control point for this core path cubic bezier curve.
-  getCtrlPt1(idx, segVectMag, segStart, segUnitVect, prevSeg) {
+  #getCtrlPt1(idx, segVectMag, segStart, segUnitVect, prevSeg) {
     let ctrlPt1;
 
     const isFirstSeg = idx === 0;
@@ -34,7 +34,7 @@ export class CorePath extends ConnectSubPath {
       this.rotDirToSegVect = testRandom(0.5) ? 1 : -1;
       const randLims = CorePath.#RAND_VECT_LIMS;
 
-      const translateVect = this.getRandVect(this.rotDirToSegVect, segUnitVect, 
+      const translateVect = this._getRandVect(this.rotDirToSegVect, segUnitVect, 
         segVectMag, randLims);
 
       ctrlPt1 = segStart.addVector(translateVect);
@@ -45,7 +45,7 @@ export class CorePath extends ConnectSubPath {
     else {
       this.rotDirToSegVect = -prevSeg.corePath.rotDirToSegVect;
       const prevCoreCtrlPt2 = prevSeg.corePath.ctrlPt2;
-      ctrlPt1 = this.getContinuingCtrlPt1(prevCoreCtrlPt2, segStart);
+      ctrlPt1 = this._getContinuingCtrlPt1(prevCoreCtrlPt2, segStart);
     };
 
     return ctrlPt1;
@@ -53,11 +53,11 @@ export class CorePath extends ConnectSubPath {
 
   // Generate a random vector back from the seg end, on the same side relative 
   // to seg main vector.
-  getCtrlPt2(segEnd, segUnitVect, segVectMag) {
+  #getCtrlPt2(segEnd, segUnitVect, segVectMag) {
     const randLims = CorePath.#RAND_VECT_LIMS;
     const reverseSegVect = segUnitVect.getReverse();
 
-    const translateVect = this.getRandVect(-this.rotDirToSegVect, reverseSegVect, 
+    const translateVect = this._getRandVect(-this.rotDirToSegVect, reverseSegVect, 
       segVectMag, randLims);
 
     const ctrlPt2 = segEnd.addVector(translateVect);

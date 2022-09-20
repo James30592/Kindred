@@ -1,13 +1,13 @@
-import { randBetween, testRandom } from "../../../sharedJs/utils.mjs";
-import { drawSimulPaths } from "../../drawAnimSvgs.js";
-import { Vector2 } from "../vector2.mjs";
+import { randBetween, testRandom } from "../../../../sharedJs/utils.mjs";
+import { drawSimulPaths } from "../drawAnimSvgs.js";
+import { Vector2 } from "../../vector2.mjs";
 import { Segment } from "./segment.mjs";
 
 
 
 export class SingleConnection extends EventTarget {
   startId;
-  endId;
+  #endId;
   pathElems = [];
   #startCoords;
   #endCoords;
@@ -17,7 +17,6 @@ export class SingleConnection extends EventTarget {
   #perpUnitVect;
   #numSegments;
   #probSegPattern;
-  drawPriority;
   #blocksizeDecreaseProb;
   #standardSegLen;
   #segments;
@@ -32,10 +31,9 @@ export class SingleConnection extends EventTarget {
     super();
 
     this.startId = connectionInfo.elemIds[0];
-    this.endId = connectionInfo.elemIds[1];
+    this.#endId = connectionInfo.elemIds[1];
     this.#startCoords = connectionInfo.coords[0];
     this.#endCoords = connectionInfo.coords[1];
-    // this.drawPriority = connectionInfo.priority;
 
     this.#mainVect = this.#startCoords.vectorTo(this.#endCoords);
     this.#totalD = this.#mainVect.getMag();
@@ -67,7 +65,7 @@ export class SingleConnection extends EventTarget {
     };
     
     this.dispatchEvent(
-      new CustomEvent("connectionDrawn", {detail: {endId: this.endId}})
+      new CustomEvent("connectionDrawn", {detail: {endId: this.#endId}})
     );
   }
 
@@ -80,30 +78,23 @@ export class SingleConnection extends EventTarget {
 
   // Procedurally builds connection of svg path curves between two points.
   createPaths() {
-    const commonPts = this.getCommonPts();
-    const segPatternMap = this.buildSegPatternMap();
-    this.#segments = this.getSegDetails(segPatternMap, commonPts);
-    this.setPathsAndDVals(this.#segments);
-    this.createPathElems(this.#segments);
-    this.addConnectionDrawPriority();
-  }
-
-  addConnectionDrawPriority() {
-    this.pathElems.forEach(path => {
-      path.dataset.drawIdx = this.drawPriority;
-    });
+    const commonPts = this.#getCommonPts();
+    const segPatternMap = this.#buildSegPatternMap();
+    this.#segments = this.#getSegDetails(segPatternMap, commonPts);
+    this.#setPathsAndDVals(this.#segments);
+    this.#createPathElems(this.#segments);
   }
 
   // Creates all the path dom elements for each path of each segment in the 
   // connection.
-  createPathElems(segList) {
+  #createPathElems(segList) {
     segList.forEach(seg => {
       this.pathElems.push(...seg.createPathElems());
     });
   }
 
   // Sets the core and extra paths and the d values for all segments.
-  setPathsAndDVals(segList) {
+  #setPathsAndDVals(segList) {
     const setCorePath = (seg, prevSeg) => seg.setCorePath(prevSeg);
     const setExtraPaths = (seg, prevSeg, nextSeg) => seg.setExtraPaths(prevSeg, nextSeg);
     const setAllPaths = seg => seg.setAllPaths();
@@ -112,13 +103,13 @@ export class SingleConnection extends EventTarget {
     const pathProcessFuncs = [setCorePath, setExtraPaths, setAllPaths, setPathDVals];
 
     pathProcessFuncs.forEach(pathProcessFunc => {
-      this.segListProcessor(segList, pathProcessFunc)
+      this.#segListProcessor(segList, pathProcessFunc)
     });
   }
 
   // Used to apply the set core path, set extra path and set path d val 
   // functions to all segments.
-  segListProcessor(segList, processFunc) {
+  #segListProcessor(segList, processFunc) {
     segList.forEach((seg, idx) => {
       const prevSeg = segList[idx - 1];
       const nextSeg = segList[idx + 1];
@@ -128,7 +119,7 @@ export class SingleConnection extends EventTarget {
 
   // Creates a segment object for each segment using the segment map and common 
   // points and creates an array of these segment objects.
-  getSegDetails(segMap, commonPts) {
+  #getSegDetails(segMap, commonPts) {
     const segDetails = [];
 
     for (let segNum = 0; segNum < segMap.length; segNum++) {
@@ -145,7 +136,7 @@ export class SingleConnection extends EventTarget {
   }
 
   // Builds array of which segments are gaps ("g") and which have a pattern (1).
-  buildSegPatternMap() {
+  #buildSegPatternMap() {
     const segMap = Array.from("g".repeat(this.#numSegments));
 
     for (let segNum = 0; segNum < this.#numSegments; segNum++) {
@@ -195,9 +186,9 @@ export class SingleConnection extends EventTarget {
   }
 
   // Get the common points to be used for start and end of each segment.
-  getCommonPts() {
-    let commonPts = this.getPrelimCommonPts();
-    commonPts = this.randCommonPts(commonPts);
+  #getCommonPts() {
+    let commonPts = this.#getPrelimCommonPts();
+    commonPts = this.#randCommonPts(commonPts);
     commonPts.splice(0, 0, this.#startCoords);
     commonPts.push(this.#endCoords);
 
@@ -205,7 +196,7 @@ export class SingleConnection extends EventTarget {
   }
 
   // Lerps between start and end coords to create specified number of segments.
-  getPrelimCommonPts() {
+  #getPrelimCommonPts() {
     const pts = [];
 
     for (let i = 1; i < this.#numSegments; i++) {
@@ -219,7 +210,7 @@ export class SingleConnection extends EventTarget {
 
   // Randomise each preliminary common point with some ajustment in the direction of 
   // the main vector and perpendicular to it.
-  randCommonPts(commonPts) {
+  #randCommonPts(commonPts) {
     for (let i = 0; i < commonPts.length; i++) {
       const commonPt = commonPts[i];
 

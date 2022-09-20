@@ -1,4 +1,4 @@
-import { FindKindredList } from "./modules/findKindred/findKindredList.mjs";
+import { FindKindredList } from "../modules/findKindred/findKindredList.mjs";
 
 
 

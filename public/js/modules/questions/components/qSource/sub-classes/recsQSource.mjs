@@ -1,7 +1,7 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { getQInfo } from "../../../../../../sharedJs/utils.mjs";
-import { fadeContentMixin } from "../../../../../fadeContentMixin.mjs";
+import { getQInfo } from "../../../questionsHelpers.mjs";
+import { fadeContentMixin } from "../../../../fadeContentMixin.mjs";
 
 
 

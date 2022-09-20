@@ -1,4 +1,4 @@
-import { ConnectionsSvg } from "./modules/connectionsSvg/connectionsSvg.mjs";
+import { ConnectionsSvg } from "../modules/drawSvgs/connectionsSvg/connectionsSvg.mjs";
 
 
 

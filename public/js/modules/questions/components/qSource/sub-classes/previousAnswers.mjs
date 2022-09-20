@@ -1,4 +1,5 @@
-import { fadeIn, fullyFadeOut, getQInfo } from "../../../../../../sharedJs/utils.mjs";
+import { fadeIn, fullyFadeOut } from "../../../../fadeTransitions.mjs";
+import { getQInfo } from "../../../questionsHelpers.mjs";
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 
 

@@ -1,42 +1,40 @@
-import { testRandom } from "../../../sharedJs/utils.mjs";
+import { testRandom } from "../../../../sharedJs/utils.mjs";
 import { CorePath } from "./connectSubPath/subClasses/corePath.mjs";
 import { ExtraPath } from "./connectSubPath/subClasses/extraPath.mjs";
 
 
 
 export class Segment {
-  idx;
+  #idx;
+  #start;
+  #end;
+  #mainVect;
+  #mainUnitVect;
+  #vectMag;
+  extraPathsBothEndsPerp = false;
   hasPattern;
-  start;
-  end;
-  mainVect;
-  mainUnitVect;
-  vectMag;
-  perpUnitVect;
   corePath;
   extraPaths = [];
   allPaths = [];
-  extraPathsBothEndPerp = false;
 
   static #PROB_BOTH_EXTRA_END_PERP = 0.4;
 
   constructor(idx, hasPattern, start, end) {
-    this.idx = idx;
+    this.#idx = idx;
     this.hasPattern = hasPattern;
-    this.start = start;
-    this.end = end;
-    this.mainVect = this.start.vectorTo(this.end);
-    this.mainUnitVect = this.mainVect.getUnitVector();
-    this.vectMag = this.mainVect.getMag();
-    this.perpUnitVect = this.mainUnitVect.getRotatedVector(Math.PI / 2);
+    this.#start = start;
+    this.#end = end;
+    this.#mainVect = this.#start.vectorTo(this.#end);
+    this.#mainUnitVect = this.#mainVect.getUnitVector();
+    this.#vectMag = this.#mainVect.getMag();
   }
 
   // Populate the corePathCtrlPts for this segment.
   setCorePath(prevSeg) {
-    this.corePath = new CorePath(this.start, this.end, this.idx);
+    this.corePath = new CorePath(this.#start, this.#end, this.#idx);
 
-    this.corePath.getCtrlPts(this.idx, this.vectMag, this.start, this.end, 
-      this.mainUnitVect, prevSeg);
+    this.corePath.getCtrlPts(this.#idx, this.#vectMag, this.#start, this.#end, 
+      this.#mainUnitVect, prevSeg);
   }
 
   // Populate the ctrlPts for the extra paths for this segment, if it has any.
@@ -45,17 +43,17 @@ export class Segment {
 
     // Dont allow a segment to have both ends be perpendicular for both extra 
     // paths or looks like fat bubble.
-    const prevSegBothEndPerp = prevSeg?.extraPathsBothEndPerp;
-    this.extraPathsBothEndPerp = prevSegBothEndPerp ? false 
+    const prevSegBothEndsPerp = prevSeg?.extraPathsBothEndsPerp;
+    this.extraPathsBothEndsPerp = prevSegBothEndsPerp ? false 
       : testRandom(Segment.#PROB_BOTH_EXTRA_END_PERP);
 
     for (let extraPathNum = 0; extraPathNum < 2; extraPathNum++) {
 
-      this.extraPaths[extraPathNum] = new ExtraPath(this.start, this.end, 
-        this.idx, extraPathNum);
+      this.extraPaths[extraPathNum] = new ExtraPath(this.#start, this.#end, 
+        this.#idx, extraPathNum);
 
-      this.extraPaths[extraPathNum].getCtrlPts(this.vectMag, this.start, 
-        this.end, prevSeg, nextSeg, this.corePath, this.extraPathsBothEndPerp);
+      this.extraPaths[extraPathNum].getCtrlPts(this.#vectMag, this.#start, 
+        this.#end, prevSeg, nextSeg, this.corePath, this.extraPathsBothEndsPerp);
     };
   }
 

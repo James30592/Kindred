@@ -1,4 +1,4 @@
-import { fadeContentMixin } from "../../fadeContentMixin.mjs";
+import { fadeContentMixin } from "../fadeContentMixin.mjs";
 import { CategoryCheckboxes } from "../categoryCheckboxes.mjs";
 
 

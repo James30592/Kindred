@@ -1,4 +1,4 @@
-import { awaitTransition } from "../sharedJs/utils.mjs";
+import { awaitTransition } from "../../../sharedJs/utils.mjs";
 
 
 
@@ -31,7 +31,8 @@ function drawAnimPath(path) {
   }, 0);
 }
 
-// Draws an array of paths simultaneously and promise resolves when all drawn.
+// Draws an array of paths simultaneously and returns promise that resolves 
+// when all drawn.
 export async function drawSimulPaths(paths) {
   let pathsDrawn = new Promise(res => res());
 
@@ -45,14 +46,9 @@ export async function drawSimulPaths(paths) {
   return;
 }
 
-
-
-
-
-
-
-
-// 
+// This and below two functions not used currently as decided to use a style of 
+// drawing where each connection is drawn once a connection is drawn to that 
+// element, this is done in the ConnectionsSvg class.
 export async function drawInOrder(svg) {
   const svgPaths = Array.from(svg.children);
   svgPaths.forEach(pathElem => pathElem.classList.add("hidden"));
@@ -84,7 +80,6 @@ async function drawSubPaths(paths) {
   await pathsDrawn;
   return;
 }
-
 
 // Builds an object with keys of drawIdxs and sub keys of subDrawIdxs and 
 // properties which are arrays of paths with these draw and subDraw idxs.

@@ -1,4 +1,4 @@
-import { fadeIn, fullyFadeOut } from "../../sharedJs/utils.mjs";
+import { fadeIn, fullyFadeOut } from "./fadeTransitions.mjs";
 
 
 
