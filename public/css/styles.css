@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: rgb(247, 237, 176);
+  background-image: radial-gradient(circle at 0% 0%, hsl(52deg, 82%, 83%) 0%, hsl(52deg, 82%, 83%) 35%, hsl(52deg, 82%, 96%) 100%);
 }
 
 hr {
@@ -15,7 +15,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Merienda", cursive;
-  color: rgb(54, 54, 54);
+  color: hsl(0deg, 0%, 21%);
 }
 
 h1 {
@@ -581,7 +581,7 @@ nav {
   display: flex;
   justify-content: end;
   align-items: center;
-  background-color: rgb(54, 54, 54);
+  background-color: hsl(0deg, 0%, 21%);
   height: 60px;
 }
 nav .logo-container {
@@ -641,17 +641,33 @@ nav .logo-container {
   height: 100%;
 }
 .connections-svg path {
-  stroke: black;
+  stroke: hsl(0deg, 0%, 43%);
   fill: none;
-  stroke-width: 1;
+  stroke-width: calc(0.5px + 0.05vw);
 }
 
 .connect-elem {
   position: absolute;
 }
 
+.lg-cursive-btn {
+  transition: opacity 0.3s;
+  font: calc(0.7rem + 0.5vw) "Merienda", cursive;
+  background-color: hsl(230deg, 49%, 29%);
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  opacity: 0.8;
+}
+.lg-cursive-btn:hover {
+  text-decoration: none;
+  color: white;
+  opacity: 1;
+}
+
 .home-content {
   width: 70%;
+  height: 40vh;
   margin: 30vh auto;
 }
 .home-content hr {
@@ -667,7 +683,7 @@ nav .logo-container {
 }
 
 .home-blurb {
-  color: rgb(110, 110, 110);
+  color: hsl(222deg, 22%, 60%);
 }
 
 /* Mobile size. */
@@ -686,7 +702,7 @@ nav .logo-container {
 }
 .loc-detail-wrapper > * {
   vertical-align: top;
-  color: rgb(110, 110, 110);
+  color: hsl(0deg, 0%, 43%);
 }
 .loc-detail-wrapper span {
   padding-right: 20px;
@@ -698,7 +714,7 @@ nav .logo-container {
 }
 
 .loc-detail {
-  background-color: rgb(247, 237, 176);
+  background-color: hsl(52deg, 82%, 83%);
   border: 0;
   width: 70%;
 }
@@ -709,27 +725,75 @@ nav .logo-container {
 }
 
 .qs-btn {
-  left: 10%;
-  top: 30%;
-  transform: translate(-50%, -50%);
+  left: 45%;
+  top: 15%;
+  transform: translate(-50%, -150%);
+}
+.qs-btn::after {
+  content: "";
+  position: absolute;
+  left: calc(-1 * -50%);
+  top: calc(-1 * -150%);
 }
 
 .kindred-btn {
-  left: 45%;
-  top: 20%;
-  transform: translate(-50%, -50%);
+  left: 25%;
+  top: 45%;
+  transform: translate(-110%, -50%);
+}
+.kindred-btn::after {
+  content: "";
+  position: absolute;
+  left: calc(-1 * -110%);
+  top: calc(-1 * -50%);
 }
 
 .recs-btn {
-  right: 10%;
+  right: 25%;
   bottom: 30%;
-  transform: translate(50%, 50%);
+  transform: translate(50%, 150%);
+}
+.recs-btn::after {
+  content: "";
+  position: absolute;
+  right: calc(1 * 50%);
+  bottom: calc(1 * 150%);
 }
 
 .admin-btn {
   pointer-events: all;
   position: absolute;
   top: 10%;
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+  .profile-svg-connects {
+    width: 100%;
+    height: calc(100vh - 40px);
+  }
+  .kindred-btn {
+    left: 25%;
+    top: 45%;
+    transform: translate(-60%, -50%);
+  }
+  .kindred-btn::after {
+    content: "";
+    position: absolute;
+    left: calc(-1 * -60%);
+    top: calc(-1 * -50%);
+  }
+  .recs-btn {
+    right: 25%;
+    bottom: 30%;
+    transform: translate(40%, 150%);
+  }
+  .recs-btn::after {
+    content: "";
+    position: absolute;
+    right: calc(1 * 40%);
+    bottom: calc(1 * 150%);
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -9,7 +9,7 @@
 }
 
 body {
-  background-color: vars.$primary-yellow;
+  background-image: radial-gradient(circle at 0% 0%, vars.$primary-yellow 0%, vars.$primary-yellow 35%, vars.$lighter-yellow 100%);
 }
 
 hr {

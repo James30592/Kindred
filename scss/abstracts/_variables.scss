@@ -1,7 +1,14 @@
 // Colours
-$primary-yellow: rgb(247, 237, 176);
-$primary-grey: rgb(54, 54, 54);
-$secondary-grey: rgb(110, 110, 110);
+$primary-yellow: hsl(52, 82%, 83%);
+$lighter-yellow: hsl(52, 82%, 96%);
+
+$primary-grey: hsl(0, 0%, 21%);
+$secondary-grey: hsl(0, 0%, 43%);
+$lighter-grey: hsl(0, 0%, 65%);
+
+$navy-blue: hsl(230, 49%, 29%);
+$mid-blue: hsl(222, 22%, 48%);
+$lighter-blue: hsl(222, 22%, 60%);
 
 // Fonts
 $cursive: 'Merienda', cursive;

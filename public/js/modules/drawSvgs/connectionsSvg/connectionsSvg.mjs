@@ -122,10 +122,11 @@ export class ConnectionsSvg {
     
     elems.forEach(elem => {
       const connectInfo = {};
-    
+
       const thisElemRect = elem.getBoundingClientRect();
-      const connectPsn = this.#getConnectPsn(thisElemRect, parentOffset);
-      
+      const afterElemStyles = window.getComputedStyle(elem, ':after');
+      const connectPsn = this.#getConnectPsn(thisElemRect, afterElemStyles, parentOffset);
+
       const elemConnectId = elem.dataset.connectId;
       connectInfo.elemId = elemConnectId;
       connectInfo.posn = connectPsn;
@@ -138,9 +139,9 @@ export class ConnectionsSvg {
   }
 
   // Get connect position coordinates for an element.
-  #getConnectPsn(elemRect, parentOffset) {
-    const xCoord = ((elemRect.left + elemRect.right) / 2) - parentOffset.x;
-    const yCoord = ((elemRect.top + elemRect.bottom) / 2) - parentOffset.y;
+  #getConnectPsn(elemRect, afterElemStyles, parentOffset) {
+    const xCoord = elemRect.left - parentOffset.x + parseInt(afterElemStyles.left, 10);
+    const yCoord = elemRect.top - parentOffset.y + parseInt(afterElemStyles.top, 10);
     const connectCoords = new Vector2(xCoord, yCoord);
   
     return connectCoords;

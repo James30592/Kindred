@@ -4,6 +4,7 @@
 
 .home-content {
     width: 70%;
+    height: 40vh;
     margin: 30vh auto;
 
     hr {
@@ -21,7 +22,7 @@
 }
 
 .home-blurb {
-    color: vars.$secondary-grey;
+    color: vars.$lighter-blue;
 }
 
 /* Mobile size. */

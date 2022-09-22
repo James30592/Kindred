@@ -1,16 +1,11 @@
 To do:
 
 
--	tidy up all code
 
 
 
 
 
-
-
-
--	make yellow background a gradient
 
 
 
@@ -56,6 +51,10 @@ To do:
 -	use oAuth for signup
 
 -	add message if dont find any kindred / recommendations - "you don't have any kindred for these selections, try answering more questions or selecting different categories"
+
+-	about section when scroll down on main page, or with link to seperate page
+
+-	procedurally generated svg border around buttons, paintbrush line border around
 
 
 
