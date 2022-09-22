@@ -1,0 +1,66 @@
+@use "../abstracts/variables" as vars;
+
+
+
+@mixin anchorBtn {
+    display: inline-block;
+    transition: background-color 0.3s, opacity 0.3s ;
+    padding: 0.5em 1em;
+    border-radius: 0.3em;
+    margin: 2px 0;
+
+    &:hover {
+        text-decoration: none;
+    }    
+}
+
+.lg-cursive-btn {
+    @include anchorBtn;
+    font: vars.$fontSize5 vars.$cursive;
+    background-color: vars.$navy-blue;
+    color: white;
+    opacity: 0.8;
+
+    &:hover {
+        color: white;
+        opacity: 1;
+    }
+}
+
+.base-btn {
+    @include anchorBtn;
+    font: vars.$fontSize7 vars.$sansSerif;
+}
+
+.grey-btn {
+    @extend .base-btn;
+    background-color: vars.$primary-grey;
+    color: white;
+
+    &:hover {
+        background-color: vars.$secondary-grey;
+        color: white;
+    }
+}
+
+.white-btn {
+    @extend .base-btn;
+    background-color: white;
+    color: black;
+
+    &:hover {
+        background-color: rgb(224, 224, 224);
+        color: black;
+    }
+}
+
+.blue-btn {
+    @extend .base-btn;
+    background-color: vars.$lighter-blue;
+    color: white;
+
+    &:hover {
+        background-color: vars.$mid-blue;
+        color: white;
+    }
+}

@@ -3,8 +3,15 @@
   font-family: "Catamaran", sans-serif;
 }
 
+html {
+  height: 100%;
+}
+
 body {
-  background-image: radial-gradient(circle at 0% 0%, hsl(52deg, 82%, 83%) 0%, hsl(52deg, 82%, 83%) 35%, hsl(52deg, 82%, 96%) 100%);
+  background: radial-gradient(circle at 0% 0%, hsl(52deg, 82%, 83%) 0%, hsl(52deg, 82%, 83%) 35%, hsl(52deg, 82%, 96%) 100%) no-repeat fixed;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 hr {
@@ -47,6 +54,18 @@ h4 {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.page-heading {
+  margin-bottom: 8%;
+}
+
+.page-content {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
 }
 
 /* Tablet up to desktop size. */
@@ -511,11 +530,11 @@ h4 {
   font-weight: 600;
 }
 
-.content-wrapper {
+.border-box-wrapper {
   position: relative;
 }
 
-.content {
+.border-box-content {
   padding: 7%;
 }
 
@@ -554,10 +573,6 @@ h4 {
   display: inline-block;
   margin: 13vh auto auto 15vw;
   min-width: 25%;
-}
-
-.page-heading {
-  margin-bottom: 8%;
 }
 
 /* Tablet up to desktop size. */
@@ -651,18 +666,67 @@ nav .logo-container {
 }
 
 .lg-cursive-btn {
-  transition: opacity 0.3s;
+  display: inline-block;
+  transition: background-color 0.3s, opacity 0.3s;
+  padding: 0.5em 1em;
+  border-radius: 0.3em;
+  margin: 2px 0;
   font: calc(0.7rem + 0.5vw) "Merienda", cursive;
   background-color: hsl(230deg, 49%, 29%);
   color: white;
-  padding: 0.5em 1em;
-  border-radius: 8px;
   opacity: 0.8;
 }
 .lg-cursive-btn:hover {
   text-decoration: none;
+}
+.lg-cursive-btn:hover {
   color: white;
   opacity: 1;
+}
+
+.base-btn, .blue-btn, .white-btn, .grey-btn {
+  display: inline-block;
+  transition: background-color 0.3s, opacity 0.3s;
+  padding: 0.5em 1em;
+  border-radius: 0.3em;
+  margin: 2px 0;
+  font: calc(0.5rem + 0.375vw) "Catamaran", sans-serif;
+}
+.base-btn:hover, .blue-btn:hover, .white-btn:hover, .grey-btn:hover {
+  text-decoration: none;
+}
+
+.grey-btn {
+  background-color: hsl(0deg, 0%, 21%);
+  color: white;
+}
+.grey-btn:hover {
+  background-color: hsl(0deg, 0%, 43%);
+  color: white;
+}
+
+.white-btn {
+  background-color: white;
+  color: black;
+}
+.white-btn:hover {
+  background-color: rgb(224, 224, 224);
+  color: black;
+}
+
+.blue-btn {
+  background-color: hsl(222deg, 22%, 60%);
+  color: white;
+}
+.blue-btn:hover {
+  background-color: hsl(222deg, 22%, 48%);
+  color: white;
+}
+
+.back-btns-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 5vh;
 }
 
 .home-content {
@@ -672,9 +736,6 @@ nav .logo-container {
 }
 .home-content hr {
   margin: 30px 0;
-}
-.home-content .btn {
-  font-size: calc(0.6rem + 0.45vw);
 }
 
 .home-logo {
@@ -793,6 +854,37 @@ nav .logo-container {
     position: absolute;
     right: calc(1 * 40%);
     bottom: calc(1 * 150%);
+  }
+}
+.questions-menu-content {
+  width: 45%;
+  margin: 50px 0 100px 20%;
+}
+
+.q-menu-heading {
+  font-size: calc(1.2rem + 0.9vw);
+  margin-bottom: 20px;
+}
+
+.q-menu-cat-group {
+  margin-bottom: 8vh;
+}
+.q-menu-cat-group .blue-btn {
+  font-size: calc(0.6rem + 0.45vw);
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+  .questions-menu-content {
+    width: 70%;
+    margin-left: 15%;
+  }
+}
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+  .questions-menu-content {
+    width: 80%;
+    margin-left: 10%;
   }
 }
 

@@ -1,0 +1,37 @@
+@use "../abstracts/variables" as vars;
+
+
+
+.questions-menu-content {
+    width: 45%;
+    margin: 50px 0 100px 20%;
+}
+
+.q-menu-heading {
+    font-size: vars.$fontSize3;
+    margin-bottom: 20px;
+}
+
+.q-menu-cat-group {
+    margin-bottom: 8vh;
+
+    .blue-btn {
+        font-size: vars.$fontSize6;
+    }
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+    .questions-menu-content {
+        width: 70%;
+        margin-left: 15%;
+    }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+    .questions-menu-content {
+        width: 80%;
+        margin-left: 10%;
+    }
+}
