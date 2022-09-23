@@ -2,34 +2,27 @@
 
 
 
-@mixin anchorBtn {
+.base-btn {
+    cursor: pointer;
+    font: vars.$fontSize7 vars.$sansSerif;
     display: inline-block;
-    transition: background-color 0.3s, opacity 0.3s ;
+    transition: background-color 0.3s, opacity 0.3s, filter 0.3s;
     padding: 0.5em 1em;
+    border-width: 0;
     border-radius: 0.3em;
-    margin: 2px 0;
+    margin: 2px 2px;
 
     &:hover {
         text-decoration: none;
-    }    
-}
-
-.lg-cursive-btn {
-    @include anchorBtn;
-    font: vars.$fontSize5 vars.$cursive;
-    background-color: vars.$navy-blue;
-    color: white;
-    opacity: 0.8;
-
-    &:hover {
-        color: white;
-        opacity: 1;
     }
-}
 
-.base-btn {
-    @include anchorBtn;
-    font: vars.$fontSize7 vars.$sansSerif;
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 5px auto black;
+    }
 }
 
 .grey-btn {
@@ -62,5 +55,18 @@
     &:hover {
         background-color: vars.$mid-blue;
         color: white;
+    }
+}
+
+.lg-cursive-btn {
+    @extend .base-btn;
+    font: vars.$fontSize5 vars.$cursive;
+    background-color: vars.$navy-blue;
+    color: white;
+    opacity: 0.8;
+
+    &:hover {
+        color: white;
+        opacity: 1;
     }
 }

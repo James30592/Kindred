@@ -8,8 +8,6 @@ import mongoose from "mongoose";
 import passport from "passport";
 const session = require("express-session");
 
-
-
 const app = express();
 
 app.use(express.static("public"));
@@ -18,7 +16,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use(session({
-  secret: "Our little secret.",
+  secret: "Very important secret.",
   resave: false,
   saveUninitialized: false
 }));

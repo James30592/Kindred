@@ -1,11 +1,13 @@
 <div class="auto-mode fade-trans fully-hidden transparent">
 
     <!-- Auto queue input panel -->
-    <div class="queue-input-panel">
-        <label>
-            <input class="incl-prev-ans" type="checkbox"> Include already answered
-        </label>
-        <hr>
+    <div class="border-box-wrapper queue-input-panel">
+    <%- include('../borders') %>
+        <div class="border-box-content">
+            <label class="incl-prev-ans-label">
+                <input class="incl-prev-ans" type="checkbox">Include previously answered questions
+            </label>
+        </div>
     </div>
 
     <!-- Answer UI panel -->
@@ -13,7 +15,5 @@
         <%- include("components/queueImgs") %>
         <%- include("components/answerUIPanel") %>
     </div>
-
-    <hr>
     
 </div>

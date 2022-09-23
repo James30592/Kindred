@@ -1,0 +1,42 @@
+@use "../../abstracts/variables" as vars;
+
+
+
+.queue-input-panel {
+    display: inline-block;
+    margin: 40px 0;
+
+    > .border-box-content {
+        padding: 15px;
+    }
+}
+
+.incl-prev-ans-label {
+    font-size: vars.$fontSize8;
+    white-space: nowrap;
+    margin: 0;
+
+    > input {
+        margin-right: 10px;
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 15px;
+        height: 15px;
+    }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+    .queue-input-panel {
+        margin: 15px 0;
+
+        > .border-box-content {
+            padding: 7px 10px;
+        }
+    }
+
+    .incl-prev-ans-label > input {
+        width: 10px;
+        height: 10px;
+    }
+}

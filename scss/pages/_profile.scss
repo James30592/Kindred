@@ -9,7 +9,7 @@
 }
 
 .qs-btn {
-    @include svgConnects.svgConnect(left, 45%, top, 15%, -50%, -150%);
+    @include svgConnects.svgConnect(left, 50%, top, 15%, -50%, -150%);
 }
 
 .kindred-btn {

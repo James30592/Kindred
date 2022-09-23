@@ -1,0 +1,34 @@
+@use "../abstracts/variables" as vars;
+
+
+
+.questions-content {
+    width: 45%;
+    margin: 2% 0 2% 20%;
+
+    > .border-box-wrapper {
+        background-color: rgba(255, 255, 255, 0.7);
+        // background-image: linear-gradient(to right, rgba(255,255,255,0.7), rgba(255,255,255,0.7) 60%, rgba(255,255,255,0) 90%);
+        // background-image: radial-gradient(circle, rgba(255,255,255,0.7), rgba(255,255,255,0.7) 30%, rgba(255,255,255,0) 50%);
+    }
+
+    .main-header {
+        margin-bottom: 5%;
+    }
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+    .questions-content {
+        width: 70%;
+        margin: 5% 15%;
+    }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+    .questions-content {
+        width: 90%;
+        margin: 5%;
+    }
+}

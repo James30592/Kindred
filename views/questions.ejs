@@ -2,51 +2,52 @@
   <title>Find Kindred</title>
 </head>
 <body>
-  <%- include('partials/navbar') %>
+  <div class="page-content">
+    <%- include('partials/navbar') %>
 
-  <div class="container mt-5">
-    <h1>Questions</h1>
+    <div class="questions-content">
+      <!-- <h1 class="page-heading">Questions</h1> -->
 
-    <div class="row">
-      <div class="col-sm-8">
-        <div class="card">
-          <div class="card-body">
-            
-            <h2 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
-              data-cat="<%= categoryName %>">
-              <%= categoryTypeName %> - <%= categoryName %></h2>
-            
-            <!-- Questions mode select -->
-            <hr>
-            <div class="q-mode-selector">
-              <button class="auto-queue-mode-btn">Auto Queue</button>
-              <button class="search-mode-btn">Search</button>
-              <button class="prev-answers-mode-btn">Previous Answers</button>
-            </div>
-            <hr>
-            
-            <!-- Prev answers list -->
-            <div class="prev-answers-list q-source fade-trans fully-hidden transparent">
-              <div class="content"></div>
-            </div>
-
-            <div class="question-modes">
-              <!-- Auto mode -->
-              <%- include("partials/questions/autoMode") %>
-              
-              <!-- Search mode -->
-              <%- include("partials/questions/searchMode") %>
-
-              <!-- Previous answers mode -->
-              <%- include("partials/questions/singleAnswerMode") %>
-            </div>
-            
-            <a class="btn btn-light" href="/questions-menu" role="button">Back to questions menu</a>
-            <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
+      <div class="border-box-wrapper">
+        <%- include('partials/borders') %>
+    
+        <div class="border-box-content">
+     
+          <h3 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
+            data-cat="<%= categoryName %>">
+            <%= categoryTypeName %> - <%= categoryName %></h3>
+          
+          <!-- Questions mode select -->
+          <div class="q-mode-selector">
+            <button class="auto-queue-mode-btn">Suggestions</button>
+            <button class="search-mode-btn">Search</button>
+            <button class="prev-answers-mode-btn">Previous Answers</button>
           </div>
-        </div>
-      </div>
+          
+          <!-- Prev answers list -->
+          <div class="prev-answers-list q-source fade-trans fully-hidden transparent">
+            <div class="content"></div>
+          </div>
 
+          <div class="question-modes">
+            <!-- Auto mode -->
+            <%- include("partials/questions/autoMode") %>
+            
+            <!-- Search mode -->
+            <%- include("partials/questions/searchMode") %>
+
+            <!-- Previous answers mode -->
+            <%- include("partials/questions/singleAnswerMode") %>
+          </div>  
+        </div>  
+      </div>  
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="back-btns-wrapper">
+      <a class="white-btn" href="/questions-menu" role="button">Back to Questions Menu</a>
+      <a class="grey-btn" href="/profile" role="button">Back to Profile</a>
     </div>
   </div>
   

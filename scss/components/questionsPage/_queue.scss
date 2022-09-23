@@ -1,6 +1,6 @@
 /* Questions page queues. */
-$num2-queue-transp: 0.6;
-$num3-queue-transp: 0.3;
+$num2-queue-transp: 0.15;
+$num3-queue-transp: 0.05;
 
 .queue-imgs {
     position: relative;
@@ -8,8 +8,7 @@ $num3-queue-transp: 0.3;
 }
   
 .queue-imgs > div {
-    width: 120px;
-    height: 180px;
+    width: 20%;
     display: inline-block;
     position: relative;
     vertical-align: bottom;
@@ -65,7 +64,7 @@ $num3-queue-transp: 0.3;
 /* Questions page queue transitions. */
 .queue-imgs-transitioning {
     transition: 0.5s all;
-    left: -120px;
+    left: -20%;
 }
   
 .queue-imgs-transitioning div {
@@ -87,4 +86,15 @@ $num3-queue-transp: 0.3;
   
 .queue-imgs-transitioning div:nth-child(2) audio {
     opacity: 1;
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+    .queue-imgs > div {
+        width: 25%;
+    }
+
+    .queue-imgs-transitioning {
+        left: -25%;
+    }
 }

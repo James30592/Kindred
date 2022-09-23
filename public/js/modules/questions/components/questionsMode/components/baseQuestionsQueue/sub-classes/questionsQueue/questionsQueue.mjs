@@ -92,7 +92,6 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   handleOutdatedQueueItem(queueIndex, recentAnswer, doTrans) {
     const inclPrevAnswers = this.inputPanel?.includeAlreadyAnsweredCheckbox?.checked;
     const previouslyInThisQueue = this._queuePrevQs.includes(this.queue[queueIndex]._id);
-    console.log(`Previously in this queue: ${previouslyInThisQueue}`);
     // If want to include already answered questions, then just update the 
     // queue question currAns to the latest local answer info.
     if (inclPrevAnswers && !previouslyInThisQueue) {

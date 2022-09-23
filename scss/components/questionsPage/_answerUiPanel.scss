@@ -1,16 +1,48 @@
 // Answer UI panel.
 @use "../../../node_modules/@yaireo/ui-range/ui-range.scss";
+@use "../../components/buttons";
+@use "../../abstracts/variables" as vars;
+
+
 
 .score-slider {
-  --fill-color: linear-gradient(to right, rgb(112, 42, 42), var(--primary-color));
+  --fill-color: linear-gradient(to right, hsl(0, 65%, 81%), hsl(222, 22%, 60%));
   --thumb-size: 30px;
   --track-height: var(--thumb-size) / 3;
-  width: 500px;
+  width: 100%;
   display: block;
-  margin: 70px 0 60px 0;
+  margin: 2% 0 60px 0;
 
   output::after {
     font-size: 20px !important;
+  }
+}
+
+.answer-btns-container {
+  display: flex;
+  justify-content: center;
+}
+
+.skip-btn, .rate-btn {
+  @extend .base-btn;
+  margin: 2px 10px;
+}
+
+.skip-btn {
+  background-color: vars.$navy-blue;
+  color: white;
+
+  &:hover {
+    filter:brightness(1.8);
+  }
+}
+
+.rate-btn {
+  background-color: vars.$lighter-pink;
+  font-weight: 700 !important;
+
+  &:hover {
+    filter:brightness(1.2);
   }
 }
 
