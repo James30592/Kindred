@@ -7,10 +7,12 @@ export class QuestionsMode extends EventTarget {
   mainDiv;
   answerUiPanel;
   questionsQueue;
+  btn;
 
-  constructor(mainDiv) {
+  constructor(mainDiv, btn = null) {
     super();
     this.mainDiv = mainDiv;
+    this.btn = btn;
     this.answerUiPanel = new AnswerUIPanel(mainDiv);
   }
 
@@ -76,10 +78,18 @@ export class QuestionsMode extends EventTarget {
   }
 
   activate() {
+    if (this.btn) {
+      this.btn.classList.add("active-q-mode");
+    };
+
     fadeIn(this.mainDiv);
   }
 
   deactivate() {
+    if (this.btn) {
+      this.btn.classList.remove("active-q-mode");
+    };
+
     fadeOut(this.mainDiv);
   }
 }

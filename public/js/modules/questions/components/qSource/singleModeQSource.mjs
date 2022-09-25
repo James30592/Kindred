@@ -23,19 +23,9 @@ export class SingleModeQSource extends EventTarget {
 
     qSourceItem.classList.add(this._qDivClass);
 
-    const qText = document.createElement("span");
-    const qScore = document.createElement("span");
-
-    const qImg = qSourceItem.querySelector("img") ?? 
-      qSourceItem.querySelector(".placeholder-img");
-
-    qImg.addEventListener("click", evt => {
-      this._handleRateBtnClick(evt, q);
-    });
-    
-    qScore.innerText = this._getScoreText(q);
-    qText.innerText = getQInfo(q.questionDetails, "qSourceDisplayText", 
-    catTypeName, catName);
+    const qText = this._getQTextElem(q, catTypeName, catName);
+    const qScore = this._getQScoreElem(q);
+    this._setupQImg(q, qSourceItem);
 
     const qInfo = {
       qSourceItem: qSourceItem,
@@ -61,5 +51,51 @@ export class SingleModeQSource extends EventTarget {
       const qSourceItem = this._createQDiv(question);
       this._contentDiv.appendChild(qSourceItem);
     };
+  }
+
+  _getQTextElem(q, catTypeName, catName) {
+    const qText = document.createElement("p");
+
+    qText.innerText = getQInfo(q.questionDetails, "qSourceDisplayText", 
+      catTypeName, catName);
+    
+    qText.classList.add("q-text");
+    return qText;
+  }
+
+  _getQScoreElem(q) {
+    const qScore = document.createElement("p");
+    qScore.innerText = this._getScoreText(q);
+    qScore.classList.add("user-score");
+    return qScore;
+  }
+
+  // Add event listener for click to the image / placeholder image.
+  // Also create and add hover effect div.
+  _setupQImg(q, qSourceItem) {
+    const qImg = qSourceItem.querySelector("img") ?? 
+      qSourceItem.querySelector(".placeholder-img");
+
+    qImg.addEventListener("click", evt => {
+      this._handleRateBtnClick(evt, q);
+    });
+
+    const imgWrapperDiv = document.createElement("div");
+    imgWrapperDiv.classList.add("q-source-img-wrapper");
+
+    // Change img to be parented by the img wrapper div instead.
+    imgWrapperDiv.appendChild(qImg);
+    qSourceItem.insertBefore(imgWrapperDiv, qSourceItem.children[0]);
+
+    // Add a hover div, also in the wrapper div.
+    const hoverDiv = document.createElement("div");
+    hoverDiv.classList.add("q-source-item-hover");
+
+    const hoverTxt = document.createElement("span");
+    hoverTxt.innerText = this._getHoverText();
+    hoverTxt.classList.add("q-source-hover-txt");
+
+    hoverDiv.appendChild(hoverTxt);
+    imgWrapperDiv.appendChild(hoverDiv);
   }
 }

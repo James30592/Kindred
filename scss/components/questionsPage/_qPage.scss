@@ -1,0 +1,52 @@
+@use "../../abstracts/variables" as vars;
+
+
+
+.q-mode-selector {
+    font-size: 0;
+
+    > button:nth-last-child(1) {
+        border-bottom-right-radius: 8px;
+    }
+}
+
+.q-mode-btn {
+    margin: 0;
+    padding: 0.6em 1.5em;
+    border: none;
+    font-size: vars.$fontSize7;
+    background-image: linear-gradient(to bottom, hsl(222, 22%, 70%), hsl(222, 22%, 70%) 50%, hsl(222, 22%, 95%));
+    transition: color 0.3s, background-image 0.3s;
+
+    &:hover {
+        cursor: pointer;
+        color: white;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 5px auto black;
+    }
+}
+
+.active-q-mode {
+    background-image: linear-gradient(to bottom, hsl(222, 22%, 95%), hsl(222, 22%, 85%) 50%, rgba(255,255,255,0) 100%);
+    font-weight: 700;
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+    .q-mode-selector > button:nth-last-child(1) {
+        border-bottom-right-radius: 6px;
+    }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+    .q-mode-selector > button:nth-last-child(1) {
+        border-bottom-right-radius: 5px;
+    }
+}

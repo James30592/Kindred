@@ -20,7 +20,7 @@ findKindredRouter.get("/", async function(req, res) {
   res.locals.allCategoryTypes = allCategoryTypes;
   res.locals.selectableCategories = selectableCategories;
 
-  res.render("find-kindred");
+  res.render("pages/find-kindred");
 });
 
 findKindredRouter.post("/", async function(req, res){

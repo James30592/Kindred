@@ -3,8 +3,13 @@
     position: relative;
 }
 
-.border-box-content {
+.inline-border-box-wrapper {
+    @extend .border-box-wrapper;
     display: inline-block;
+}
+
+.border-box-content {
+    display: block;
     padding: 7%;
 }
 

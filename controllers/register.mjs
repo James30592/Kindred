@@ -7,7 +7,7 @@ import passport from "passport";
 export const registerRouter = express.Router();
 
 registerRouter.get("/", function(req, res) {
-  res.render("register");
+  res.render("pages/register");
 });
 
 

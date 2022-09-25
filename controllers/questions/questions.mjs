@@ -17,7 +17,7 @@ questionsRouter.all("/:categoryType/:category", async function(req, res) {
     req.user._id, categoryTypeName, categoryName);
 
   if (req.method === "GET") {
-    res.render("questions", {
+    res.render("pages/questions", {
       categoryTypeName: categoryTypeName,
       categoryName: categoryName
     });

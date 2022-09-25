@@ -2,16 +2,43 @@
 @use "../../../node_modules/@yaireo/ui-range/ui-range.scss";
 @use "../../components/buttons";
 @use "../../abstracts/variables" as vars;
+@use "../../general";
+@use "../buttons" as btns;
 
 
+
+.curr-question-div {
+  @extend .centre-content-h;
+  margin: 2% 0;
+}
+
+.curr-question {
+  font-size: vars.$fontSize5;
+  font-weight: 700;
+}
+
+.curr-ans-msg {
+  margin-right: 10px;
+}
+
+.prev-ans-info {
+  font-size: vars.$fontSize7;
+}
+
+.prev-ans-val {
+  font-weight: 700;
+}
 
 .score-slider {
+  --value-font: 700 12px/1 "Catamaran";
+  --min-max-font: 12px "Catamaran";
   --fill-color: linear-gradient(to right, hsl(0, 65%, 81%), hsl(222, 22%, 60%));
+  --primary-color: hsl(222, 22%, 48%);
   --thumb-size: 30px;
   --track-height: var(--thumb-size) / 3;
   width: 100%;
   display: block;
-  margin: 2% 0 60px 0;
+  margin: 50px 0 6% 0;
 
   output::after {
     font-size: 20px !important;
@@ -25,7 +52,9 @@
 
 .skip-btn, .rate-btn {
   @extend .base-btn;
+  padding: 1em 2em;
   margin: 2px 10px;
+  font-size: vars.$fontSize6;
 }
 
 .skip-btn {
@@ -33,7 +62,7 @@
   color: white;
 
   &:hover {
-    filter:brightness(1.8);
+    filter:brightness(1.5);
   }
 }
 
@@ -48,31 +77,49 @@
 
 // Modal, for single answer mode - prev answers / recommendations.
 .centre-modal-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
   
-    .centre-modal-background {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-    }
+.centre-modal-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
   
+.centre-modal {
+  position: relative;
+  width: 30%;
+  padding: 2%;
+  background-color: hsl(0,0,92);
+  border-radius: 10px;
+  z-index: 10;
+
+  > .close {
+    @include btns.dontFocusOnClick;
+    position: absolute;
+    top: 3%;
+    right: 4%;
+  }
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
     .centre-modal {
-      position: relative;
-      display: inline-block;
-      top: 25vh;
-      left : 25vw;
-      background-color: white;
-      z-index: 10;
-  
-      > .close {
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
+      width: 50%;
     }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+  .centre-modal {
+    width: 70%;
+  }
 }

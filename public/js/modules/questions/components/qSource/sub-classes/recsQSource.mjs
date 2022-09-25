@@ -114,6 +114,10 @@ export class RecsQSource extends SingleModeQSource {
   async _getUpdatedSourceData() {
     return await this.#getLatestRecs();
   }
+  
+  _getHoverText() {
+    return "Rate it!";
+  }
 }
 
 Object.assign(RecsQSource.prototype, fadeContentMixin);

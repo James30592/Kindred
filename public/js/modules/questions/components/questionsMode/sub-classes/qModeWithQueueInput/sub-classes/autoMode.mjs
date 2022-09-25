@@ -11,8 +11,8 @@ sub-classes/questionsQueue/sub-classes/autoQuestionsQueue.mjs";
 export class AutoMode extends QModeWithQueueInput {
   name = "auto";
 
-  constructor(mainDiv, categoryType, category) {
-    super(mainDiv);
+  constructor(mainDiv, categoryType, category, btn = null) {
+    super(mainDiv, btn);
     this.questionsQueue = new AutoQuestionsQueue(mainDiv, categoryType, category);
     this.queueInputPanel = new AutoQueueInputPanel(mainDiv);
   }

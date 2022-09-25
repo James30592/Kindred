@@ -1,8 +1,8 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
   <title>Kindred | Recommendations</title>
 </head>
 <body>
-  <%- include('partials/navbar') %>
+  <%- include('../partials/navbar') %>
 
   <div class="container mt-5">
     <h1>Recommendations</h1>
@@ -15,13 +15,13 @@
 
             <div class="recommendations-for">
               <h2>Recommendations for:</h2>
-              <%- include('partials/categoryCheckboxes') %>
+              <%- include('../partials/categoryCheckboxes') %>
               <hr>
             </div>
 
             <div class="based-on">
               <h2>Based on:</h2>
-              <%- include('partials/categoryCheckboxesLimitSelects') %>
+              <%- include('../partials/categoryCheckboxesLimitSelects') %>
               <hr>
             </div>
 
@@ -43,7 +43,7 @@
           <div class="question-modes">
 
             <!-- Single answer mode -->
-            <%- include("partials/questions/singleAnswerMode") %>
+            <%- include("../partials/questions/singleAnswerMode") %>
             
           </div>
 
@@ -55,4 +55,4 @@
 
   <script type="module" src="/js/pages/recommendations.js"></script>
 
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

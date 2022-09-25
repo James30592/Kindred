@@ -1,9 +1,11 @@
 To do:
 
 
+BUG	- recommendations page when rate something (not skip) and it tries to remove it from the list its messing up, check console
 
 
 
+-	ready to start with recommendations page...
 
 
 
@@ -200,6 +202,8 @@ FIXED	bug5: answering question in prev answer mode now doesnt close the answer u
 FIXED	bug6: answering q in recs mode didn't remove from list. just needed to set currqrow to parent div since changing event listener to be on the img
 
 FIXED	bug3: queue when include already answers is ticked will populate with early questions again. fixed by increasing queue refresh amount to 30 from 20 and keeping record of isNewQueue and queuePrevQs for each queue.
+
+FIXED	- as soon as either skip or re rate something on prev answers page everything else becomes unclickable. was a problem with finishFadeOut function, event listener had flag of "once" but would get used up on a different property like "filter" and would only fully hide when transition completed for opacity. made it recursive so if not the opacity property it keeps waiting.
 
 NOT FIXED - placeholder images doing weird transition...
 

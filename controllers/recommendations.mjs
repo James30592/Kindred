@@ -20,7 +20,7 @@ recommendationsRouter.get("/", async function(req, res){
   res.locals.allCategoryTypes = allCategoryTypes;
   res.locals.selectableCategories = selectableCategories;
 
-  res.render("recommendations");
+  res.render("pages/recommendations");
 });
 
 recommendationsRouter.post("/", async function(req, res){

@@ -8,5 +8,5 @@ questionsMenuRouter.get("/", async function(req, res){
   const allCategoryTypes = await CategoryType.find().exec();
 
   res.locals.allCategoryTypes = allCategoryTypes;
-  res.render("questions-menu");
+  res.render("pages/questions-menu");
 });

@@ -11,8 +11,8 @@ sub-classes/questionsQueue/sub-classes/searchQuestionsQueue.mjs";
 export class SearchMode extends QModeWithQueueInput {
   name = "search";
 
-  constructor(mainDiv, categoryType, category) {
-    super(mainDiv);
+  constructor(mainDiv, categoryType, category, btn = null) {
+    super(mainDiv, btn);
     this.questionsQueue = new SearchQuestionsQueue(mainDiv, categoryType, category);
     this.queueInputPanel = new SearchQueueInputPanel(mainDiv);
   }

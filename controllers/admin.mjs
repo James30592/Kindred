@@ -5,7 +5,7 @@ import express from "express";
 export const adminRouter = express.Router();
 
 adminRouter.get("/", async function(req, res){
-  res.render("admin");
+  res.render("pages/admin");
 });
 
 adminRouter.post("/:adminRequest", async function(req, res){

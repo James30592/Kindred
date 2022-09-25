@@ -72,15 +72,23 @@ export function findAndOverwriteElsePush(array, newItem, elemCompFunc) {
 // optional transition property name check.
 export function awaitTransition(elem, propName = null) {
   return new Promise(resolve => {
-    elem.addEventListener("transitionend", evt => {
+    elem.addEventListener("transitionend", async evt => {
+
       if (propName) {
         if (evt.propertyName === propName) {
           resolve();
+        }
+
+        else {
+          await awaitTransition(elem, propName);
+          resolve();
         };
       }
+
       else {
         resolve();
       };
+
     }, {once: true});
   })
 }

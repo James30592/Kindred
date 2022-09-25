@@ -54,6 +54,12 @@ h4 {
   transition: opacity 0.3s;
 }
 
+// Positioning
+.centre-content-h {
+  display: flex;
+  justify-content: center;
+}
+
 // Visibility
 .transparent {
   opacity: 0 !important;
@@ -65,13 +71,6 @@ h4 {
 
 .fully-hidden {
   display: none !important;
-}
-
-// Positioning
-.centre-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 // Common classes
@@ -86,9 +85,6 @@ h4 {
 .footer {
   flex-shrink: 0;
 }
-
-
-
 
 /* Tablet up to desktop size. */
 @media only screen and (max-width: 1023px) {

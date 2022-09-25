@@ -2,7 +2,18 @@
 
 
 
+@mixin dontFocusOnClick {
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 5px auto black;
+    }
+}
+
 .base-btn {
+    @include dontFocusOnClick;
     cursor: pointer;
     font: vars.$fontSize7 vars.$sansSerif;
     display: inline-block;
@@ -14,14 +25,6 @@
 
     &:hover {
         text-decoration: none;
-    }
-
-    &:focus {
-        outline: none;
-    }
-
-    &:focus-visible {
-        outline: 5px auto black;
     }
 }
 

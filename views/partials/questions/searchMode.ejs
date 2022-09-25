@@ -1,13 +1,19 @@
 <div class="search-mode fade-trans fully-hidden transparent">
 
     <!-- Search queue input panel -->
-    <div class="queue-input-panel">
-        <input type="text" class="search-input" placeholder="Enter search text...">
-        <button class="search-btn">-></button>
-        <br>
-        <label>
-            <input class="incl-prev-ans" type="checkbox" checked="checked"> Include already answered
-        </label>
+    <div class="centre-content-h">
+        <div class="border-box-wrapper queue-input-panel">
+            <%- include('../borders') %>
+            <div class="border-box-content search-queue-panel-content">
+                <div class="search-div">
+                    <input type="text" class="search-input" placeholder="Enter search text...">
+                    <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <label class="incl-prev-ans-label">
+                    <input class="incl-prev-ans" type="checkbox" checked="checked">Include previously answered questions
+                </label>
+            </div>
+        </div>
     </div>
     
     <!-- Answer UI panel -->

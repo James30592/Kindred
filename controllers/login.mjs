@@ -6,7 +6,7 @@ import passport from "passport";
 export const loginRouter = express.Router();
 
 loginRouter.get("/", function(req, res) {
-  res.render("login");
+  res.render("pages/login");
 });
 
 loginRouter.post('/',

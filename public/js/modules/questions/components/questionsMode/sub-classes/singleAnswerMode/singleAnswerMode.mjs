@@ -12,8 +12,8 @@ export class SingleAnswerMode extends QuestionsMode {
   _qSource;
   _answerUiModal;
 
-  constructor(mainDiv, qSource) {
-    super(mainDiv);
+  constructor(mainDiv, qSource, btn = null) {
+    super(mainDiv, btn);
     this.questionsQueue = new SingleQuestionQueue(mainDiv);
     this._qSource = qSource;
 

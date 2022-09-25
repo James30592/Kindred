@@ -8,8 +8,8 @@ sub-classes/singleQuestionQueue.mjs";
 export class PrevAnswerMode extends SingleAnswerMode {
   name = "prevAns";
 
-  constructor(mainDiv, qSource, catTypeName, catName) {
-    super(mainDiv, qSource);
+  constructor(mainDiv, qSource, catTypeName, catName, btn = null) {
+    super(mainDiv, qSource, btn);
     this.questionsQueue = new SingleQuestionQueue(mainDiv, catTypeName, catName);
   }
 

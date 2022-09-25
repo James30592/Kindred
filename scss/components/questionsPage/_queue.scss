@@ -1,5 +1,5 @@
 /* Questions page queues. */
-$num2-queue-transp: 0.15;
+$num2-queue-transp: 0.1;
 $num3-queue-transp: 0.05;
 
 .queue-imgs {
@@ -9,7 +9,10 @@ $num3-queue-transp: 0.05;
   
 .queue-imgs > div {
     width: 20%;
-    display: inline-block;
+    aspect-ratio: 0.666;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
     vertical-align: bottom;
 
@@ -17,9 +20,21 @@ $num3-queue-transp: 0.05;
         width: 100%;
         object-fit: contain;
     }
+
+    audio {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-width: 100px;
+        height: 16%;
+        z-index: 11;
+        transition: opacity 1s;
+    }
 }
   
 .placeholder-img {
+    display: inline-block;
     background-color: black;
     position: relative;
     width: 100%;
@@ -29,15 +44,6 @@ $num3-queue-transp: 0.05;
         color: white;
         position: absolute;
     }
-}
-  
-.queue-imgs div audio {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 20%;
-    z-index: 1000;
-    transition: opacity 1s;
 }
   
 .queue-imgs div:nth-child(2) {
@@ -86,6 +92,17 @@ $num3-queue-transp: 0.05;
   
 .queue-imgs-transitioning div:nth-child(2) audio {
     opacity: 1;
+}
+
+// Modal version of queue images.
+.centre-modal .queue-imgs {
+    display: flex;
+    justify-content: center;
+    transform: translateX(0) !important;
+
+    > div {
+        width: 25%;
+    }
 }
 
 /* Tablet up to desktop size. */

@@ -1,10 +1,11 @@
 @use "../../abstracts/variables" as vars;
+@use "../buttons";
 
 
-
+// Auto mode
 .queue-input-panel {
     display: inline-block;
-    margin: 40px 0;
+    margin-bottom: 10%;
 
     > .border-box-content {
         padding: 15px;
@@ -25,18 +26,37 @@
     }
 }
 
+.search-div {
+    white-space: nowrap;
+    display: inline-block;
+    margin-right: 50px;
+
+    input {
+        font-size: vars.$fontSize6;
+    }
+}
+
+.search-btn {
+    @extend .grey-btn;
+    font-size: vars.$fontSize7;
+    padding: 0.35em 1em;
+
+}
+
 /* Mobile size. */
 @media only screen and (max-width: 767px) {
-    .queue-input-panel {
-        margin: 15px 0;
-
-        > .border-box-content {
-            padding: 7px 10px;
-        }
+    .queue-input-panel > .border-box-content {
+        padding: 7px 10px;
     }
 
     .incl-prev-ans-label > input {
         width: 10px;
         height: 10px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .search-div {
+        margin-right: 0;
     }
 }

@@ -25,23 +25,25 @@ const prevAnswersListDiv = document.querySelector(".prev-answers-list");
 const prevAnswersList = new PreviousAnswers(prevAnswersListDiv, 
   categoryTypeName, categoryName);
 
-// Create the question modes.
-const autoQMode = new AutoMode(autoQModeDiv, categoryTypeName, categoryName);
-const searchQMode = new SearchMode(searchQModeDiv, categoryTypeName, categoryName);
-const prevAnswerQMode = new PrevAnswerMode(singleAnswerQModeDiv, 
-  prevAnswersList, categoryTypeName, categoryName);
+  // Question mode buttons.
+const autoModeBtn = document.querySelector(".auto-queue-mode-btn");
+const searchModeBtn = document.querySelector(".search-mode-btn");
+const prevAnswersModeBtn = document.querySelector(".prev-answers-mode-btn");
 
-// Create the questions mode switcher.
-  const autoModeBtn = document.querySelector(".auto-queue-mode-btn");
-  const searchModeBtn = document.querySelector(".search-mode-btn");
-  const prevAnswersModeBtn = document.querySelector(".prev-answers-mode-btn");
-  const qModeSwitcher = [
-    {mode: autoQMode, btn: autoModeBtn},
-    {mode: searchQMode, btn: searchModeBtn},
-    {mode: prevAnswerQMode, btn: prevAnswersModeBtn}
-  ];
+// Create the question modes.
+const autoQMode = new AutoMode(autoQModeDiv, categoryTypeName, categoryName, autoModeBtn);
+const searchQMode = new SearchMode(searchQModeDiv, categoryTypeName, categoryName, searchModeBtn);
+const prevAnswerQMode = new PrevAnswerMode(singleAnswerQModeDiv, 
+  prevAnswersList, categoryTypeName, categoryName, prevAnswersModeBtn);
 
 const allQModes = [autoQMode, searchQMode, prevAnswerQMode];
+
+// Create the questions mode switcher.
+const qModeSwitcher = [
+  {mode: autoQMode, btn: autoModeBtn},
+  {mode: searchQMode, btn: searchModeBtn},
+  {mode: prevAnswerQMode, btn: prevAnswersModeBtn}
+];
 
 // Create the questions page.
 const questionsPage = new FullQuestionsPage(allQModes, qModeSwitcher, 

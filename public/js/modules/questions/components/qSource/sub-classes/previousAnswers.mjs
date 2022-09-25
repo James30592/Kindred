@@ -77,12 +77,16 @@ export class PreviousAnswers extends SingleModeQSource {
   }
 
   _getScoreText(prevAns) {
-    return prevAns.skip ? "Skipped" : prevAns.answerVal;
+    return prevAns.skip ? "Skipped" : Number(prevAns.answerVal).toFixed(1);
   }
 
   _addToQDiv(qInfo) {
     qInfo.qSourceItem.appendChild(qInfo.qText);
     qInfo.qSourceItem.appendChild(qInfo.qScore);
     return qInfo.qSourceItem;
+  }
+  
+  _getHoverText() {
+    return "Re-rate it!";
   }
 }

@@ -15,7 +15,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
     case ("Interests", "Films") :
       info = {
         imgPath: q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null,
-        qDisplayText: `${q?.title} (${q?.releaseDate})`,
+        qDisplayText: `${q?.title} (${new Date(q?.releaseDate).getFullYear()})`,
         qSourceDisplayText: `${q?.title}`,
         imgPlaceHolderTxt: `${q?.title}`
       };
@@ -24,7 +24,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
     case ("Interests", "TV") :
       info = {
         imgPath: q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null,
-        qDisplayText: `${q?.title} (${q?.releaseDate})`,
+        qDisplayText: `${q?.title} (${new Date(q?.releaseDate).getFullYear()})`,
         qSourceDisplayText: `${q?.title}`,
         imgPlaceHolderTxt: `${q?.title}`
       };
@@ -33,7 +33,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
     case ("Interests", "Music"):
       info = {
         imgPath: q?.image,
-        qDisplayText: `${q?.trackName} - ${q?.artist} (${q?.album} - ${q?.releaseDate})`,
+        qDisplayText: `${q?.trackName} - ${q?.artist} (${q?.album} - ${new Date(q?.releaseDate).getFullYear()})`,
         qSourceDisplayText: `${q?.trackName} - ${q?.artist}`,
         imgPlaceHolderTxt: `${q?.trackName}`
       };
@@ -42,7 +42,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
     case ("Interests", "Video Games"):
       info = {
         imgPath: q?.image ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${q.image}.jpg` : null,
-        qDisplayText: `${q?.title} (${q?.releaseDate}) (${q.platforms})`,
+        qDisplayText: `${q?.title} (${new Date(q?.releaseDate).getFullYear()}) (${q.platforms})`,
         qSourceDisplayText: `${q?.title}`,
         imgPlaceHolderTxt: `${q?.title}`
       };
