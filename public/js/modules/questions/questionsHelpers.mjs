@@ -15,7 +15,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
     case ("Interests", "Films") :
       info = {
         imgPath: q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null,
-        qDisplayText: `${q?.title} (${new Date(q?.releaseDate).getFullYear()})`,
+        qDisplayText: `${q?.title} (${getDisplayReleaseDate(q?.releaseDate)})`,
         qSourceDisplayText: `${q?.title}`,
         imgPlaceHolderTxt: `${q?.title}`
       };
@@ -24,7 +24,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
     case ("Interests", "TV") :
       info = {
         imgPath: q?.posterPath ? `https://image.tmdb.org/t/p/w185/${q.posterPath}` : null,
-        qDisplayText: `${q?.title} (${new Date(q?.releaseDate).getFullYear()})`,
+        qDisplayText: `${q?.title} (${getDisplayReleaseDate(q?.releaseDate)})`,
         qSourceDisplayText: `${q?.title}`,
         imgPlaceHolderTxt: `${q?.title}`
       };
@@ -42,7 +42,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
     case ("Interests", "Video Games"):
       info = {
         imgPath: q?.image ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${q.image}.jpg` : null,
-        qDisplayText: `${q?.title} (${new Date(q?.releaseDate).getFullYear()}) (${q.platforms})`,
+        qDisplayText: `${q?.title} (${getDisplayReleaseDate(q?.releaseDate)}) (${q.platforms})`,
         qSourceDisplayText: `${q?.title}`,
         imgPlaceHolderTxt: `${q?.title}`
       };
@@ -67,6 +67,10 @@ export function getQInfo(q, detail, catTypeName, catName) {
   };
 
   return info[detail];
+}
+
+function getDisplayReleaseDate(releaseDate) {
+  return releaseDate ? new Date(releaseDate).getFullYear() : "Unknown";
 }
 
 // Used in the dom queue for answering questions (search and auto) and also in 
