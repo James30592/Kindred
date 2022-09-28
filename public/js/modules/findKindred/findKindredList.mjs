@@ -1,4 +1,4 @@
-import { fadeContentMixin } from "../fadeContentMixin.mjs";
+import { kindredRecsMixin } from "../kindredRecsMixin.mjs";
 import { CategoryCheckboxes } from "../categoryCheckboxes.mjs";
 
 
@@ -7,21 +7,33 @@ export class FindKindredList {
   _mainDiv;
   _contentDiv;
   #findKindredBtn;
-  #categoryCheckboxesArr;
+  #categoryCheckboxes;
   _loader;
+
+  static #INVALID_SELECTS_MSG = `At least one category must be selected.`;
 
   constructor(mainDiv) {
     this._mainDiv = mainDiv;
     this._contentDiv = mainDiv.querySelector(".content");
     this.#findKindredBtn = document.querySelector(".find-kindred-btn");
-    this.#categoryCheckboxesArr = document.querySelectorAll(".category-checkbox");
+
+    const domCatCheckboxes = document.querySelectorAll(".category-checkbox");
+    this.#categoryCheckboxes = new CategoryCheckboxes(domCatCheckboxes);
+
     this._loader = mainDiv.querySelector(".loader");
   }
   
   init() {
     this.#findKindredBtn.addEventListener("click", () => {
-      this.handleUpdateBtnClick()
+      this.validateHandleUpdate(this._contentDiv, 
+        FindKindredList.#INVALID_SELECTS_MSG);
     });
+  }
+
+  // Ensure at least one checkbox is selected for Rec for and Based on Groups.
+  _validateSelections() {
+    const numCats = this.#categoryCheckboxes.getNumSelected();
+    return (numCats > 0);
   }
 
   // Clears content for just headings and hr elem.
@@ -52,8 +64,7 @@ export class FindKindredList {
   }
 
   async _findKindred() {
-    const categoryCheckboxes = new CategoryCheckboxes(this.#categoryCheckboxesArr);
-    const selectedCategoryInfo = categoryCheckboxes.getSelectedCategoryInfo();
+    const selectedCategoryInfo = this.#categoryCheckboxes.getSelectedCategoryInfo();
   
     const fetchResponse = await fetch("/find-kindred", {
       method: "POST",
@@ -72,4 +83,4 @@ export class FindKindredList {
   }
 }
 
-Object.assign(FindKindredList.prototype, fadeContentMixin);
+Object.assign(FindKindredList.prototype, kindredRecsMixin);

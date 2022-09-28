@@ -61,7 +61,7 @@ export function getQInfo(q, detail, catTypeName, catName) {
       info = {
         imgPath: null,
         qDisplayText: q?.text,
-        qSourceDisplayText: q?.text,
+        qSourceDisplayText: q?.shortText,
         imgPlaceHolderTxt: q?.shortText ?? q.text
       };
   };

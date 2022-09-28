@@ -1,0 +1,85 @@
+@use "../abstracts/variables" as vars;
+@use "../components/buttons" as btns;
+
+
+
+// Recommendations input elements.
+.rec-input-container {
+    margin-bottom: 10%
+}
+
+.rec-cat-selects .border-box-wrapper {
+    background-image: vars.$diag-white-fade;
+    margin-bottom: 7%;
+}
+
+.recs-input-heading {
+    font-size: vars.$fontSize4;
+    font-family: vars.$sansSerif;
+    text-align: center;
+    margin-bottom: 3%;
+    color: vars.$primary-grey;
+}
+
+.recs-header {
+    font-size: vars.$fontSize2;
+    margin-bottom: 5% !important;
+}
+
+.kindred-recs-btn {
+    font-size: vars.$fontSize6;
+}
+
+// Info button for based on categories.
+.info-btn-wrapper {
+    position: absolute;
+    bottom: 8%;
+    right: 5%;
+}
+
+.info-btn {
+    @include btns.dontFocusOnClick;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    i {
+        font-size: vars.$fontSize6;
+        color: vars.$primary-grey;
+        transition: color 0.3s;
+    }
+
+    i:hover {
+        color: vars.$lighter-grey;
+    }
+}
+
+.info-txt {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transition: opacity 0.3s;
+    background-color: vars.$primary-grey;
+    color: white;
+    font-size: vars.$fontSize8;
+    border-radius: 0.7em;
+    width: max(200px, 15vw);
+    padding: 1em;
+    transform: translate(-2em, -2em);
+}
+
+// The recommendations output list.
+.recs-list-wrapper {
+    background-image: vars.$diag-white-fade;
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+    .kindred-recs-btn {
+        margin-top: 6%;
+    }
+
+    .recs-header {
+        margin-bottom: 5% !important;
+    }
+}

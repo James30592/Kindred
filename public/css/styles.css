@@ -69,7 +69,7 @@ h4 {
   margin-bottom: 8%;
 }
 
-.page-content {
+.pre-footer {
   flex: 1 0 auto;
 }
 
@@ -351,7 +351,7 @@ h4 {
   padding: 0.5em 1em;
   border-width: 0;
   border-radius: 0.3em;
-  margin: 2px 2px;
+  margin: 0.4em;
 }
 .base-btn:focus, .skip-btn:focus, .rate-btn:focus, .lg-cursive-btn:focus, .blue-btn:focus, .white-btn:focus, .grey-btn:focus, .search-btn:focus {
   outline: none;
@@ -514,18 +514,44 @@ h4 {
     width: 70%;
   }
 }
+.header-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  column-gap: 5%;
+}
+.header-row > span {
+  font: "Catamaran", sans-serif;
+  font-size: calc(0.5rem + 0.375vw);
+  font-weight: 700;
+  color: hsl(0deg, 0%, 43%);
+}
+
 .rec-item {
-  height: 300px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  column-gap: 5%;
   align-items: center;
+  margin-bottom: 20px;
+  position: relative;
 }
-.rec-item > * {
-  flex-basis: 20%;
+.rec-item p {
+  font-size: calc(0.5rem + 0.375vw);
+  margin: 0;
 }
-.rec-item img {
-  max-height: 100%;
-  width: 20%;
-  object-fit: contain;
+.rec-item .user-score {
+  font-size: calc(0.8rem + 0.6vw);
+  font-weight: 700;
+}
+.rec-item .q-source-img-wrapper {
+  aspect-ratio: 0.666;
+}
+.rec-item audio {
+  width: max(100px, 20%);
+  height: max(15px, 12%);
+  position: absolute;
+  bottom: 15%;
+  left: 35%;
+  opacity: 0.6;
 }
 
 .prev-answers-list > .content {
@@ -548,6 +574,7 @@ h4 {
 }
 .q-source-img-wrapper .placeholder-img {
   cursor: pointer;
+  width: 100%;
 }
 .q-source-img-wrapper:hover .q-source-item-hover {
   opacity: 1;
@@ -817,12 +844,12 @@ h4 {
   }
 }
 .loader {
-  width: 48px;
-  height: 48px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   display: inline-block;
-  border-top: 4px solid hsl(222deg, 22%, 60%);
-  border-right: 4px solid transparent;
+  border-top: 7px solid hsl(222deg, 22%, 60%);
+  border-right: 7px solid transparent;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
 }
@@ -833,11 +860,11 @@ h4 {
   position: absolute;
   left: 0;
   top: 0;
-  width: 48px;
-  height: 48px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
-  border-left: 4px solid hsl(0deg, 65%, 81%);
-  border-bottom: 4px solid transparent;
+  border-top: 7px solid hsl(0deg, 65%, 81%);
+  border-right: 7px solid transparent;
   animation: rotation 0.5s linear infinite reverse;
 }
 
@@ -1006,6 +1033,67 @@ nav .logo-container {
   margin: 0 5vh 5vh 0;
 }
 
+.page-content {
+  width: 40%;
+  min-height: 60%;
+  margin: 2% 0 2% 20%;
+}
+.page-content .main-header {
+  margin-bottom: 3%;
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+  .page-content {
+    width: 70%;
+    margin: 5% 15%;
+  }
+  .page-content > .inline-border-box-wrapper {
+    display: block;
+  }
+  .page-content > .inline-border-box-wrapper > .border-box-content {
+    display: block;
+  }
+}
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+  .page-content {
+    width: 90%;
+    margin: 5%;
+  }
+}
+.cat-checks-header {
+  font-family: "Catamaran", sans-serif;
+}
+
+.category-type-group > label {
+  font-size: calc(0.5rem + 0.375vw);
+  font-weight: 300;
+  margin: 0 2em 0 0;
+}
+.category-type-group > label > input {
+  width: 18px;
+  aspect-ratio: 1;
+  margin-left: 7px;
+  vertical-align: middle;
+}
+
+.category-type-group:nth-last-child(1) {
+  margin-top: 3%;
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+  .category-type-group > label > input {
+    width: 12px;
+  }
+}
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+  .category-type-group > label > input {
+    width: 10px;
+  }
+}
 .home-content {
   width: 70%;
   height: 40vh;
@@ -1164,16 +1252,8 @@ nav .logo-container {
     margin-left: 10%;
   }
 }
-.questions-content {
-  width: 40%;
-  min-height: 60%;
-  margin: 2% 0 2% 20%;
-}
 .questions-content > .border-box-wrapper {
   background-image: linear-gradient(to top right, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.7) 80%, rgba(255, 255, 255, 0) 95%);
-}
-.questions-content .main-header {
-  margin-bottom: 3%;
 }
 .questions-content .queue-imgs {
   transform: translateX(20%);
@@ -1181,25 +1261,87 @@ nav .logo-container {
 
 /* Tablet up to desktop size. */
 @media only screen and (max-width: 1023px) {
-  .questions-content {
-    width: 70%;
-    margin: 5% 15%;
-  }
-  .questions-content > .inline-border-box-wrapper {
-    display: block;
-  }
-  .questions-content > .inline-border-box-wrapper > .border-box-content {
-    display: block;
-  }
   .queue-imgs {
     transform: translateX(12.5%) !important;
   }
 }
-/* Mobile size. */
-@media only screen and (max-width: 767px) {
-  .questions-content {
-    width: 90%;
-    margin: 5%;
+.rec-input-container {
+  margin-bottom: 10%;
+}
+
+.rec-cat-selects .border-box-wrapper {
+  background-image: linear-gradient(to top right, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.7) 80%, rgba(255, 255, 255, 0) 95%);
+  margin-bottom: 7%;
+}
+
+.recs-input-heading {
+  font-size: calc(0.8rem + 0.6vw);
+  font-family: "Catamaran", sans-serif;
+  text-align: center;
+  margin-bottom: 3%;
+  color: hsl(0deg, 0%, 21%);
+}
+
+.recs-header {
+  font-size: calc(1.6rem + 1.2vw);
+  margin-bottom: 5% !important;
+}
+
+.kindred-recs-btn {
+  font-size: calc(0.6rem + 0.45vw);
+}
+
+.info-btn-wrapper {
+  position: absolute;
+  bottom: 8%;
+  right: 5%;
+}
+
+.info-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.info-btn:focus {
+  outline: none;
+}
+.info-btn:focus-visible {
+  outline: 5px auto black;
+}
+.info-btn i {
+  font-size: calc(0.6rem + 0.45vw);
+  color: hsl(0deg, 0%, 21%);
+  transition: color 0.3s;
+}
+.info-btn i:hover {
+  color: hsl(0deg, 0%, 65%);
+}
+
+.info-txt {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: opacity 0.3s;
+  background-color: hsl(0deg, 0%, 21%);
+  color: white;
+  font-size: calc(0.4rem + 0.3vw);
+  border-radius: 0.7em;
+  width: max(200px, 15vw);
+  padding: 1em;
+  transform: translate(-2em, -2em);
+}
+
+.recs-list-wrapper {
+  background-image: linear-gradient(to top right, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.7) 80%, rgba(255, 255, 255, 0) 95%);
+}
+
+/* Tablet up to desktop size. */
+@media only screen and (max-width: 1023px) {
+  .kindred-recs-btn {
+    margin-top: 6%;
+  }
+  .recs-header {
+    margin-bottom: 5% !important;
   }
 }
 

@@ -2,37 +2,69 @@
   <title>Kindred | Find Kindred</title>
 </head>
 <body>
-  <%- include('../partials/navbar') %>
+  <div class="pre-footer">
+    <%- include('../partials/navbar') %>
 
-  <div class="container mt-5">
-    <h1>Find Kindred</h1>
+    <div class="page-content">
+      <h1 class="main-header recs-header">Find Kindred</h1>
 
-    <div class="row">
-      <div class="col-sm-8">
+      <!-- Input panel -->
+      <div class="rec-cat-selects">
+        <div class="border-box-wrapper">
+          <%- include('../partials/borders') %>
+          <div class="border-box-content">
+            <div class="based-on">
+              <%- include('../partials/categoryCheckboxesLimitSelects') %>
+            </div>
+          </div>
 
-        <div class="card">
-          <div class="card-body">
-
-            <%- include('../partials/categoryCheckboxesLimitSelects') %>
-
-            <hr>
-            <button type="button" class="find-kindred-btn btn btn-dark">Find Kindred</button>
-            <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
-
+          <div class="info-btn-wrapper">
+            <button class="info-btn">
+              <i class="fa-solid fa-circle-info"></i>
+            </button>
+            <span class="info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to find Kindred.</span>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-body kindred-list">
-            <div class="loader fade-trans fully-hidden transparent"></div>
-            <div class="content fade-trans"></div>
-          </div>
+        <div class="centre-content-h">
+          <button class="find-kindred-btn kindred-recs-btn blue-btn">Find Kindred</button>
         </div>
 
       </div>
+
+      <!-- Kindred list -->
+      <div class="border-box-wrapper recs-list-wrapper">
+        <%- include('../partials/borders') %>
+        <div class="border-box-content kindred-list">
+          
+          <div class="header-row">
+            <span>Username</span>
+            <span>Location</span>
+            <span>Similarity score</span>
+            <span>Num common answers</span>
+            <span>Score differential (positivity)</span>
+          </div>
+
+          <hr>
+          
+          <div class="centre-content-h">
+            <div class="loader fade-trans fully-hidden transparent"></div>
+          </div>
+          
+          <div class="content fade-trans"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <script type="module" src="/js/pages/find-kindred.js"></script>
+  <div class="footer">
+    <div class="back-btns-wrapper">
+      <a class="grey-btn" href="/profile" role="button">Back to Profile</a>
+    </div>
+  </div>
 
-<%- include('../partials/footer') %>
+
+<script type="module" src="/js/pages/find-kindred.js"></script>
+
+<%- include('../partials/endBody') %>

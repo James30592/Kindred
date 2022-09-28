@@ -2,10 +2,10 @@
   <title>Find Kindred</title>
 </head>
 <body>
-  <div class="page-content">
+  <div class="pre-footer">
     <%- include('../partials/navbar') %>
 
-    <div class="questions-content">     
+    <div class="page-content questions-content">     
       <h3 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
         data-cat="<%= categoryName %>">
         <%= categoryTypeName %> - <%= categoryName %>
@@ -52,4 +52,4 @@
   
   <script type="module" src="/js/pages/questions.js"></script>
 
-<%- include('../partials/footer') %>
+<%- include('../partials/endBody') %>

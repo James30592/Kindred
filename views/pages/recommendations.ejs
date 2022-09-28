@@ -2,57 +2,90 @@
   <title>Kindred | Recommendations</title>
 </head>
 <body>
-  <%- include('../partials/navbar') %>
+  <div class="pre-footer">
+    <%- include('../partials/navbar') %>
 
-  <div class="container mt-5">
-    <h1>Recommendations</h1>
+    <div class="page-content">
+      <h1 class="main-header recs-header">Recommendations</h1>
+  
+      <div class="rec-input-container">
 
-    <div class="row">
-      <div class="col-sm-8">
+        <!-- Input panel -->
+        <div class="rec-cat-selects">
 
-        <div class="card">
-          <div class="card-body">
-
-            <div class="recommendations-for">
-              <h2>Recommendations for:</h2>
-              <%- include('../partials/categoryCheckboxes') %>
-              <hr>
+          <div class="border-box-wrapper">
+            <%- include('../partials/borders') %>
+            <div class="border-box-content">
+              <div class="recommendations-for">
+                <h4 class="recs-input-heading">Recommendations for:</h4>
+                <%- include('../partials/categoryCheckboxes') %>
+              </div>
+            </div>
+          </div>
+      
+          <div class="border-box-wrapper">
+            <%- include('../partials/borders') %>
+            <div class="border-box-content">
+              <div class="based-on">
+                <h4 class="recs-input-heading">Based on:</h4>
+                <%- include('../partials/categoryCheckboxesLimitSelects') %>
+              </div>
             </div>
 
-            <div class="based-on">
-              <h2>Based on:</h2>
-              <%- include('../partials/categoryCheckboxesLimitSelects') %>
-              <hr>
+            <div class="info-btn-wrapper">
+              <button class="info-btn">
+                <i class="fa-solid fa-circle-info"></i>
+              </button>
+              <span class="info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to generate recommendations.</span>
             </div>
-
-            <button type="button" class="get-recommendations btn btn-dark">Get Recommendations</button>
-            <a class="btn btn-light" href="/profile" role="button">Back to profile</a>
-
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-body recommendations-list q-source">
-            <div class="loader fade-trans fully-hidden transparent"></div>
-            <div class="content fade-trans"></div>
-          </div>
-
-          <!-- Recommendations list -->
-          <div class="recommendations-list fully-hidden"></div>
-
-          <div class="question-modes">
-
-            <!-- Single answer mode -->
-            <%- include("../partials/questions/singleAnswerMode") %>
             
           </div>
 
         </div>
 
+        <div class="centre-content-h">
+          <button class="get-recs-btn kindred-recs-btn blue-btn">Get Recommendations</button>
+        </div>
+
       </div>
+  
+      <!-- Recommendations list -->
+      <div class="border-box-wrapper recs-list-wrapper">
+        <%- include('../partials/borders') %>
+        <div class="border-box-content recommendations-list q-source">
+          
+          <div class="header-row">
+            <span>Score</span>
+            <span></span>
+            <span>Title</span>
+            <span>Category</span>
+            <span></span>
+          </div>
+
+          <hr>
+          
+          <div class="centre-content-h">
+            <div class="loader fade-trans fully-hidden transparent"></div>
+          </div>
+          
+          <div class="content fade-trans"></div>
+        </div>
+      </div>
+
+      <div class="question-modes">
+        <!-- Single answer mode -->
+        <%- include("../partials/questions/singleAnswerMode") %>
+      </div>
+
     </div>
   </div>
 
-  <script type="module" src="/js/pages/recommendations.js"></script>
+  <div class="footer">
+    <div class="back-btns-wrapper">
+      <a class="grey-btn" href="/profile" role="button">Back to Profile</a>
+    </div>
+  </div>
 
-<%- include('../partials/footer') %>
+<%- include('../partials/endBody') %>
+
+<script type="module" src="/js/pages/recommendations.js"></script>

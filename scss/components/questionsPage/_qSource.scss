@@ -1,42 +1,60 @@
 @use "../../abstracts/variables" as vars;
 
 
-// Older, initial basic code.
-.rec-item {
-  height: 300px;
-  display: flex;
-  align-items: center;
-  // gap: 20px;
 
-  > * {
-    flex-basis: 20%;
-  }
-  
-  img {
-    max-height: 100%;
-    width: 20%;
-    object-fit: contain;
+// Recommendations q source.
+@mixin recsHGrid() {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  column-gap: 5%;
+}
+
+.header-row {
+  @include recsHGrid();
+
+  > span {
+      font: vars.$sansSerif;
+      font-size: vars.$fontSize7;
+      font-weight: 700;
+      color: vars.$secondary-grey;
   }
 }
 
+.rec-item {
+  @include recsHGrid();
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
 
+  p {
+    font-size: vars.$fontSize7;
+    margin: 0;
+  }
 
+  .user-score {
+    font-size: vars.$fontSize4;
+    font-weight: 700;
+  }
 
+  .q-source-img-wrapper {
+    aspect-ratio: 0.666;
+  }
+  
+  audio {
+    width: max(100px, 20%);
+    height: max(15px, 12%);
+    position: absolute;
+    bottom: 15%;
+    left: 35%;
+    opacity: 0.6;
+  }
+}
 
-
-// Proper code below---------------------
-
-
-
-
-
-
-
-// Question source items.
+// Previous answers q source.
 .prev-answers-list > .content {
   display: grid;
   grid-template-columns: repeat(auto-fill, 150px);
-  // img height of 225px + 81px (4 lines) = 306px.
+  // img height of 225px + 81px (4 lines) = 306px. //1569
   grid-auto-rows: 310px;
   justify-content: space-around;
   column-gap: 10px;
@@ -55,6 +73,7 @@
 
   .placeholder-img {
     cursor: pointer;
+    width: 100%;
   }
 
   &:hover {
@@ -119,6 +138,7 @@
     opacity: 0.6;
   }
 }
+
 
 /* Small mobile size. */
 @media only screen and (max-width: 410px) {

@@ -1,11 +1,8 @@
 To do:
 
 
-BUG	- recommendations page when rate something (not skip) and it tries to remove it from the list its messing up, check console
 
 
-
--	ready to start with recommendations page...
 
 
 

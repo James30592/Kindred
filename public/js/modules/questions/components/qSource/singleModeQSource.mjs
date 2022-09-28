@@ -20,11 +20,11 @@ export class SingleModeQSource extends EventTarget {
 
     const qSourceItem = createQDomItem(q.questionDetails, catTypeName, 
       catName);
-
+    
     qSourceItem.classList.add(this._qDivClass);
 
-    const qText = this._getQTextElem(q, catTypeName, catName);
-    const qScore = this._getQScoreElem(q);
+    const qText = this._createQTextElem(q, catTypeName, catName);
+    const qScore = this._createtQScoreElem(q);
     this._setupQImg(q, qSourceItem);
 
     const qInfo = {
@@ -53,7 +53,7 @@ export class SingleModeQSource extends EventTarget {
     };
   }
 
-  _getQTextElem(q, catTypeName, catName) {
+  _createQTextElem(q, catTypeName, catName) {
     const qText = document.createElement("p");
 
     qText.innerText = getQInfo(q.questionDetails, "qSourceDisplayText", 
@@ -63,7 +63,7 @@ export class SingleModeQSource extends EventTarget {
     return qText;
   }
 
-  _getQScoreElem(q) {
+  _createtQScoreElem(q) {
     const qScore = document.createElement("p");
     qScore.innerText = this._getScoreText(q);
     qScore.classList.add("user-score");

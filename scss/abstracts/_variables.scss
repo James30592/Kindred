@@ -14,6 +14,14 @@ $lightest-blue: hsl(222, 22%, 80%);
 $lighter-pink: 	hsl(0, 65%, 81%);
 $darker-pink: 	hsl(312, 61%, 30%);
 
+$diag-white-fade: linear-gradient(
+    to top right, 
+    rgba(255,255,255,0) 5%, 
+    rgba(255,255,255,0.7) 20%, 
+    rgba(255,255,255,0.7) 80%, 
+    rgba(255,255,255,0) 95%
+);
+
 // Fonts
 $cursive: 'Merienda', cursive;
 $sansSerif: 'Catamaran', sans-serif;

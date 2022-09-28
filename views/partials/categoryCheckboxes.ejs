@@ -1,10 +1,10 @@
 <% allCategoryTypes.forEach(function(categoryType){ %>
   <div class="category-type-group">
-    <h4><%= categoryType.name %></h4>
+    <h4 class="cat-checks-header"><%= categoryType.name %></h4>
     <% categoryType.categories.forEach(function(category){ %>
       <label><%= category.name %>
         <input type="checkbox" name="<%= categoryType.name + "." +
-         category.name %>" value="" class="category-checkbox">
+          category.name %>" value="" class="category-checkbox">
       </label>
     <% }); %>
   </div>

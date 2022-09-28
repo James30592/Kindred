@@ -69,13 +69,6 @@ export class PreviousAnswers extends SingleModeQSource {
     return currDBAnswers;
   }
 
-  _getQText(prevAns) {
-    const thisQText = getQInfo(prevAns?.questionDetails, "qSourceDisplayText", 
-      this._categoryTypeName, this._categoryName);
-    
-    return `${thisQText}. Skipped: ${prevAns.skip}. Answer: ${prevAns?.answerVal}.`;
-  }
-
   _getScoreText(prevAns) {
     return prevAns.skip ? "Skipped" : Number(prevAns.answerVal).toFixed(1);
   }

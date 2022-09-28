@@ -1,7 +1,6 @@
 import { SingleModeQSource } from "../singleModeQSource.mjs";
 import { CategoryCheckboxes } from "../../../../categoryCheckboxes.mjs";
-import { getQInfo } from "../../../questionsHelpers.mjs";
-import { fadeContentMixin } from "../../../../fadeContentMixin.mjs";
+import { kindredRecsMixin } from "../../../../kindredRecsMixin.mjs";
 
 
 
@@ -10,9 +9,11 @@ export class RecsQSource extends SingleModeQSource {
   #currQRow = null;
   #recForCategoryCheckboxes;
   #basedOnCategoryCheckboxes;
-  _loader;
   #getRecsBtn;
+  _loader;
   _qDivClass = "rec-item";
+
+  static #INVALID_SELECTS_MSG = `At least one category must be selected from each of the "Recommend for" and "Based on" groups.`;
 
   constructor(listDiv) {
     super(listDiv);
@@ -27,19 +28,30 @@ export class RecsQSource extends SingleModeQSource {
     this.#recForCategoryCheckboxes = new CategoryCheckboxes(recForCheckboxesArr);
     this.#basedOnCategoryCheckboxes = new CategoryCheckboxes(basedOnCheckboxesArr);
 
-    this.#getRecsBtn = document.querySelector(".get-recommendations");
+    this.#getRecsBtn = document.querySelector(".get-recs-btn");
 
-    this.#getRecsBtn.addEventListener("click", async () => {
-      this.handleUpdateBtnClick();
+    this.#getRecsBtn.addEventListener("click", () => {
+      this.validateHandleUpdate(this._listDiv, RecsQSource.#INVALID_SELECTS_MSG);
     });
+  }
+
+  // Ensure at least one checkbox is selected for Rec for and Based on Groups.
+  _validateSelections() {
+    const numBasedOnCats = this.#recForCategoryCheckboxes.getNumSelected();
+    const numRecCats = this.#basedOnCategoryCheckboxes.getNumSelected();
+    const isValidSelections = (numBasedOnCats > 0) && (numRecCats > 0);
+    return isValidSelections;
   }
 
   _addToQDiv(qInfo) {
     qInfo.qSourceItem.appendChild(qInfo.qText);
     qInfo.qSourceItem.insertBefore(qInfo.qScore, qInfo.qSourceItem.children[0]);
 
-    const catTypeText = document.createElement("span");
-    const catText = document.createElement("span");
+    const catTypeText = document.createElement("p");
+    const catText = document.createElement("p");
+
+    catTypeText.classList.add("rec-cat-type");
+    catText.classList.add("rec-cat");
 
     [catTypeText.innerText, catText.innerText] = [qInfo.catTypeName, qInfo.catName];
 
@@ -74,17 +86,10 @@ export class RecsQSource extends SingleModeQSource {
     return recsInfo.recommendList;
   }
 
-  _getQText(rec) {
-    const thisQText = getQInfo(prevAns?.questionDetails, "qSourceDisplayText", 
-      this._categoryTypeName, this._categoryName);
-    
-    return `${rec.rating.strength.toFixed(0)} - ${thisQText} - ${rec.category} - ${rec.categoryType} - ${rec.rating.numUsersAnswered}`;
-  }
-
   // Set the currQRow to the question that is now being rated, so it can be 
   // easily removed once answered.
   _handleRateBtnClick(evt, question) {
-    this.#currQRow  = evt.currentTarget.parentNode;
+    this.#currQRow  = evt.currentTarget.parentNode.parentNode;
     super._handleRateBtnClick(evt, question);
   }
 
@@ -120,4 +125,4 @@ export class RecsQSource extends SingleModeQSource {
   }
 }
 
-Object.assign(RecsQSource.prototype, fadeContentMixin);
+Object.assign(RecsQSource.prototype, kindredRecsMixin);

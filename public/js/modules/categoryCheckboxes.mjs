@@ -28,4 +28,9 @@ export class CategoryCheckboxes {
         this.categoryInfo = selectedCategoryInfo;
         return this.categoryInfo;
     }
+
+    getNumSelected() {
+      const checkBoxesArr = Array.from(this.#checkboxes);
+      return checkBoxesArr.reduce((tot, curr) => (tot + curr.checked), 0);
+    }
 }
