@@ -11,7 +11,7 @@
       <div class="rec-input-container">
 
         <!-- Input panel -->
-        <div class="rec-cat-selects">
+        <div class="cat-selects">
 
           <div class="border-box-wrapper">
             <%- include('../partials/borders') %>
@@ -32,13 +32,11 @@
               </div>
             </div>
 
-            <div class="info-btn-wrapper">
-              <button class="info-btn">
-                <i class="fa-solid fa-circle-info"></i>
-              </button>
+            <button class="info-btn">
+              <i class="fa-solid fa-circle-info"></i>
               <span class="info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to generate recommendations.</span>
-            </div>
-            
+            </button>
+
           </div>
 
         </div>
@@ -50,7 +48,7 @@
       </div>
   
       <!-- Recommendations list -->
-      <div class="border-box-wrapper recs-list-wrapper">
+      <div class="border-box-wrapper white-fade">
         <%- include('../partials/borders') %>
         <div class="border-box-content recommendations-list q-source">
           

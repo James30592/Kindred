@@ -73,3 +73,39 @@
         opacity: 1;
     }
 }
+
+// Info tooltip button.
+.info-btn {
+    @include dontFocusOnClick;
+    position: absolute;
+    bottom: 8%;
+    right: 5%;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    i {
+        font-size: vars.$fontSize6;
+        color: vars.$primary-grey;
+        transition: color 0.3s;
+    }
+
+    &:hover > i {
+        color: vars.$lighter-grey;
+    }
+}
+
+.info-txt {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transition: opacity 0.3s;
+    background-color: vars.$primary-grey;
+    color: white;
+    font-size: vars.$fontSize8;
+    border-radius: 0.7em;
+    width: max(200px, 15vw);
+    padding: 1em;
+    transform: translate(-2em, -2em);
+    text-align: start;
+}

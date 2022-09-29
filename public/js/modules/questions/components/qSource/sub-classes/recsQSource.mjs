@@ -61,11 +61,6 @@ export class RecsQSource extends SingleModeQSource {
     return qInfo.qSourceItem;
   }
 
-  // Clear the content in the list div.
-  _clearContentDiv() {
-    this._contentDiv.replaceChildren();
-  }
-
   // Get the latest recommendations from the back end.
   async getRecs() {
     const recForCategoryInfo = this.#recForCategoryCheckboxes.getSelectedCategoryInfo();

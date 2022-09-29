@@ -10,6 +10,11 @@ export const kindredRecsMixin = {
     this._buildContentDiv(data);
   },
 
+  // Clear the content in the list div.
+  _clearContentDiv() {
+    this._contentDiv.replaceChildren();
+  },
+
   _showLoader() {
     return fadeFromTo(this._contentDiv, this._loader);
   },

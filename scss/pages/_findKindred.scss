@@ -1,3 +1,33 @@
 @use "../abstracts/variables" as vars;
 
 
+
+@mixin kindredHGrid() {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
+    column-gap: 5%;
+}
+
+.kindred-input-container {
+    margin-bottom: 10%;
+}
+
+.header-row {
+    @include kindredHGrid();
+}
+
+.kindred-item {
+    @include kindredHGrid();
+    align-items: center;
+    margin-bottom: 20px;
+
+    p {
+        font-size: vars.$fontSize7;
+        margin: 0;
+    }
+
+    .sim-score {
+        font-size: vars.$fontSize4;
+        font-weight: 700;
+    }
+}

@@ -77,6 +77,10 @@ h4 {
   flex-shrink: 0;
 }
 
+.white-fade {
+  background-image: linear-gradient(to top right, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.7) 80%, rgba(255, 255, 255, 0) 95%);
+}
+
 /* Tablet up to desktop size. */
 @media only screen and (max-width: 1023px) {
   .register-content {
@@ -399,6 +403,44 @@ h4 {
 .lg-cursive-btn:hover {
   color: white;
   opacity: 1;
+}
+
+.info-btn {
+  position: absolute;
+  bottom: 8%;
+  right: 5%;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.info-btn:focus {
+  outline: none;
+}
+.info-btn:focus-visible {
+  outline: 5px auto black;
+}
+.info-btn i {
+  font-size: calc(0.6rem + 0.45vw);
+  color: hsl(0deg, 0%, 21%);
+  transition: color 0.3s;
+}
+.info-btn:hover > i {
+  color: hsl(0deg, 0%, 65%);
+}
+
+.info-txt {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: opacity 0.3s;
+  background-color: hsl(0deg, 0%, 21%);
+  color: white;
+  font-size: calc(0.4rem + 0.3vw);
+  border-radius: 0.7em;
+  width: max(200px, 15vw);
+  padding: 1em;
+  transform: translate(-2em, -2em);
+  text-align: start;
 }
 
 .curr-question-div {
@@ -1269,7 +1311,7 @@ nav .logo-container {
   margin-bottom: 10%;
 }
 
-.rec-cat-selects .border-box-wrapper {
+.cat-selects .border-box-wrapper {
   background-image: linear-gradient(to top right, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.7) 80%, rgba(255, 255, 255, 0) 95%);
   margin-bottom: 7%;
 }
@@ -1291,50 +1333,6 @@ nav .logo-container {
   font-size: calc(0.6rem + 0.45vw);
 }
 
-.info-btn-wrapper {
-  position: absolute;
-  bottom: 8%;
-  right: 5%;
-}
-
-.info-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-.info-btn:focus {
-  outline: none;
-}
-.info-btn:focus-visible {
-  outline: 5px auto black;
-}
-.info-btn i {
-  font-size: calc(0.6rem + 0.45vw);
-  color: hsl(0deg, 0%, 21%);
-  transition: color 0.3s;
-}
-.info-btn i:hover {
-  color: hsl(0deg, 0%, 65%);
-}
-
-.info-txt {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  transition: opacity 0.3s;
-  background-color: hsl(0deg, 0%, 21%);
-  color: white;
-  font-size: calc(0.4rem + 0.3vw);
-  border-radius: 0.7em;
-  width: max(200px, 15vw);
-  padding: 1em;
-  transform: translate(-2em, -2em);
-}
-
-.recs-list-wrapper {
-  background-image: linear-gradient(to top right, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.7) 80%, rgba(255, 255, 255, 0) 95%);
-}
-
 /* Tablet up to desktop size. */
 @media only screen and (max-width: 1023px) {
   .kindred-recs-btn {
@@ -1343,6 +1341,31 @@ nav .logo-container {
   .recs-header {
     margin-bottom: 5% !important;
   }
+}
+.kindred-input-container {
+  margin-bottom: 10%;
+}
+
+.header-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 1fr;
+  column-gap: 5%;
+}
+
+.kindred-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 1fr;
+  column-gap: 5%;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.kindred-item p {
+  font-size: calc(0.5rem + 0.375vw);
+  margin: 0;
+}
+.kindred-item .sim-score {
+  font-size: calc(0.8rem + 0.6vw);
+  font-weight: 700;
 }
 
 /*# sourceMappingURL=styles.css.map */

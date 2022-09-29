@@ -4,16 +4,15 @@ import { fullyFadeIn, fullyFadeOut } from "./fadeTransitions.mjs";
 
 // Class for info buttons that fade transition on click.
 export class InfoBtns {
-  #infoBtnWrappers;
+  #infoBtns;
 
   constructor() {
-    this.#infoBtnWrappers = document.querySelectorAll(".info-btn-wrapper");
+    this.#infoBtns = document.querySelectorAll(".info-btn");
   }
 
   init() {
-    for (let btnWrapper of this.#infoBtnWrappers) {
-      const btn = btnWrapper.querySelector(".info-btn");
-      const txt = btnWrapper.querySelector(".info-txt");
+    for (let btn of this.#infoBtns) {
+      const txt = btn.querySelector(".info-txt");
       this.#setupInfoBtnClick(btn, txt);
     };
   }

@@ -36,15 +36,6 @@ export class FindKindredList {
     return (numCats > 0);
   }
 
-  // Clears content for just headings and hr elem.
-  _clearContentDiv() {
-    const headings = document.createElement("p");
-    headings.textContent = "Profile name - Location - Similarity score - Common answers - Score Diff";
-    const hr = document.createElement("hr");
-    this._contentDiv.replaceChildren(headings);
-    this._contentDiv.appendChild(hr);
-  }
-
   _buildContentDiv(kindredArr) {
     for (let kindred of kindredArr.simRatingList) {
       const kindredRow = this._createRow(kindred);
@@ -52,13 +43,23 @@ export class FindKindredList {
     };
   }
 
-  _createRow(kindred) {
-    const kindredRow = document.createElement("p");
-    const loc = kindred.location;
+  _createRow(kindred) {   
+    const kindredRow = document.createElement("div");
+    kindredRow.classList.add("kindred-item");
 
-    kindredRow.innerText = `${kindred.profileName} - ${loc.placeName}, \
-      ${loc.country.long} - ${kindred.simInfo.simScore.toFixed(1)} - \
-      ${kindred.simInfo.numCommonAnswers} - ${kindred.simInfo.scoreDiff.toFixed(1)}`;
+    const simScore = document.createElement("p");
+    const username = document.createElement("p");
+    const loc = document.createElement("p");
+    const posDiff = document.createElement("p");
+
+    simScore.innerText = kindred.simInfo.simScore.toFixed(1);
+    username.innerText = kindred.profileName;
+    loc.innerText = `${kindred.location.placeName}, ${kindred.location.country.long}`;
+    posDiff.innerText = kindred.simInfo.scoreDiff.toFixed(1);
+
+    simScore.classList.add("sim-score");
+
+    kindredRow.append(simScore, username, loc, posDiff);
 
     return kindredRow;
   }

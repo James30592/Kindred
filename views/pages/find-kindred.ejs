@@ -9,40 +9,38 @@
       <h1 class="main-header recs-header">Find Kindred</h1>
 
       <!-- Input panel -->
-      <div class="rec-cat-selects">
-        <div class="border-box-wrapper">
-          <%- include('../partials/borders') %>
-          <div class="border-box-content">
-            <div class="based-on">
-              <%- include('../partials/categoryCheckboxesLimitSelects') %>
+      <div class="kindred-input-container">
+        <div class="cat-selects">
+          <div class="border-box-wrapper">
+            <%- include('../partials/borders') %>
+            <div class="border-box-content">
+              <div class="based-on">
+                <%- include('../partials/categoryCheckboxesLimitSelects') %>
+              </div>
             </div>
-          </div>
-
-          <div class="info-btn-wrapper">
+  
             <button class="info-btn">
               <i class="fa-solid fa-circle-info"></i>
+              <span class="info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to find Kindred.</span>
             </button>
-            <span class="info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to find Kindred.</span>
           </div>
         </div>
-
+  
         <div class="centre-content-h">
           <button class="find-kindred-btn kindred-recs-btn blue-btn">Find Kindred</button>
         </div>
-
       </div>
 
       <!-- Kindred list -->
-      <div class="border-box-wrapper recs-list-wrapper">
+      <div class="border-box-wrapper white-fade">
         <%- include('../partials/borders') %>
         <div class="border-box-content kindred-list">
           
           <div class="header-row">
+            <span>Similarity score</span>
             <span>Username</span>
             <span>Location</span>
-            <span>Similarity score</span>
-            <span>Num common answers</span>
-            <span>Score differential (positivity)</span>
+            <span>Positivity Difference</span>
           </div>
 
           <hr>
@@ -63,7 +61,6 @@
       <a class="grey-btn" href="/profile" role="button">Back to Profile</a>
     </div>
   </div>
-
 
 <script type="module" src="/js/pages/find-kindred.js"></script>
 
