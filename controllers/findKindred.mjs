@@ -1,16 +1,16 @@
 import express from "express";
-import { CategoryType } from "../models/categoryType.mjs";
 import { CategoryAnswersList } from "../models/categoryAnswersList.mjs";
 import { KindredList } from "../lib/similarity/kindredList/kindredList.mjs"
 import { CategoryInfo } from "../public/sharedJs/categoryInfo.mjs";
 import { getSelectableUserCategories } from "../lib/similarity/getSelectableUserCategories.mjs";
+import { serverState } from "../lib/serverState/serverState.mjs";
 
 
 
 export const findKindredRouter = express.Router();
 
 findKindredRouter.get("/", async function(req, res) {
-  const allCategoryTypes = await CategoryType.find({}).exec();
+  const allCategoryTypes = serverState.allCategories;
   const userCategoryAnswers = await CategoryAnswersList.find(
     {userId: req.user._id}).exec();
 

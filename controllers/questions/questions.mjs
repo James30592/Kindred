@@ -3,15 +3,24 @@ import { serverState } from "../../lib/serverState/serverState.mjs"
 import { createNewQuestions } from '../../lib/questions/createNewQuestions.mjs';
 import { DBCategoryAnswersList } from "../../lib/dbHelpers/categoryQuestionOrAnswersList/sub-classes/categoryAnswersList.mjs";
 import { userAnswersRouter } from "./userAnswers.mjs";
+import { validateCategory } from "./validateCategory.mjs";
 
 
 
 export const questionsRouter = express.Router();
 questionsRouter.use("/user-answers", userAnswersRouter);
 
-questionsRouter.all("/:categoryType/:category", async function(req, res) {
+questionsRouter.all("/:categoryType/:category", async function(req, res, next) {
   const categoryTypeName = req.params.categoryType;
   const categoryName = req.params.category;
+
+  // If invalid route parameters from URL then go to next route (404);
+  const isValidCategory = validateCategory(categoryName, categoryTypeName, 
+    serverState);
+
+  if (!isValidCategory) {
+    return next();
+  };
 
   const currAnswerer = await serverState.currAnswerers.getCurrAnswerer(
     req.user._id, categoryTypeName, categoryName);

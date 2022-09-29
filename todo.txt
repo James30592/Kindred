@@ -2,9 +2,14 @@ To do:
 
 
 
+-	add many fake accounts with data
+-	protect api keys (and restrict for google one)
+-	deploy website and database online
 
-
-
+-	use oAuth for signup
+-	about section when scroll down on main page, or with link to seperate page
+-	add message to find kindred / recommendations pages if was able to search but returned no results "answer more questions or change input categories".
+-	add svg background to a few pages (make it fade out and re-draw too).
 
 
 
@@ -21,15 +26,11 @@ To do:
 
 -	"forgot your password" feature.
 
+-	validation on data that can be sent to server.
+
 -	make it give error message when registering with email that already exists - prompt for "forgot your password".
 
 -	account / email verification when registering / changing email.
-
--	protect api keys (and restrict for google one)
-
--	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results
-
--	validation on data that can be sent to server, including from the url itself (eg. atm server crashes if changing questions category in url to an invalid one). - make 404 page content not found for if url has unrecognised endpoint, use res.sendStatus
 
 -	for api queries, include only stuff that has already been released
 
@@ -39,6 +40,8 @@ To do:
 
 -	profanity filter on usernames
 
+-	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results. seems fine lat time I checked it though actually (29/09/22).
+
 -	need to link to way to watch / play / listen / do for each suggestion, also show more detailed info (such as blurb, trailer) for each one.
 
 -	bookmark feature like taste.io?
@@ -47,11 +50,7 @@ To do:
 
 -	make it so as soon as you release the slider it rates it, does animation
 
--	use oAuth for signup
-
 -	add message if dont find any kindred / recommendations - "you don't have any kindred for these selections, try answering more questions or selecting different categories"
-
--	about section when scroll down on main page, or with link to seperate page
 
 -	procedurally generated svg border around buttons, paintbrush line border around
 

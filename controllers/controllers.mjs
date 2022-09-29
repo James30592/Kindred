@@ -11,6 +11,7 @@ import { recommendationsRouter } from "./recommendations.mjs";
 import { adminRouter } from "./admin.mjs";
 import { questionsMenuRouter } from "./questions-menu.mjs";
 import { questionsRouter } from "./questions/questions.mjs";
+import { pageNotFoundRouter } from "./pageNotFound.mjs";
 
 
 
@@ -27,3 +28,4 @@ router.use("/recommendations", recommendationsRouter);
 router.use("/admin", adminRouter);
 router.use("/questions-menu", questionsMenuRouter);
 router.use("/questions", questionsRouter);
+router.use(pageNotFoundRouter);

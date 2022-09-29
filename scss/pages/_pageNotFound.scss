@@ -1,0 +1,14 @@
+@use "../abstracts/variables" as vars;
+
+
+
+.not-found-content {
+    h1 {
+        margin-top: 0.5em;
+        color: vars.$lighter-blue;
+    }
+
+    h3 {
+        margin-bottom: 0.5em;
+    }
+}
