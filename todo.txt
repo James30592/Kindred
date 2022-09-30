@@ -1,10 +1,10 @@
 To do:
 
 
-
+-	admin route authentication
 -	add many fake accounts with data
--	protect api keys (and restrict for google one)
 -	deploy website and database online
+-	restrict google API key useage
 
 -	use oAuth for signup
 -	about section when scroll down on main page, or with link to seperate page
@@ -17,6 +17,10 @@ To do:
 
 
 
+
+-	add rate limiting per IP for each request, so as not to use up API keys
+
+-	find a more efficient way on back end for find kindred (and find kindred within recommendations) rather than searching through all answers for everyone each time
 
 -	find kindred on a map instead of list
 
@@ -40,7 +44,7 @@ To do:
 
 -	profanity filter on usernames
 
--	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results. seems fine last time I checked it though actually (29/09/22).
+-	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results. seems fine last time I checked it though actually (29/09/22). Added basic error checking to back end since then so that server doesn't crash on async error and error page is rendered.
 
 -	need to link to way to watch / play / listen / do for each suggestion, also show more detailed info (such as blurb, trailer) for each one.
 

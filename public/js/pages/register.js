@@ -7,8 +7,6 @@ window.onload = initAutocomplete();
 
 autocomplete.addListener("place_changed", placeChosen);
 
-
-
 function initAutocomplete() {
   const locInput = document.querySelector(".loc-input");
   autocomplete = new google.maps.places.Autocomplete(locInput);

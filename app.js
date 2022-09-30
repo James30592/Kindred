@@ -6,8 +6,12 @@ import { router } from "./controllers/controllers.mjs";
 import express from "express";
 import mongoose from "mongoose";
 import passport from "passport";
+import * as dotenv from 'dotenv';
+import { serverState } from './lib/serverState/serverState.mjs';
 
 
+
+dotenv.config()
 
 const session = require("express-session");
 
@@ -19,7 +23,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use(session({
-  secret: "Very important secret.",
+  secret: process.env.EXPRESS_SESSION,
   resave: false,
   saveUninitialized: false
 }));
@@ -35,3 +39,4 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.listen(3000, () => {console.log("Server running on port 3000.")});
+serverState.init();
