@@ -9,18 +9,22 @@ import { serverState } from "../lib/serverState/serverState.mjs";
 
 export const findKindredRouter = express.Router();
 
-findKindredRouter.get("/", async function(req, res) {
-  const allCategoryTypes = serverState.allCategories;
-  const userCategoryAnswers = await CategoryAnswersList.find(
-    {userId: req.user._id}).exec();
+findKindredRouter.get("/", async function(req, res, next) {
+  throw new Error("broken");
 
-  const selectableCategories = getSelectableUserCategories(
-    userCategoryAnswers);
+
+
+  // const allCategoryTypes = serverState.allCategories;
+  // const userCategoryAnswers = await CategoryAnswersList.find(
+  //   {userId: req.user._id}).exec();
+
+  // const selectableCategories = getSelectableUserCategories(
+  //   userCategoryAnswers);
   
-  res.locals.allCategoryTypes = allCategoryTypes;
-  res.locals.selectableCategories = selectableCategories;
+  // res.locals.allCategoryTypes = allCategoryTypes;
+  // res.locals.selectableCategories = selectableCategories;
 
-  res.render("pages/find-kindred");
+  // res.render("pages/find-kindred");
 });
 
 findKindredRouter.post("/", async function(req, res){
