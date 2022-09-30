@@ -1,4 +1,5 @@
 import express from "express";
+import "express-async-errors";
 
 import { defaultRouter } from "./default.mjs";
 import { homeRouter } from "./home.mjs";
