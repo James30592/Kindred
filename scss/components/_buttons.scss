@@ -82,6 +82,7 @@
     right: 5%;
     background: none;
     border: none;
+    padding: 0;
     cursor: pointer;
 
     i {
@@ -104,8 +105,24 @@
     color: white;
     font-size: vars.$fontSize8;
     border-radius: 0.7em;
+    max-width: max-content;
     width: max(200px, 15vw);
     padding: 1em;
     transform: translate(-2em, -2em);
     text-align: start;
+}
+
+.info-txt-right {
+    right: auto;
+    left: 0;
+}
+
+.header-row-info-btn {
+    bottom: -1em;
+    left: 0;
+    right: auto;
+
+    > i {
+        font-size: vars.$fontSize8;
+    }
 }

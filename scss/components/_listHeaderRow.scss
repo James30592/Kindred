@@ -1,0 +1,18 @@
+@use "../abstracts/variables" as vars;
+
+
+
+// Used by find kindred and recommendations pages.
+.header-row {
+  div {
+    // vertical-align: top
+    display: flex;
+    align-items: flex-start;
+  }
+
+  > span, > div > span {
+    font-size: vars.$fontSize7;
+    font-weight: 700;
+    color: vars.$secondary-grey;
+  }
+}

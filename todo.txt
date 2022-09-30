@@ -40,7 +40,7 @@ To do:
 
 -	profanity filter on usernames
 
--	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results. seems fine lat time I checked it though actually (29/09/22).
+-	error checking, especially with results from APIs, can error sometimes, think with weird search terms that maybe dont return any results. seems fine last time I checked it though actually (29/09/22).
 
 -	need to link to way to watch / play / listen / do for each suggestion, also show more detailed info (such as blurb, trailer) for each one.
 

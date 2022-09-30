@@ -9,15 +9,8 @@
   column-gap: 5%;
 }
 
-.header-row {
+.recommendations-list .header-row {
   @include recsHGrid();
-
-  > span {
-      font: vars.$sansSerif;
-      font-size: vars.$fontSize7;
-      font-weight: 700;
-      color: vars.$secondary-grey;
-  }
 }
 
 .rec-item {

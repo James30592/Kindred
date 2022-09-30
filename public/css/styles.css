@@ -53,6 +53,10 @@ h4 {
   justify-content: center;
 }
 
+.pos-rel {
+  position: relative;
+}
+
 .transparent {
   opacity: 0 !important;
 }
@@ -411,6 +415,7 @@ h4 {
   right: 5%;
   background: none;
   border: none;
+  padding: 0;
   cursor: pointer;
 }
 .info-btn:focus {
@@ -437,10 +442,25 @@ h4 {
   color: white;
   font-size: calc(0.4rem + 0.3vw);
   border-radius: 0.7em;
+  max-width: max-content;
   width: max(200px, 15vw);
   padding: 1em;
   transform: translate(-2em, -2em);
   text-align: start;
+}
+
+.info-txt-right {
+  right: auto;
+  left: 0;
+}
+
+.header-row-info-btn {
+  bottom: -1em;
+  left: 0;
+  right: auto;
+}
+.header-row-info-btn > i {
+  font-size: calc(0.4rem + 0.3vw);
 }
 
 .curr-question-div {
@@ -556,16 +576,10 @@ h4 {
     width: 70%;
   }
 }
-.header-row {
+.recommendations-list .header-row {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
   column-gap: 5%;
-}
-.header-row > span {
-  font: "Catamaran", sans-serif;
-  font-size: calc(0.5rem + 0.375vw);
-  font-weight: 700;
-  color: hsl(0deg, 0%, 43%);
 }
 
 .rec-item {
@@ -1136,6 +1150,16 @@ nav .logo-container {
     width: 10px;
   }
 }
+.header-row div {
+  display: flex;
+  align-items: flex-start;
+}
+.header-row > span, .header-row > div > span {
+  font-size: calc(0.5rem + 0.375vw);
+  font-weight: 700;
+  color: hsl(0deg, 0%, 43%);
+}
+
 .home-content {
   width: 70%;
   height: 40vh;
@@ -1346,7 +1370,7 @@ nav .logo-container {
   margin-bottom: 10%;
 }
 
-.header-row {
+.kindred-list .header-row {
   display: grid;
   grid-template-columns: 1fr 2fr 2fr 1fr;
   column-gap: 5%;
