@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+  <title>Kindred | Profile (Admin)</title>
+</head>
+<body>
+  <div class="pre-footer">
+    <%- include('../partials/navbar') %>
+
+    <div class="svg-connects-wrapper profile-svg-connects">
+      <a class="lg-cursive-btn connect-elem  qs-btn" data-connect-id="0" data-connects-to="1,2" data-draw-origin="true" href="/questions-menu" role="button">Questions</a>
+      <a class="lg-cursive-btn connect-elem kindred-btn" data-connect-id="1" data-connects-to="2,3" href="/find-kindred" role="button">Find Kindred</a>
+      <a class="lg-cursive-btn connect-elem recs-btn" data-connect-id="2" data-connects-to="3" href="/recommendations" role="button">Recommendations</a>
+      <a class="lg-cursive-btn connect-elem admin-btn" data-connect-id="3" href="/admin" role="button">Admin</a>
+    </div>
+  </div>
+
+<script type="module" src="/js/pages/profile.js"></script>
+
+<%- include('../partials/endBody') %>

@@ -19,7 +19,8 @@ registerRouter.post("/", function(req, res) {
     {
       email: req.body.email,
       profileName: req.body["profile-name"],
-      location: thisLoc 
+      location: thisLoc,
+      isAdmin: false
     },
 
     req.body.password,

@@ -66,6 +66,11 @@ const userSchema = new mongoose.Schema({
   location: {
     type: locationSchema, 
     required: true
+  },
+
+  isAdmin: {
+    type: Boolean,
+    required: true
   }
 });
 

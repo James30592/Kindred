@@ -1,7 +1,6 @@
 To do:
 
 
--	admin route authentication
 -	add many fake accounts with data
 -	deploy website and database online
 -	restrict google API key useage

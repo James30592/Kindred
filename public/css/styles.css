@@ -1253,9 +1253,15 @@ nav .logo-container {
 }
 
 .admin-btn {
-  pointer-events: all;
+  left: 25%;
+  bottom: 20%;
+  transform: translate(-110%, 50%);
+}
+.admin-btn::after {
+  content: "";
   position: absolute;
-  top: 10%;
+  left: calc(-1 * -110%);
+  bottom: calc(1 * 50%);
 }
 
 /* Mobile size. */

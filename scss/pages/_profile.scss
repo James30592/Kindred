@@ -21,9 +21,7 @@
 }
 
 .admin-btn {
-    pointer-events: all;
-    position: absolute;
-    top: 10%;
+    @include svgConnects.svgConnect(left, 25%, bottom, 20%, -110%, 50%);
 }
   
 /* Mobile size. */
