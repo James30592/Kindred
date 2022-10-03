@@ -2,12 +2,13 @@ To do:
 
 
 -	add many fake accounts with data
+-	add message to find kindred / recommendations pages if was able to search but returned no results "you don't have any kindred for these selections, try answering more questions or selecting different categories".
 -	deploy website and database online
 -	restrict google API key useage
+-	use pm2 to make server restart when it dies
+-	do some proper questions for the personality categories
 
 -	use oAuth for signup
--	about section when scroll down on main page, or with link to seperate page
--	add message to find kindred / recommendations pages if was able to search but returned no results "answer more questions or change input categories".
 -	add svg background to a few pages (make it fade out and re-draw too).
 
 
@@ -16,6 +17,9 @@ To do:
 
 
 
+
+
+-	about section when scroll down on main page, or with link to seperate page
 
 -	add rate limiting per IP for each request, so as not to use up API keys
 
@@ -52,10 +56,6 @@ To do:
 -	cookie message
 
 -	make it so as soon as you release the slider it rates it, does animation
-
--	add message if dont find any kindred / recommendations - "you don't have any kindred for these selections, try answering more questions or selecting different categories"
-
--	procedurally generated svg border around buttons, paintbrush line border around
 
 -	use a different word instead of "questions"
 

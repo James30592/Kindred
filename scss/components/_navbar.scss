@@ -1,9 +1,14 @@
-@use "../abstracts/mixins" as mixins;
 @use "../abstracts/variables" as vars;
 
 
 
 // Navbar
+@mixin dimOnHover {
+    &:hover {
+        filter: brightness(0.8);
+    }
+}
+
 nav {
     position: sticky;
     z-index: 2;
@@ -35,7 +40,7 @@ nav {
 
 .nav-link.dropdown-toggle {
     color: white;
-    @include mixins.dimOnHover;
+    @include dimOnHover;
 }
 
 .nav-menu-btn-small {

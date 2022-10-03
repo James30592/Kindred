@@ -77,8 +77,8 @@ export class RecsQSource extends SingleModeQSource {
       body: JSON.stringify(allCategoryInfo)
     });
     
-    const recsInfo = await fetchResponse.json();
-    return recsInfo.recommendList;
+    const recommendList = await fetchResponse.json();
+    return recommendList;
   }
 
   // Set the currQRow to the question that is now being rated, so it can be 

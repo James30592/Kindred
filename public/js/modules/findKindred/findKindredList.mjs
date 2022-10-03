@@ -36,8 +36,8 @@ export class FindKindredList {
     return (numCats > 0);
   }
 
-  _buildContentDiv(kindredArr) {
-    for (let kindred of kindredArr.simRatingList) {
+  _buildContentDiv(simRatingList) {
+    for (let kindred of simRatingList) {
       const kindredRow = this._createRow(kindred);
       this._contentDiv.appendChild(kindredRow);
     };

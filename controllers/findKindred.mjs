@@ -29,6 +29,7 @@ findKindredRouter.post("/", async function(req, res){
   const thisKindredList = new KindredList(req.user, 10);
   await thisKindredList.initKindredList(categoryInfo);
   thisKindredList.findKindred();
+  thisKindredList.cleanForSend();
 
-  res.json(thisKindredList);
+  res.json(thisKindredList.simRatingList);
 });

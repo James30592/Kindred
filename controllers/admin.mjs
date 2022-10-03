@@ -17,10 +17,8 @@ adminRouter.post("/:adminRequest", async function(req, res){
   if (req.params.adminRequest === "createAutoUsers") {
     const numNewUsers = req.body.numNewUsers;
 
-    const currDBCategories = serverState.allCategories;
-    const currDBQuestions = await models.CategoryQuestionsList.find({}).exec();
-    const batchUserMaker = new admin.BatchUserCreator(currDBCategories, 
-      currDBQuestions);
+    const allDBCategories = serverState.allCategories;
+    const batchUserMaker = new BatchUserCreator(allDBCategories);
 
     const resultMsg = batchUserMaker.createUsers(numNewUsers);
 

@@ -34,5 +34,5 @@ recommendationsRouter.post("/", async function(req, res){
 
   thisRecommendationList.getRecommendations();
   
-  res.json(thisRecommendationList);
+  res.json(thisRecommendationList.recommendList);
 });
