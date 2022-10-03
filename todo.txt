@@ -2,6 +2,7 @@ To do:
 
 
 -	add many fake accounts with data
+-	check similarity logic and maybe reduce threshold down to 5.0 for recommendations
 -	add message to find kindred / recommendations pages if was able to search but returned no results "you don't have any kindred for these selections, try answering more questions or selecting different categories".
 -	deploy website and database online
 -	restrict google API key useage
