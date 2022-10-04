@@ -33,6 +33,11 @@ recommendationsRouter.post("/", async function(req, res){
     resultCategoryInfo);
 
   thisRecommendationList.getRecommendations();
+
+  const recommendsInfo = {
+    recommendList: thisRecommendationList.recommendList,
+    numKindred: thisRecommendationList.simRatingList.length
+  };
   
-  res.json(thisRecommendationList.recommendList);
+  res.json(recommendsInfo);
 });

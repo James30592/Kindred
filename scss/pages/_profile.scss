@@ -25,7 +25,7 @@
 }
   
 /* Mobile size. */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: vars.$mobileWidth) {
     .profile-svg-connects {
         width: 100%;
         height: calc(100vh - 40px);

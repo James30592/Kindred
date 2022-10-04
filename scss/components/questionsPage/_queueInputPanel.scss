@@ -44,7 +44,7 @@
 }
 
 /* Mobile size. */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: vars.$mobileWidth) {
     .queue-input-panel > .border-box-content {
         padding: 7px 10px;
     }

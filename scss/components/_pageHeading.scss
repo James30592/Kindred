@@ -1,0 +1,16 @@
+@use "../abstracts/variables" as vars;
+
+
+
+.page-heading-wrapper {
+    margin-bottom: 8%;
+  }
+  
+  .page-heading {
+    margin-bottom: 0.5em;
+  }
+  
+  .page-sub-heading {
+    font-family: vars.$sansSerif;
+    color: vars.$lighter-blue;
+  }

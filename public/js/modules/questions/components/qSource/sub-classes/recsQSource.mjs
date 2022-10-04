@@ -14,6 +14,8 @@ export class RecsQSource extends SingleModeQSource {
   _qDivClass = "rec-item";
 
   static #INVALID_SELECTS_MSG = `At least one category must be selected from each of the "Recommend for" and "Based on" groups.`;
+  static #NO_KINDRED_MSG = ["You're one of a kind!", "We couldn't find anyone similar enough to you for the selected categories. Try a different selection or answer more questions."];
+  static #KINDRED_NO_RECS_MSG = ["No recommendations!", "Your Kindred spirits for the categories selected have nothing to recommend you that you haven't rated already! Try a different selection."];
 
   constructor(listDiv) {
     super(listDiv);
@@ -33,6 +35,37 @@ export class RecsQSource extends SingleModeQSource {
     this.#getRecsBtn.addEventListener("click", () => {
       this.validateHandleUpdate(this._listDiv, RecsQSource.#INVALID_SELECTS_MSG);
     });
+  }
+
+  // Builds the content div with all the questions.
+  _buildContentDiv(recsInfo) {
+    if (recsInfo.numKindred > 0) {
+      if (recsInfo.recommendList.length > 0) {
+        super._buildContentDiv(recsInfo.recommendList);
+      }
+      else {
+        this.#setNoRecsMsg(RecsQSource.#KINDRED_NO_RECS_MSG);
+      };
+    }
+    else {
+      this.#setNoRecsMsg(RecsQSource.#NO_KINDRED_MSG);
+    };
+  }
+
+  // Sets a message in the recommendations list for why no recommendations were found.
+  #setNoRecsMsg(msgInfo) {
+    const noRecsMsgDiv = document.createElement("div");
+    const noRecsHeader = document.createElement("h5");
+    const noRecsTxt = document.createElement("p");
+
+    noRecsHeader.innerText = msgInfo[0];
+    noRecsTxt.innerText = msgInfo[1];
+    
+    noRecsMsgDiv.appendChild(noRecsHeader);
+    noRecsMsgDiv.appendChild(noRecsTxt);
+
+    noRecsMsgDiv.classList.add("no-recs-msg");
+    this._contentDiv.appendChild(noRecsMsgDiv);
   }
 
   // Ensure at least one checkbox is selected for Rec for and Based on Groups.
@@ -77,8 +110,8 @@ export class RecsQSource extends SingleModeQSource {
       body: JSON.stringify(allCategoryInfo)
     });
     
-    const recommendList = await fetchResponse.json();
-    return recommendList;
+    const recommendsInfo = await fetchResponse.json();
+    return recommendsInfo;
   }
 
   // Set the currQRow to the question that is now being rated, so it can be 
@@ -106,8 +139,8 @@ export class RecsQSource extends SingleModeQSource {
       this.addEventListener('postAnswersComplete', resolve(), {once: true});
     });
 
-    const latestRecs = await this.getRecs();
-    return latestRecs;
+    const latestRecsInfo = await this.getRecs();
+    return latestRecsInfo;
   }
 
   // Used by the mixin to get latest recommendations.

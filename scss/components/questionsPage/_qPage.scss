@@ -38,14 +38,14 @@
 }
 
 /* Tablet up to desktop size. */
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: vars.$tabletWidth) {
     .q-mode-selector > button:nth-last-child(1) {
         border-bottom-right-radius: 6px;
     }
 }
 
 /* Mobile size. */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: vars.$mobileWidth) {
     .q-mode-selector > button:nth-last-child(1) {
         border-bottom-right-radius: 5px;
     }

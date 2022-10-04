@@ -1,3 +1,7 @@
+@use "../../abstracts/variables" as vars;
+
+
+
 /* Questions page queues. */
 $num2-queue-transp: 0.1;
 $num3-queue-transp: 0.05;
@@ -106,7 +110,7 @@ $num3-queue-transp: 0.05;
 }
 
 /* Tablet up to desktop size. */
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: vars.$tabletWidth) {
     .queue-imgs > div {
         width: 25%;
     }

@@ -1,3 +1,7 @@
+@use "../abstracts/variables" as vars;
+
+
+
 // Used for register and login pages.
 .full-page-content {
     display: inline-block;
@@ -6,7 +10,7 @@
 }
 
 /* Tablet up to desktop size. */
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: vars.$tabletWidth) {
     .full-page-content {
         display: block;
         margin: 20%;
@@ -14,7 +18,7 @@
 }
 
 /* Mobile size. */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: vars.$mobileWidth) {
     .full-page-content {
         display: block;
         margin: 10% 7%;

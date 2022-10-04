@@ -24,7 +24,7 @@
 }    
 
 /* Tablet up to desktop size. */
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: vars.$tabletWidth) {
     .category-type-group > label > input {
         width: 12px;
     }
@@ -32,7 +32,7 @@
 
 
 /* Mobile size. */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: vars.$mobileWidth) {
     .category-type-group > label > input {
         width: 10px;
     }

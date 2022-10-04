@@ -28,11 +28,10 @@ export const kindredRecsMixin = {
     const data = await this._getUpdatedSourceData();
 
     // Don't hide the loader / show the content until both the loader has 
-    // finished faded in AND the doStuff has been completed.
-    loaderShown.then(() => {
-      this._rebuildContentDiv(data);
-      this._hideLoader();
-    });
+    // finished fading in AND the doStuff has been completed.
+    await loaderShown;
+    this._rebuildContentDiv(data);
+    this._hideLoader();
   },
 
   // Validates and then handles the request to update, otherwise alerts with 

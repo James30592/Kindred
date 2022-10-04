@@ -48,6 +48,14 @@ h3 {
 h4 {
   font-size: vars.$fontSize4;
 }
+
+h5 {
+  font-size: vars.$fontSize5;
+}
+
+h6 {
+  font-size: vars.$fontSize6;
+}
   
 // Transition
 .fade-trans {
@@ -78,10 +86,6 @@ h4 {
 }
 
 // Common classes
-.page-heading {
-  margin-bottom: 8%;
-}
-
 .pre-footer {
   flex: 1 0 auto;
 }
@@ -92,20 +96,4 @@ h4 {
 
 .white-fade {
     background-image: vars.$diag-white-fade;
-}
-
-/* Tablet up to desktop size. */
-@media only screen and (max-width: 1023px) {
-  .register-content {
-      display: block;
-      margin: 20%;
-  }
-}
-
-/* Mobile size. */
-@media only screen and (max-width: 767px) {
-  .register-content {
-      display: block;
-      margin: 15% 7%;
-  }
 }

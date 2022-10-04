@@ -30,13 +30,37 @@
     font-size: vars.$fontSize6;
 }
 
+.no-recs-msg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5% auto;
+
+    > h5 {
+        font-weight: 600;
+        margin-bottom: 5%;
+    }
+
+    > * {
+        text-align: center;
+        font-size: vars.$fontSize6;
+    }
+}
+
 /* Tablet up to desktop size. */
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: vars.$tabletWidth) {
     .kindred-recs-btn {
         margin-top: 6%;
     }
 
     .recs-header {
         margin-bottom: 5% !important;
+    }
+}
+
+/* Mobile size. */
+@media only screen and (max-width: vars.$mobileWidth) {
+    .get-recs-btn {
+        margin-top: 0;
     }
 }

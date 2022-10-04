@@ -44,6 +44,14 @@ h4 {
   font-size: calc(0.8rem + 0.6vw);
 }
 
+h5 {
+  font-size: calc(0.7rem + 0.5vw);
+}
+
+h6 {
+  font-size: calc(0.6rem + 0.45vw);
+}
+
 .fade-trans {
   transition: opacity 0.3s;
 }
@@ -69,10 +77,6 @@ h4 {
   display: none !important;
 }
 
-.page-heading {
-  margin-bottom: 8%;
-}
-
 .pre-footer {
   flex: 1 0 auto;
 }
@@ -85,20 +89,6 @@ h4 {
   background-image: linear-gradient(to top right, rgba(255, 255, 255, 0) 5%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.7) 80%, rgba(255, 255, 255, 0) 95%);
 }
 
-/* Tablet up to desktop size. */
-@media only screen and (max-width: 1023px) {
-  .register-content {
-    display: block;
-    margin: 20%;
-  }
-}
-/* Mobile size. */
-@media only screen and (max-width: 767px) {
-  .register-content {
-    display: block;
-    margin: 15% 7%;
-  }
-}
 .range-slider {
   --primary-color: #0366D6;
   --value-offset-y: var(--ticks-gap);
@@ -1160,6 +1150,19 @@ nav .logo-container {
   color: hsl(0deg, 0%, 43%);
 }
 
+.page-heading-wrapper {
+  margin-bottom: 8%;
+}
+
+.page-heading {
+  margin-bottom: 0.5em;
+}
+
+.page-sub-heading {
+  font-family: "Catamaran", sans-serif;
+  color: hsl(222deg, 22%, 60%);
+}
+
 .home-content {
   width: 70%;
   height: 40vh;
@@ -1178,13 +1181,6 @@ nav .logo-container {
   color: hsl(222deg, 22%, 60%);
 }
 
-/* Mobile size. */
-@media only screen and (max-width: 767px) {
-  .register-content {
-    display: block;
-    margin: 15% 7%;
-  }
-}
 .loc-details {
   padding: 6% 0 4% 0;
 }
@@ -1363,6 +1359,21 @@ nav .logo-container {
   font-size: calc(0.6rem + 0.45vw);
 }
 
+.no-recs-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5% auto;
+}
+.no-recs-msg > h5 {
+  font-weight: 600;
+  margin-bottom: 5%;
+}
+.no-recs-msg > * {
+  text-align: center;
+  font-size: calc(0.6rem + 0.45vw);
+}
+
 /* Tablet up to desktop size. */
 @media only screen and (max-width: 1023px) {
   .kindred-recs-btn {
@@ -1370,6 +1381,12 @@ nav .logo-container {
   }
   .recs-header {
     margin-bottom: 5% !important;
+  }
+}
+/* Mobile size. */
+@media only screen and (max-width: 767px) {
+  .get-recs-btn {
+    margin-top: 0;
   }
 }
 .kindred-input-container {
