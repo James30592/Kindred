@@ -1,12 +1,12 @@
 To do:
 
 
--	do some proper questions for the personality categories
--	back to home button on register and login pages
 -	use oAuth for signup
--	use pm2 to make server restart when it dies - test an error in async somewhere, like api getting qs...
+-	do some proper questions for the personality categories
+-	add about section to homepage
 
 -	deploy website and database online
+-	set up with pm2 and test by temporarily uninstalling express-async-errors
 -	restrict google API key useage
 
 
