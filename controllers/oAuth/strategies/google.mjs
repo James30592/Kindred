@@ -5,7 +5,7 @@ import passport from "passport";
 
 export const authGoogleRouter = express.Router();
 
-authGoogleRouter.get("/", passport.authenticate("google", {scope: ["profile"]}));
+authGoogleRouter.get("/", passport.authenticate("google", {scope: ["profile", "email"]}));
  
 authGoogleRouter.get('/profile', 
   passport.authenticate('google', {failureRedirect: '/login'}),
