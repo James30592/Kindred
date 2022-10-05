@@ -4,6 +4,7 @@ To do:
 -	use oAuth for signup
 -	do some proper questions for the personality categories
 -	add about section to homepage
+-	tweak segment length for mobile size
 
 -	deploy website and database online
 -	set up with pm2 and test by temporarily uninstalling express-async-errors

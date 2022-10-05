@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+// import findOrCreate from "mongoose-findorcreate";
+const findOrCreate = require("mongoose-findorcreate");
+
 
 
 const locationSchema = new mongoose.Schema({
@@ -63,6 +68,11 @@ const userSchema = new mongoose.Schema({
     required: true
   },
 
+  googleId: {
+    type: String,
+    required: false
+  },
+
   location: {
     type: locationSchema, 
     required: true
@@ -75,7 +85,6 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(passportLocalMongoose, {usernameField: "email"});
-
-
+userSchema.plugin(findOrCreate);
 
 export const User = new mongoose.model("User", userSchema);

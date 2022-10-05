@@ -14,15 +14,17 @@ import { questionsMenuRouter } from "./questions-menu.mjs";
 import { questionsRouter } from "./questions/questions.mjs";
 import { pageNotFoundRouter } from "./pageNotFound.mjs";
 import { errHandler } from "./errorHandler.mjs";
+import { authRouter } from "./oAuth/oAuth.mjs";
 
 
 
 export const router = express.Router();
 
-router.use("*", defaultRouter);
+// router.use("*", defaultRouter);
 router.use("/", homeRouter);
 router.use("/register", registerRouter);
 router.use("/login", loginRouter);
+router.use("/auth", authRouter);
 router.use("/profile", profileRouter);
 router.use("/logout", logoutRouter);
 router.use("/find-kindred", findKindredRouter);
