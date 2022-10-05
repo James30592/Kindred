@@ -4,7 +4,7 @@ nicer sign up and sign in with google button on register and login pages
 add setupComplete - true to all current accounts
 
 
--	use oAuth for signup
+-	implement oAuth for facebook too
 -	do some proper questions for the personality categories
 -	add about section to homepage
 -	tweak segment length for mobile size
