@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
-import passportLocalMongoose from "passport-local-mongoose";
-
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-// import findOrCreate from "mongoose-findorcreate";
+
+import mongoose from "mongoose";
+import passportLocalMongoose from "passport-local-mongoose";
 const findOrCreate = require("mongoose-findorcreate");
 
 
@@ -54,6 +53,14 @@ const locationSchema = new mongoose.Schema({
 }, {_id: false});
 
 
+// Only recorded for oAuth accounts.
+const oAuthInfoSchema = new mongoose.Schema({
+  // googleId: id
+  // or
+  // facebookId: id
+  // etc.
+}, {_id: false, strict: false});
+
 
 // Collection of users.
 const userSchema = new mongoose.Schema({
@@ -68,17 +75,24 @@ const userSchema = new mongoose.Schema({
     required: true
   },
 
-  googleId: {
-    type: String,
-    required: false
-  },
-
   location: {
     type: locationSchema, 
     required: true
   },
 
   isAdmin: {
+    type: Boolean,
+    required: true
+  },
+
+  oAuthInfo: {
+    type: oAuthInfoSchema,
+    required: false
+  },
+
+  // For oAuth accounts, only true once they have also provided profile name 
+  // and location seperately to oAth.
+  setupComplete: {
     type: Boolean,
     required: true
   }

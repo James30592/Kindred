@@ -20,7 +20,7 @@ import { authRouter } from "./oAuth/oAuth.mjs";
 
 export const router = express.Router();
 
-// router.use("*", defaultRouter);
+router.use("*", defaultRouter);
 router.use("/", homeRouter);
 router.use("/register", registerRouter);
 router.use("/login", loginRouter);

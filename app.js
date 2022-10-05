@@ -1,19 +1,15 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-
-import { User } from "./models/user.mjs"
 import { router } from "./controllers/controllers.mjs";
 import express from "express";
+import session from "express-session";
 import mongoose from "mongoose";
 import passport from "passport";
 import * as dotenv from 'dotenv';
 import { serverState } from './lib/serverState/serverState.mjs';
+import { initPassport } from './lib/initPassport.mjs';
 
 
  
 dotenv.config()
-
-const session = require("express-session");
 
 const app = express();
 
@@ -34,9 +30,7 @@ app.use("/", router);
 
 mongoose.connect("mongodb://127.0.0.1:27017/kindred02");
 
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+initPassport();
 
 app.listen(3000, () => {console.log("Server running on port 3000.")});
 serverState.init();

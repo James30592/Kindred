@@ -1,10 +1,14 @@
 To do:
 
+nicer sign up and sign in with google button on register and login pages
+add setupComplete - true to all current accounts
+
 
 -	use oAuth for signup
 -	do some proper questions for the personality categories
 -	add about section to homepage
 -	tweak segment length for mobile size
+-	check pages in google Lighthouse
 
 -	deploy website and database online
 -	set up with pm2 and test by temporarily uninstalling express-async-errors

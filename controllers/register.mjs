@@ -1,6 +1,7 @@
 import express from "express";
 import { User } from "../models/user.mjs";
 import passport from "passport";
+import { logoutIfAlreadyLoggedIn } from "./logout.mjs";
 
 
 
@@ -11,38 +12,44 @@ registerRouter.get("/", function(req, res) {
 });
 
 
-registerRouter.post("/", function(req, res) {
+registerRouter.post("/", 
+  function(req, res, next) {
+    logoutIfAlreadyLoggedIn(req, res, next);
+  },
 
-  const thisLoc = getLocObj(req.body);
+  function(req, res) {
+    const thisLoc = getLocObj(req.body);
 
-  User.register(
-    {
-      email: req.body.email,
-      profileName: req.body["profile-name"],
-      location: thisLoc,
-      isAdmin: false
-    },
+    User.register(
+      {
+        email: req.body.email,
+        profileName: req.body["profile-name"],
+        location: thisLoc,
+        isAdmin: false,
+        setupComplete: true
+      },
 
-    req.body.password,
+      req.body.password,
 
-    function(err, user){
-      if (err) {
-        console.log(err);
-        res.redirect("/register");
+      function(err, user){
+        if (err) {
+          console.log(err);
+          res.redirect("/register");
+        }
+        else {
+          passport.authenticate("local")(req, res, function(){
+            res.redirect("/profile");
+          });
+        };
       }
-      else {
-        passport.authenticate("local")(req, res, function(){
-          res.redirect("/profile");
-        });
-      };
-    }
-  );
-});
+    );
+  }
+);
 
 
 // Creates an address object ready for the database, from the registration page 
 // form data.
-function getLocObj(form) {
+export function getLocObj(form) {
   const thisLocObj = {
     placeName: form.placeName,
     googlePlaceId: form.googlePlaceId,
