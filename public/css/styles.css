@@ -453,13 +453,19 @@ h6 {
   font-size: calc(0.4rem + 0.3vw);
 }
 
+.login-btns-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .social-btn {
   display: inline-block;
   background-color: hsl(217deg, 89%, 61%);
   padding: 0.375rem 0.75rem;
   border-radius: 0.25rem;
   transition: background-color 0.3s;
-  margin: 15px auto;
 }
 .social-btn:hover {
   background-color: hsl(217deg, 89%, 50%);
@@ -470,10 +476,6 @@ h6 {
 }
 .social-btn > span {
   color: white;
-}
-
-.login-btn, .register-btn {
-  margin-right: 25px;
 }
 
 .curr-question-div {

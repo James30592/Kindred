@@ -1,6 +1,6 @@
 To do:
 
-add setupComplete - true to all current accounts
+
 
 
 -	do some proper questions for the personality categories

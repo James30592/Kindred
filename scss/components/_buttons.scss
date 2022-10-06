@@ -127,13 +127,20 @@
     }
 }
 
+.login-btns-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .social-btn {
     display: inline-block;
     background-color: hsl(217, 89%, 61%);
     padding: 0.375rem 0.75rem;
     border-radius: 0.25rem;
     transition: background-color 0.3s;
-    margin: 15px auto;
+    // margin: 15px 0;
 
     &:hover {
         background-color: hsl(217, 89%, 50%);
@@ -147,8 +154,4 @@
     > span {
         color: white;
     }
-}
-
-.login-btn, .register-btn {
-    margin-right: 25px;
 }
