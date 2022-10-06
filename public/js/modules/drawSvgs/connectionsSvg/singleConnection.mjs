@@ -23,7 +23,7 @@ export class SingleConnection extends EventTarget {
   #startedDrawing = false;
 
   // Standard size of segment (before randomising) as percentage of viewport width).
-  static #STANDARD_SEG_LEN_RATIO = 1;
+  static #STANDARD_SEG_LEN_RATIO = 9;
   static #COMMON_PTS_MAIN_RAND = 0.02;
   static #COMMON_PTS_PERP_RAND = 0.01;
 
