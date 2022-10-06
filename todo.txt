@@ -1,6 +1,5 @@
 To do:
 
-nicer sign up and sign in with google button on register and login pages
 add setupComplete - true to all current accounts
 
 
@@ -13,7 +12,7 @@ add setupComplete - true to all current accounts
 -	set up with pm2 and test by temporarily uninstalling express-async-errors
 -	restrict google API key useage
 -	change urls in google / facebook oauth once hosted
--	convert to https and then implement oAuth for facebook too
+-	convert to https and then implement oAuth for facebook too. google firebase apparently has built in ssl.
 
 
 

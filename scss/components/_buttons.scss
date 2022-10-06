@@ -126,3 +126,29 @@
         font-size: vars.$fontSize8;
     }
 }
+
+.social-btn {
+    display: inline-block;
+    background-color: hsl(217, 89%, 61%);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s;
+    margin: 15px auto;
+
+    &:hover {
+        background-color: hsl(217, 89%, 50%);
+        text-decoration: none;
+    }
+
+    > img {
+        height: 1.6rem;
+    }
+
+    > span {
+        color: white;
+    }
+}
+
+.login-btn, .register-btn {
+    margin-right: 25px;
+}

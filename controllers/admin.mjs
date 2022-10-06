@@ -1,5 +1,5 @@
 import express from "express";
-import { BatchUserCreator } from "../lib/admin.mjs";
+import { BatchUserCreator } from "../lib/admin/admin.mjs";
 import { serverState } from "../lib/serverState/serverState.mjs";
 
 
