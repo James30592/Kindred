@@ -23,7 +23,7 @@ export class SingleConnection extends EventTarget {
   #startedDrawing = false;
 
   // Standard size of segment (before randomising) as percentage of viewport width).
-  static #STANDARD_SEG_LEN_RATIO = 7;
+  static #STANDARD_SEG_LEN_RATIO = 1;
   static #COMMON_PTS_MAIN_RAND = 0.02;
   static #COMMON_PTS_PERP_RAND = 0.01;
 
@@ -38,8 +38,9 @@ export class SingleConnection extends EventTarget {
     this.#mainVect = this.#startCoords.vectorTo(this.#endCoords);
     this.#totalD = this.#mainVect.getMag();
 
+    const avgWindowSideLen = (window.innerWidth + window.innerHeight) / 2;
     this.#standardSegLen = (SingleConnection.#STANDARD_SEG_LEN_RATIO / 100) 
-      * window.innerWidth;
+      * avgWindowSideLen;
 
     this.#numSegments = Math.round(this.#totalD / this.#standardSegLen);
     this.#probSegPattern = 0.4;
