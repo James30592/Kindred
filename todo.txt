@@ -13,6 +13,7 @@ implement oAuth for facebook too
 -	deploy website and database online
 -	set up with pm2 and test by temporarily uninstalling express-async-errors
 -	restrict google API key useage
+-	change urls in google / facebook oauth once hosted
 
 
 
