@@ -30,7 +30,7 @@ export class AnswerUIPanel {
     this.#showOrHidePanel(newQInfo);
 
     // Show current question text and reset previous answer info.
-    this.currQuestionText.innerText = newQInfo.currQText;
+    this.currQuestionText.innerHTML = newQInfo.currQText;
     this.prevAnsVal.innerText = "";
 
     const prevScore = this.#fillPrevAns(newQInfo, includeAlreadyAnswered);

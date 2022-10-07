@@ -5,8 +5,9 @@ personality:
 how competitive are you
 lookup personality traits, positive and negative eg. jealousy
 
+also finalise sports questions
 
--	make so some categories arent recommendable eg personality
+
 -	check pages in google Lighthouse
 
 -	deploy website and database online (google firebase)
