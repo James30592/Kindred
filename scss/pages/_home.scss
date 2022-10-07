@@ -2,10 +2,17 @@
 
 
 
+.home-content-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
 .home-content {
-    width: 70%;
-    height: 40vh;
-    margin: 30vh auto;
+    width: 70vw;
 
     hr {
         margin: 30px 0;
@@ -19,4 +26,40 @@
 
 .home-blurb {
     color: vars.$lighter-blue;
+}
+
+%home-arrow-btn-wrapper {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.home-down-btn-wrapper {
+    @extend %home-arrow-btn-wrapper;
+    bottom: 5%;
+}
+
+.home-up-btn-wrapper {
+    @extend %home-arrow-btn-wrapper;
+    top: 5%;
+}
+
+.home-arrow-btn {
+    width: clamp(100px, 9%, 200px);
+}
+
+.home-about-sect {
+    margin: 5vh 0;
+
+    .about-sect-heading {
+        color: vars.$mid-blue;
+        margin-bottom: 2vh;
+        font-weight: 700;
+    }
+}
+
+.about-login-btn {
+    margin-left: 0;
 }

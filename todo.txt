@@ -1,10 +1,12 @@
 To do:
 
-
-
-
 -	do some proper questions for the personality categories
--	add about section to homepage
+personality:
+how competitive are you
+lookup personality traits, positive and negative eg. jealousy
+
+
+-	make so some categories arent recommendable eg personality
 -	check pages in google Lighthouse
 
 -	deploy website and database online (google firebase)

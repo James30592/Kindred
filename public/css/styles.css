@@ -5,6 +5,7 @@
 
 html {
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -50,6 +51,10 @@ h5 {
 
 h6 {
   font-size: calc(0.6rem + 0.45vw);
+}
+
+p {
+  font-size: calc(0.5rem + 0.375vw);
 }
 
 .fade-trans {
@@ -341,7 +346,17 @@ h6 {
   font: var(--value-font);
 }
 
-.base-btn, .skip-btn, .rate-btn, .lg-cursive-btn, .blue-btn, .white-btn, .grey-btn, .search-btn {
+.anchor-btn:focus, .arrow-btn:focus, .base-btn:focus, .skip-btn:focus, .rate-btn:focus, .lg-cursive-btn:focus, .pink-btn:focus, .blue-btn:focus, .white-btn:focus, .grey-btn:focus, .search-btn:focus {
+  outline: none;
+}
+.anchor-btn:focus-visible, .arrow-btn:focus-visible, .base-btn:focus-visible, .skip-btn:focus-visible, .rate-btn:focus-visible, .lg-cursive-btn:focus-visible, .pink-btn:focus-visible, .blue-btn:focus-visible, .white-btn:focus-visible, .grey-btn:focus-visible, .search-btn:focus-visible {
+  outline: 5px auto black;
+}
+.anchor-btn:hover, .arrow-btn:hover, .base-btn:hover, .skip-btn:hover, .rate-btn:hover, .lg-cursive-btn:hover, .pink-btn:hover, .blue-btn:hover, .white-btn:hover, .grey-btn:hover, .search-btn:hover {
+  text-decoration: none;
+}
+
+.base-btn, .skip-btn, .rate-btn, .lg-cursive-btn, .pink-btn, .blue-btn, .white-btn, .grey-btn, .search-btn {
   cursor: pointer;
   font: calc(0.5rem + 0.375vw) "Catamaran", sans-serif;
   display: inline-block;
@@ -350,15 +365,6 @@ h6 {
   border-width: 0;
   border-radius: 0.3em;
   margin: 0.4em;
-}
-.base-btn:focus, .skip-btn:focus, .rate-btn:focus, .lg-cursive-btn:focus, .blue-btn:focus, .white-btn:focus, .grey-btn:focus, .search-btn:focus {
-  outline: none;
-}
-.base-btn:focus-visible, .skip-btn:focus-visible, .rate-btn:focus-visible, .lg-cursive-btn:focus-visible, .blue-btn:focus-visible, .white-btn:focus-visible, .grey-btn:focus-visible, .search-btn:focus-visible {
-  outline: 5px auto black;
-}
-.base-btn:hover, .skip-btn:hover, .rate-btn:hover, .lg-cursive-btn:hover, .blue-btn:hover, .white-btn:hover, .grey-btn:hover, .search-btn:hover {
-  text-decoration: none;
 }
 
 .grey-btn, .search-btn {
@@ -386,6 +392,15 @@ h6 {
 .blue-btn:hover {
   background-color: hsl(222deg, 22%, 48%);
   color: white;
+}
+
+.pink-btn {
+  background-color: hsl(0deg, 65%, 81%);
+  color: black;
+}
+.pink-btn:hover {
+  background-color: hsl(0deg, 65%, 70%);
+  color: black;
 }
 
 .lg-cursive-btn {
@@ -476,6 +491,26 @@ h6 {
 }
 .social-btn > span {
   color: white;
+}
+
+.arrow-btn {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.arrow-btn:focus {
+  outline: none;
+}
+.arrow-btn:focus-visible {
+  outline: 5px auto black;
+}
+.arrow-btn:hover {
+  transform: scale(120%);
+}
+.arrow-btn > img {
+  width: 100%;
+  object-fit: contain;
 }
 
 .curr-question-div {
@@ -1188,10 +1223,17 @@ nav .logo-container {
   color: hsl(222deg, 22%, 60%);
 }
 
+.home-content-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
 .home-content {
-  width: 70%;
-  height: 40vh;
-  margin: 30vh auto;
+  width: 70vw;
 }
 .home-content hr {
   margin: 30px 0;
@@ -1204,6 +1246,39 @@ nav .logo-container {
 
 .home-blurb {
   color: hsl(222deg, 22%, 60%);
+}
+
+.home-up-btn-wrapper, .home-down-btn-wrapper {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.home-down-btn-wrapper {
+  bottom: 5%;
+}
+
+.home-up-btn-wrapper {
+  top: 5%;
+}
+
+.home-arrow-btn {
+  width: clamp(100px, 9%, 200px);
+}
+
+.home-about-sect {
+  margin: 5vh 0;
+}
+.home-about-sect .about-sect-heading {
+  color: hsl(222deg, 22%, 48%);
+  margin-bottom: 2vh;
+  font-weight: 700;
+}
+
+.about-login-btn {
+  margin-left: 0;
 }
 
 .loc-details {
