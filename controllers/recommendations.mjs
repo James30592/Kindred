@@ -2,7 +2,7 @@ import express from "express";
 import { CategoryAnswersList } from "../models/categoryAnswersList.mjs";
 import { CategoryInfo } from "../public/sharedJs/categoryInfo.mjs";
 import { RecommendationList } from "../lib/similarity/recommendationList/recommendationList.mjs";
-import { getSelectableUserCategories } from "../lib/similarity/getSelectableUserCategories.mjs";
+import { getBasedOnUserCategories } from "../lib/similarity/getBasedOnUserCategories.mjs";
 import { serverState } from "../lib/serverState/serverState.mjs";
 
 
@@ -14,11 +14,11 @@ recommendationsRouter.get("/", async function(req, res){
   const userCategoryAnswers = await CategoryAnswersList.find(
     {userId: req.user._id}).exec();
 
-  const selectableCategories = getSelectableUserCategories(
-    userCategoryAnswers);
+  const selectableBasedOnCategories = getBasedOnUserCategories(userCategoryAnswers);
 
   res.locals.allCategoryTypes = allCategoryTypes;
-  res.locals.selectableCategories = selectableCategories;
+  res.locals.selectableBasedOn = selectableBasedOnCategories;
+  res.locals.selectableRecsFor = serverState.selectableRecForCategories;
 
   res.render("pages/recommendations");
 });

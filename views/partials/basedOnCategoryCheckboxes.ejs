@@ -4,7 +4,11 @@
     <% categoryType.categories.forEach(function(category){ %>
       <label><%= category.name %>
         <input type="checkbox" name="<%= categoryType.name + "." +
-          category.name %>" value="" class="category-checkbox">
+        category.name %>" value="" class="category-checkbox"
+        <% if (!selectableBasedOn.includes(category.name)){ %>
+          disabled="disabled"
+        <% }; %>
+        >
       </label>
     <% }); %>
   </div>

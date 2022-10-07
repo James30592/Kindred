@@ -1057,6 +1057,19 @@ p {
     margin: 10% 7%;
   }
 }
+.full-page-flex-content-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.full-page-flex-content {
+  width: 70vw;
+}
+
 nav {
   position: sticky;
   z-index: 2;
@@ -1223,19 +1236,7 @@ nav .logo-container {
   color: hsl(222deg, 22%, 60%);
 }
 
-.home-content-wrapper {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.home-content {
-  width: 70vw;
-}
-.home-content hr {
+.home-hr {
   margin: 30px 0;
 }
 

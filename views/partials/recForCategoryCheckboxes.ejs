@@ -5,7 +5,7 @@
       <label><%= category.name %>
         <input type="checkbox" name="<%= categoryType.name + "." +
         category.name %>" value="" class="category-checkbox"
-        <% if (!selectableCategories.includes(category.name)){ %>
+        <% if (!selectableRecsFor.includes(category.name)){ %>
           disabled="disabled"
         <% }; %>
         >

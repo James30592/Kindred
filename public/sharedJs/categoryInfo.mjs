@@ -5,9 +5,26 @@ export class CategoryInfo {
 
   // Where catInfo is an optional category info style object (just the data, not 
   // an actual instance of this class - from when stringified and sent using fetch).
-  constructor(catInfo = null) {
+  // dbCatTypes is a list of categoryType documents as returned from doing find 
+  // of category types in DB.
+  constructor(catInfo = null, dbCatTypes = null) {
     if (catInfo) {
       this.catTypes = catInfo.catTypes;
+    };
+
+    if (dbCatTypes) {
+      this.#constructFromCatTypes(dbCatTypes);
+    };
+  }
+
+  // Construct this category info based on a given array of category types and 
+  // their nested categories (as a result of a dib find on category types).
+  #constructFromCatTypes(dbCatTypes) {
+    for (let catType of dbCatTypes) {
+      for (let cat of catType.categories) {
+        const isRecData = {isRecommendable: cat.isRecommendable};
+        this.checkAndAddCategoryWithType(catType.name, cat.name, isRecData);
+      };
     };
   }
 
@@ -45,7 +62,7 @@ export class CategoryInfo {
 
   // Returns an array of objects where each object contains the
   // categoryTypeName and categoryName, for every unique category in this.
-  getAllCategories() {
+  getAllCategories(inclData = false) {
     const allUniqueCategories = [];
 
     for (let catType in this.catTypes) {
@@ -54,6 +71,14 @@ export class CategoryInfo {
           categoryType: catType,
           category: category
         };
+
+        if (inclData) {
+          const catData = this.catTypes[catType].categories[category];
+          for (let key in catData) {
+            thisCatAndType[key] = catData[key];
+          };
+        };
+
         allUniqueCategories.push(thisCatAndType);
       };
     };
