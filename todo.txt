@@ -1,9 +1,5 @@
 To do:
 
--	do some proper questions for the personality categories
-personality:
-how competitive are you
-lookup personality traits, positive and negative eg. jealousy
 
 also finalise sports questions
 

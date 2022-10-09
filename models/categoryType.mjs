@@ -24,7 +24,14 @@ const categoryTypeSchema = new mongoose.Schema({
     required: true, 
     unique: true
   },
-  categories: [categorySchema]
+  
+  categories: [categorySchema],
+
+  idx: {
+    type: Number,
+    required: true,
+    unique: true
+  }
 });
 
 
