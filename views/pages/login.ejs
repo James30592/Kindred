@@ -15,19 +15,21 @@
           <form action="/login" method="POST">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="email">
+              <input type="email" class="form-input" name="email">
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
+              <input type="password" class="form-input" name="password">
             </div>
             
             <div class="login-btns-wrapper">
-              <button type="submit" class="btn btn-dark">Login</button>
-
+              <button type="submit" class="grey-btn">Login</button>
+  
               <a class="social-btn" href="/auth/google">
-                <img src="images/btn_google_light_normal_ios.svg" alt="">
-                <span>Sign in with Google</span>
+                <div class="social-inner-wrapper">
+                  <img src="images/btn_google_light_normal_ios.svg" alt="">
+                  <span>Sign in with Google</span>
+                </div>
               </a>
             </div>
           </form>
@@ -45,4 +47,5 @@
     </div>
   </div>
 
-<%- include('../partials/endBody') %>
+</body>
+</html>

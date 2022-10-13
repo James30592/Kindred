@@ -16,22 +16,22 @@
   
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="email" required>
+              <input type="email" class="form-input" name="email" required>
             </div>
   
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" name="password" required>
+              <input type="password" class="form-input" name="password" required>
             </div>
   
             <div class="form-group">
               <label for="profile-name">Profile Name</label>
-              <input type="text" class="form-control" name="profile-name" required>
+              <input type="text" class="form-input" name="profile-name" required>
             </div>
   
             <div class="form-group location-group">
               <label for="loc-input">Location</label>
-              <input class="form-control loc-input" type="text" placeholder="Search for a place...">
+              <input class="form-input loc-input" type="text" placeholder="Search for a place...">
               
               <!-- Chosen Google location -->
               <div class="loc-details">
@@ -55,11 +55,13 @@
             </div>
   
             <div class="login-btns-wrapper">
-              <button type="submit" class="submit-btn btn btn-dark">Register</button>
+              <button type="submit" class="grey-btn">Register</button>
   
               <a class="social-btn" href="/auth/google">
-                <img src="images/btn_google_light_normal_ios.svg" alt="">
-                <span>Sign up with Google</span>
+                <div class="social-inner-wrapper">
+                  <img src="images/btn_google_light_normal_ios.svg" alt="">
+                  <span>Sign up with Google</span>
+                </div>
               </a>
             </div>
             
@@ -81,4 +83,5 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBupuPl_TCETkPatiOhkFxBV53iCO72IHY&libraries=places"></script>
   <script type="module" src="/js/pages/register.js"></script>
 
-<%- include('../partials/endBody') %>
+</body>
+</html>

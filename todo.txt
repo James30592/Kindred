@@ -1,7 +1,9 @@
 To do:
 
 
-also finalise sports questions
+
+
+add favicon
 
 
 -	check pages in google Lighthouse

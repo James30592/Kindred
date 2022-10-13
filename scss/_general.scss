@@ -18,6 +18,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+  margin: 0;
 }
 
 hr {
@@ -29,6 +30,10 @@ hr {
 h1, h2, h3, h4, h5, h6 {
   font-family: vars.$cursive;
   color: vars.$primary-grey;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  font-weight: 500;
 }
 
 h1 {
@@ -37,12 +42,10 @@ h1 {
 }
 
 h2 {
-  font-weight: 500;
   font-size: vars.$fontSize2;
 }
 
 h3 {
-  font-weight: 500;
   font-size: vars.$fontSize3;
 }
 
@@ -60,6 +63,31 @@ h6 {
 
 p {
   font-size: vars.$fontSize7;
+}
+
+a {
+  text-decoration: none;
+}
+
+img, svg {
+  vertical-align: middle;
+}
+
+hr {
+  margin: 1rem auto;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  overflow: visible;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
   
 // Transition

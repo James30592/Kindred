@@ -1,7 +1,6 @@
 import { RecommendationsMode } from "../modules/questions/components/questionsMode/sub-classes/singleAnswerMode/sub-classes/recommendationsMode.mjs";
 import { RecsQSource } from "../modules/questions/components/qSource/sub-classes/recsQSource.mjs";
 import { RecsQuestionsPage } from "../modules/questions/questionsPage/sub-classes/recsQuestionsPage.mjs";
-import { InfoBtns } from "../modules/infoBtns.mjs";
 
 
 
@@ -22,6 +21,3 @@ questionsPage.init();
 window.onload = async () => {
   await questionsPage.setQMode(recommendationsMode);
 }
-
-const infoBtns = new InfoBtns();
-infoBtns.init();

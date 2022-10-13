@@ -35,10 +35,12 @@
               </div>
             </div>
 
-            <button class="info-btn">
-              <i class="fa-solid fa-circle-info"></i>
-              <span class="info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to generate recommendations.</span>
-            </button>
+            <div class="pop-btn-container">
+              <button class="pop-btn info-btn">
+                <i class="fa-solid fa-circle-info"></i>
+                <span class="pop-btn-content info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to generate recommendations.</span>
+              </button>
+            </div>
 
           </div>
 
@@ -58,9 +60,9 @@
           <div class="header-row">
             <div class="pos-rel">
               <span>Score</span>
-              <button class="info-btn header-row-info-btn">
+              <button class="pop-btn info-btn header-row-info-btn">
                 <i class="fa-solid fa-circle-info"></i>
-                <span class="info-txt info-txt-right fully-hidden transparent">Your predicted rating for this item.</span>
+                <span class="pop-btn-content info-txt info-txt-right fully-hidden transparent">Your predicted rating for this item.</span>
               </button>
             </div>
             <span></span>
@@ -93,6 +95,6 @@
     </div>
   </div>
 
-<%- include('../partials/endBody') %>
+  <script type="module" src="/js/pages/recommendations.js"></script>
 
-<script type="module" src="/js/pages/recommendations.js"></script>
+<%- include('../partials/endBodyLoggedIn') %>
