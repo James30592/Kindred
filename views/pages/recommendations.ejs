@@ -1,14 +1,15 @@
 <%- include('../partials/header') %>
   <title>Kindred | Recommendations</title>
+  <meta name="description" content="Get recommendations from the people similar to you around the world.">
 </head>
 <body>
   <div class="pre-footer">
     <%- include('../partials/navbar') %>
 
-    <div class="page-content">
+    <main class="page-content">
       <div class="page-heading-wrapper">
         <h1 class="page-heading">Recommendations</h1>
-        <h6 class="page-sub-heading">Get recommendations from people that share your tastes.</h6>
+        <h2 class="page-sub-heading h-size-6">Get recommendations from people that share your tastes.</h2>
       </div>
   
       <div class="rec-input-container">
@@ -20,7 +21,7 @@
             <%- include('../partials/borders') %>
             <div class="border-box-content">
               <div class="recommendations-for">
-                <h4 class="recs-input-heading">Recommendations for:</h4>
+                <h2 class="recs-input-heading h-size-4">Recommendations for:</h2>
                 <%- include('../partials/recForcategoryCheckboxes') %>
               </div>
             </div>
@@ -30,13 +31,13 @@
             <%- include('../partials/borders') %>
             <div class="border-box-content">
               <div class="based-on">
-                <h4 class="recs-input-heading">Based on:</h4>
+                <h2 class="recs-input-heading h-size-4">Based on:</h2>
                 <%- include('../partials/basedOnCategoryCheckboxes') %>
               </div>
             </div>
 
             <div class="pop-btn-container">
-              <button class="pop-btn info-btn">
+              <button class="pop-btn info-btn" aria-label="Based on categories tip">
                 <i class="fa-solid fa-circle-info"></i>
                 <span class="pop-btn-content info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to generate recommendations.</span>
               </button>
@@ -60,7 +61,7 @@
           <div class="header-row">
             <div class="pos-rel">
               <span>Score</span>
-              <button class="pop-btn info-btn header-row-info-btn">
+              <button class="pop-btn info-btn header-row-info-btn" aria-label="Predicted rating tip">
                 <i class="fa-solid fa-circle-info"></i>
                 <span class="pop-btn-content info-txt info-txt-right fully-hidden transparent">Your predicted rating for this item.</span>
               </button>
@@ -86,12 +87,12 @@
         <%- include("../partials/questions/singleAnswerMode") %>
       </div>
 
-    </div>
+    </main>
   </div>
 
   <div class="footer">
     <div class="back-btns-wrapper">
-      <a class="grey-btn" href="/profile" role="button">Back to Profile</a>
+      <a class="grey-btn" href="/profile">Back to Profile</a>
     </div>
   </div>
 

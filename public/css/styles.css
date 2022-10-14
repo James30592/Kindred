@@ -36,23 +36,27 @@ h1 {
   font-size: calc(2rem + 1.5vw);
 }
 
-h2 {
+.h-size-1 {
+  font-size: calc(2rem + 1.5vw);
+}
+
+.h-size-2 {
   font-size: calc(1.6rem + 1.2vw);
 }
 
-h3 {
+.h-size-3 {
   font-size: calc(1.2rem + 0.9vw);
 }
 
-h4 {
+.h-size-4 {
   font-size: calc(0.8rem + 0.6vw);
 }
 
-h5 {
+.h-size-5 {
   font-size: calc(0.7rem + 0.5vw);
 }
 
-h6 {
+.h-size-6 {
   font-size: calc(0.6rem + 0.45vw);
 }
 
@@ -378,7 +382,7 @@ input {
   outline: none;
 }
 .anchor-btn:focus-visible, .arrow-btn:focus-visible, .base-btn:focus-visible, .skip-btn:focus-visible, .rate-btn:focus-visible, .centre-modal > .close:focus-visible, .social-btn:focus-visible, .lg-cursive-btn:focus-visible, .pink-btn:focus-visible, .blue-btn:focus-visible, .white-btn:focus-visible, .grey-btn:focus-visible, .search-btn:focus-visible {
-  outline: 5px auto black;
+  outline: 5px auto red;
 }
 .anchor-btn:hover, .arrow-btn:hover, .base-btn:hover, .skip-btn:hover, .rate-btn:hover, .centre-modal > .close:hover, .social-btn:hover, .lg-cursive-btn:hover, .pink-btn:hover, .blue-btn:hover, .white-btn:hover, .grey-btn:hover, .search-btn:hover {
   text-decoration: none;
@@ -414,11 +418,11 @@ input {
 }
 
 .blue-btn {
-  background-color: hsl(222deg, 22%, 60%);
+  background-color: hsl(222deg, 22%, 48%);
   color: white;
 }
 .blue-btn:hover {
-  background-color: hsl(222deg, 22%, 48%);
+  background-color: hsl(222deg, 22%, 60%);
   color: white;
 }
 
@@ -455,7 +459,7 @@ input {
   outline: none;
 }
 .info-btn:focus-visible {
-  outline: 5px auto black;
+  outline: 5px auto red;
 }
 .info-btn i {
   font-size: calc(0.6rem + 0.45vw);
@@ -531,7 +535,7 @@ input {
   outline: none;
 }
 .arrow-btn:focus-visible {
-  outline: 5px auto black;
+  outline: 5px auto red;
 }
 .arrow-btn:hover {
   transform: scale(120%);

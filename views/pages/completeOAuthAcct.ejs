@@ -6,25 +6,25 @@
     <div class="full-page-content">
       <div class="page-heading-wrapper">
         <h1 class="page-heading">Complete your account</h1>
-        <h6 class="page-sub-heading">Enter a profile name and location to complete your account.</h6>
+        <h2 class="page-sub-heading h-size-6">Enter a profile name and location to complete your account.</h2>
       </div>
   
       <div class="border-box-wrapper">
         <%- include('../partials/borders') %>
   
-        <div class="border-box-content">
+        <main class="border-box-content">
   
             <!-- Makes POST request to /register route -->
           <form class="reg-form" action="/auth/completeAccount" method="POST">
   
             <div class="form-group">
               <label for="profile-name">Profile Name</label>
-              <input type="text" class="form-input" name="profile-name" required>
+              <input id="profile-name" type="text" class="form-input" name="profile-name" required>
             </div>
   
             <div class="form-group location-group">
               <label for="loc-input">Location</label>
-              <input class="form-input loc-input" type="text" placeholder="Search for a place...">
+              <input label="loc-input" class="form-input loc-input" type="text" placeholder="Search for a place...">
               
               <!-- Chosen Google location -->
               <div class="loc-details">
@@ -51,7 +51,7 @@
             
           </form>
   
-        </div>
+        </main>
       </div>
   
     </div>
@@ -59,8 +59,8 @@
 
   <div class="footer">
     <div class="back-btns-wrapper">
-      <a class="white-btn" href="/logout" role="button">Log Out</a>
-      <a class="grey-btn" href="/" role="button">Back to home</a>
+      <a class="white-btn" href="/logout">Log Out</a>
+      <a class="grey-btn" href="/">Back to home</a>
     </div>
   </div>
 

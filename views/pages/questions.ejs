@@ -1,15 +1,16 @@
 <%- include('../partials/header') %>
-  <title>Find Kindred</title>
+  <title>Kindred | <%= categoryName %></title>
+  <meta name="description" content="Answer questions in the category of <%= categoryName %> to fill out your Kindred profile.">
 </head>
 <body>
   <div class="pre-footer">
     <%- include('../partials/navbar') %>
 
-    <div class="page-content questions-content">     
-      <h3 class="main-header" data-cat-Type="<%= categoryTypeName %>" 
+    <main class="page-content questions-content">     
+      <h1 class="main-header h-size-3" data-cat-Type="<%= categoryTypeName %>" 
         data-cat="<%= categoryName %>">
         <%= categoryTypeName %> - <%= categoryName %>
-      </h3>
+      </h1>
 
       <div class="border-box-wrapper">
         <%- include('../partials/borders') %>
@@ -40,13 +41,13 @@
           </div>  
         </div>  
       </div>  
-    </div>
+    </main>
   </div>
 
   <div class="footer">
     <div class="back-btns-wrapper">
-      <a class="white-btn" href="/questions-menu" role="button">Back to Questions Menu</a>
-      <a class="grey-btn" href="/profile" role="button">Back to Profile</a>
+      <a class="white-btn" href="/questions-menu">Back to Questions Menu</a>
+      <a class="grey-btn" href="/profile">Back to Profile</a>
     </div>
   </div>
   

@@ -3,8 +3,6 @@ To do:
 
 
 
-add favicon
-
 
 -	check pages in google Lighthouse
 
@@ -42,7 +40,7 @@ add favicon
 
 -	validation on data that can be sent to server.
 
--	make it give error message when registering with email that already exists - prompt for "forgot your password".
+-	make it give error message when registering with email that already exists - prompt for "forgot your password". also messages for incorrect password etc.
 
 -	account / email verification when registering / changing email.
 

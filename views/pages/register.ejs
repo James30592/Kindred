@@ -1,9 +1,10 @@
 <%- include('../partials/header') %>
   <title>Kindred | Register</title>
+  <meta name="description" content="Sign up to Kindred. Find people similar to you around the world and get recommendations from your kindred spirits.">
 </head>
 <body>
   <div class="pre-footer">
-    <div class="full-page-content">
+    <main class="full-page-content">
       <h1 class="page-heading">Register</h1>
   
       <div class="border-box-wrapper">
@@ -16,32 +17,34 @@
   
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-input" name="email" required>
+              <input id="email" type="email" class="form-input" name="email" required>
             </div>
   
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-input" name="password" required>
+              <input id="password" type="password" class="form-input" name="password" required>
             </div>
   
             <div class="form-group">
               <label for="profile-name">Profile Name</label>
-              <input type="text" class="form-input" name="profile-name" required>
+              <input id="profile-name" type="text" class="form-input" name="profile-name" required>
             </div>
   
             <div class="form-group location-group">
               <label for="loc-input">Location</label>
-              <input class="form-input loc-input" type="text" placeholder="Search for a place...">
+              <input id="loc-input" class="form-input loc-input" type="text" placeholder="Search for a place...">
               
               <!-- Chosen Google location -->
               <div class="loc-details">
                 <div class="loc-detail-wrapper">
-                  <span>Place:</span>
-                  <textarea name="formattedAddress" class="loc-detail" required onfocus="blur();"></textarea>
+                  <label for="google-place">Place:</label>
+                  <!-- <span>Place:</span> -->
+                  <textarea id="google-place" name="formattedAddress" class="loc-detail" required onfocus="blur();"></textarea>
                 </div>
                 <div class="loc-detail-wrapper">
-                  <span>Country:</span>
-                  <input name="countryLong" class="loc-detail" required onfocus="blur();"></input>
+                  <label for="google-country">Country:</label>
+                  <!-- <span>Country:</span> -->
+                  <input id="google-country" name="countryLong" class="loc-detail" required onfocus="blur();"></input>
                 </div>
               </div>
               
@@ -59,7 +62,7 @@
   
               <a class="social-btn" href="/auth/google">
                 <div class="social-inner-wrapper">
-                  <img src="images/btn_google_light_normal_ios.svg" alt="">
+                  <img src="images/btn_google_light_normal_ios.svg" alt="Sign up with Google">
                   <span>Sign up with Google</span>
                 </div>
               </a>
@@ -70,13 +73,13 @@
         </div>
       </div>
   
-    </div>
+    </main>
   </div>
 
   <div class="footer">
     <div class="back-btns-wrapper">
-      <a class="white-btn" href="/login" role="button">Log In</a>
-      <a class="grey-btn" href="/" role="button">Back to home</a>
+      <a class="white-btn" href="/login">Log In</a>
+      <a class="grey-btn" href="/">Back to home</a>
     </div>
   </div>
 

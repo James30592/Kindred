@@ -68,6 +68,7 @@ export class ConnectionsSvg {
     svg.setAttribute("viewBox", `0 0 ${viewBoxWidth} ${viewBoxHeight}`);
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("alt", "");
     
     this.#createConnections(connectionInfos);
     this.#createSvgPaths(svg);

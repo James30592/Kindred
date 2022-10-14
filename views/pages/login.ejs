@@ -1,5 +1,6 @@
 <%- include('../partials/header') %>
   <title>Kindred | Login</title>
+  <meta name="description" content="Log in to Kindred. Find people similar to you around the world and get recommendations from your kindred spirits.">
 </head>
 <body>
   <div class="pre-footer">
@@ -9,17 +10,17 @@
       <div class="border-box-wrapper">
         <%- include('../partials/borders') %>
   
-        <div class="border-box-content">
+        <main class="border-box-content">
   
           <!-- Makes POST request to /login route -->
           <form action="/login" method="POST">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-input" name="email">
+              <input id="email" type="email" class="form-input" name="email">
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-input" name="password">
+              <input id="password" type="password" class="form-input" name="password">
             </div>
             
             <div class="login-btns-wrapper">
@@ -27,14 +28,14 @@
   
               <a class="social-btn" href="/auth/google">
                 <div class="social-inner-wrapper">
-                  <img src="images/btn_google_light_normal_ios.svg" alt="">
+                  <img src="images/btn_google_light_normal_ios.svg" alt="Log in with Google">
                   <span>Sign in with Google</span>
                 </div>
               </a>
             </div>
           </form>
         
-        </div>
+        </main>
       </div>
     
     </div>
@@ -42,8 +43,8 @@
 
   <div class="footer">
     <div class="back-btns-wrapper">
-      <a class="white-btn" href="/register" role="button">Register</a>
-      <a class="grey-btn" href="/" role="button">Back to home</a>
+      <a class="white-btn" href="/register">Register</a>
+      <a class="grey-btn" href="/">Back to home</a>
     </div>
   </div>
 

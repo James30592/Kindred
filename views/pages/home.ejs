@@ -1,21 +1,22 @@
 <%- include('../partials/header') %>
   <title>Kindred</title>
+  <meta name="description" content="Sign up or log in to Kindred. Find people similar to you around the world and get recommendations from your kindred spirits.">
 </head>
 <body>
-  <div class="pre-footer">
+  <main class="pre-footer">
     <div id="home" class="full-page-flex-content-wrapper">
       <div class="full-page-flex-content">
-        <img class="home-logo" src="/images/logoDark.svg" alt="">
-        <h4 class="home-blurb">Find your kindred spirits</h4>
+        <h1><img class="home-logo" src="/images/logoDark.svg" alt="Kindred logo"></h1>
+        <h2 class="home-blurb h-size-4">Find your kindred spirits</h2>
         <hr class="home-hr">
-        <a class="grey-btn" href="/login" role="button">Login</a>
-        <a class="white-btn" href="/register" role="button">Register</a>
-        <a class="pink-btn" href="#about" role="button">About</a>
+        <a class="grey-btn" href="/login">Login</a>
+        <a class="white-btn" href="/register">Register</a>
+        <a class="pink-btn" href="#about">About</a>
       </div>
   
       <div class="home-down-btn-wrapper">
         <a class="home-arrow-btn arrow-btn" href="#about">
-          <img src="/images/downArrow.svg" alt="">
+          <img src="/images/downArrow.svg" alt="Next page">
         </a>
       </div>
     </div>
@@ -23,33 +24,33 @@
     <div id="about" class="full-page-flex-content-wrapper">
       <div class="home-up-btn-wrapper">
         <a class="home-arrow-btn arrow-btn" href="#home">
-          <img src="/images/upArrow.svg" alt="">
+          <img src="/images/upArrow.svg" alt="Previous page">
         </a>
       </div>
 
       <div class="about full-page-flex-content">
-        <h1>About</h1>
+        <h3 class="h-size-1">About</h3>
 
-        <section class="home-about-sect">
-          <h5 class="about-sect-heading">Find your Kindred spirits</h5>
+        <div class="home-about-sect">
+          <h4 class="about-sect-heading h-size-5">Find your Kindred spirits</h4>
           <p>Find your kindred spirits from around the world that share your 
             tastes and interests. Kindred shows you who you have most in common 
             with as you fill out your profile.</p>
-        </section>
+        </div>
 
-        <section class="home-about-sect">
-          <h5 class="about-sect-heading">Recommendations</h5>
+        <div class="home-about-sect">
+          <h4 class="about-sect-heading h-size-5">Recommendations</h4>
           <p>Get recommendations for films, TV, music, video games and more, from those who share your tastes and interests.</p>
           <p>Want to start reading but not sure what to start with? Get book recommendations from people who share your taste in films!</p>
           <p>Do you want to start playing sport? Find a sport you'll enjoy from people whose personality matches yours!</p>
-        </section>
+        </div>
         
-        <a class="about-login-btn grey-btn" href="/login" role="button">Login</a>
-        <a class="white-btn" href="/register" role="button">Register</a>
+        <a class="about-login-btn grey-btn" href="/login">Login</a>
+        <a class="white-btn" href="/register">Register</a>
       </div>
     </div>
 
-  </div>
+  </main>
 
 </body>
 </html>

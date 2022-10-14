@@ -1,14 +1,15 @@
 <%- include('../partials/header') %>
   <title>Kindred | Find Kindred</title>
+  <meta name="description" content="Find your kindred spirits from around the world. Select which categories you want to use to find people in common, then discover them.">
 </head>
 <body>
   <div class="pre-footer">
     <%- include('../partials/navbar') %>
 
-    <div class="page-content">
+    <main class="page-content">
       <div class="page-heading-wrapper">
         <h1 class="page-heading">Find Kindred</h1>
-        <h6 class="page-sub-heading">Find people that share your tastes and interests.</h6>
+        <h2 class="page-sub-heading h-size-6">Find people that share your tastes and interests.</h2>
       </div>
 
       <!-- Input panel -->
@@ -23,7 +24,7 @@
             </div>
   
             <div class="pop-btn-container">
-              <button class="pop-btn info-btn">
+              <button class="pop-btn info-btn" aria-label="Based on categories tip">
                 <i class="fa-solid fa-circle-info"></i>
                 <span class="pop-btn-content info-txt fully-hidden transparent">You must answer at least 6 questions in a category before you can use it to find Kindred.</span>
               </button>
@@ -45,7 +46,7 @@
             <div class="pos-rel">
               <span>Similarity score</span>
               <div class="pop-btn-container">
-                <button class="pop-btn info-btn header-row-info-btn">
+                <button class="pop-btn info-btn header-row-info-btn" aria-label="Similarity score tip">
                   <i class="fa-solid fa-circle-info"></i>
                   <span class="pop-btn-content info-txt info-txt-right fully-hidden transparent">Rating out of 10 for the similarity of your answers to this user's answers for the selected categories.</span>
                 </button>
@@ -56,7 +57,7 @@
             <div class="pos-rel">
               <span>Positivity Difference</span>
               <div class="pop-btn-container">
-                <button class="pop-btn info-btn header-row-info-btn">
+                <button class="pop-btn info-btn header-row-info-btn" aria-label="Positivity difference tip">
                   <i class="fa-solid fa-circle-info"></i>
                   <span class="pop-btn-content info-txt fully-hidden transparent">The average difference in scores by this user compared to yours for the categories selected. A positive number means this user generally scored more positively than you.</span>
                 </button>
@@ -74,12 +75,12 @@
         </div>
       </div>
 
-    </div>
+    </main>
   </div>
 
   <div class="footer">
     <div class="back-btns-wrapper">
-      <a class="grey-btn" href="/profile" role="button">Back to Profile</a>
+      <a class="grey-btn" href="/profile">Back to Profile</a>
     </div>
   </div>
 

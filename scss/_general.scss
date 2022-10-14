@@ -41,23 +41,27 @@ h1 {
   font-size: vars.$fontSize1;
 }
 
-h2 {
+.h-size-1 {
+  font-size: vars.$fontSize1;
+}
+
+.h-size-2 {
   font-size: vars.$fontSize2;
 }
 
-h3 {
+.h-size-3 {
   font-size: vars.$fontSize3;
 }
 
-h4 {
+.h-size-4 {
   font-size: vars.$fontSize4;
 }
 
-h5 {
+.h-size-5 {
   font-size: vars.$fontSize5;
 }
 
-h6 {
+.h-size-6 {
   font-size: vars.$fontSize6;
 }
 

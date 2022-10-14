@@ -8,7 +8,7 @@
     }
 
     &:focus-visible {
-        outline: 5px auto black;
+        outline: 5px auto red;
     }
 }
 
@@ -56,11 +56,11 @@
 
 .blue-btn {
     @extend .base-btn;
-    background-color: vars.$lighter-blue;
+    background-color: vars.$mid-blue;
     color: white;
 
     &:hover {
-        background-color: vars.$mid-blue;
+        background-color: vars.$lighter-blue;
         color: white;
     }
 }

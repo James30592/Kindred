@@ -1,6 +1,6 @@
 <% allCategoryTypes.forEach(function(categoryType){ %>
   <div class="category-type-group">
-    <h4 class="cat-checks-header"><%= categoryType.name %></h4>
+    <h3 class="cat-checks-header h-size-4"><%= categoryType.name %></h3>
     <% categoryType.categories.forEach(function(category){ %>
       <label><%= category.name %>
         <input type="checkbox" name="<%= categoryType.name + "." +
