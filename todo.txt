@@ -1,15 +1,14 @@
 To do:
 
 
-
-
-
 -	check pages in google Lighthouse
+
+-	add error messages to register and login pages
 
 -	deploy website and database online (google firebase)
 -	set up with pm2 and test by temporarily uninstalling express-async-errors
 -	restrict google API key useage
--	change urls in google / facebook oauth once hosted
+-	change urls in google oauth once hosted
 -	convert to https and then implement oAuth for facebook too. google firebase apparently has built in ssl.
 
 

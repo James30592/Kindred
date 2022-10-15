@@ -164,6 +164,7 @@
 
     img {
         height: vars.$fontSize5;
+        width: auto;
         margin-right: 8px;
     }
 
@@ -186,6 +187,6 @@
 
     > img {
         width: 100%;
-        object-fit: contain;
+        height: auto;
     }
 }
