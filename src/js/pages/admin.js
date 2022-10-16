@@ -1,3 +1,7 @@
+import "./loggedInPage.js";
+
+
+
 const createUsersBtn = document.querySelector(".create-users");
 const createUsersInput = document.querySelector("input[name='create-users-num']")
 

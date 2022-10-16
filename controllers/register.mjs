@@ -38,6 +38,7 @@ registerRouter.post("/",
         }
         else {
           passport.authenticate("local")(req, res, function(){
+            console.log("going to profile");
             res.redirect("/profile");
           });
         };

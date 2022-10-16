@@ -33,7 +33,7 @@ class PopBtn {
 }
 
 // Inits all pop btns on a page.
-export function setupPopBtns() {
+function setupPopBtns() {
   const popBtnContainers = document.querySelectorAll(".pop-btn-container");
   
   popBtnContainers.forEach(popBtnContainer => {

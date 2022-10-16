@@ -1,6 +1,6 @@
 import express from "express";
 import { CategoryAnswersList } from "../models/categoryAnswersList.mjs";
-import { CategoryInfo } from "../public/sharedJs/categoryInfo.mjs";
+import { CategoryInfo } from "../src/sharedJs/categoryInfo.mjs";
 import { RecommendationList } from "../lib/similarity/recommendationList/recommendationList.mjs";
 import { getBasedOnUserCategories } from "../lib/similarity/getBasedOnUserCategories.mjs";
 import { serverState } from "../lib/serverState/serverState.mjs";

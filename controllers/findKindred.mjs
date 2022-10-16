@@ -1,7 +1,7 @@
 import express from "express";
 import { CategoryAnswersList } from "../models/categoryAnswersList.mjs";
 import { KindredList } from "../lib/similarity/kindredList/kindredList.mjs"
-import { CategoryInfo } from "../public/sharedJs/categoryInfo.mjs";
+import { CategoryInfo } from "../src/sharedJs/categoryInfo.mjs";
 import { getBasedOnUserCategories } from "../lib/similarity/getBasedOnUserCategories.mjs";
 import { serverState } from "../lib/serverState/serverState.mjs";
 
