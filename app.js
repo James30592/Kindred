@@ -28,7 +28,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use("/", router);
 
-mongoose.connect("mongodb://127.0.0.1:27017/kindred02");
+// mongoose.connect("mongodb://127.0.0.1:27017/kindred02");
+mongoose.connect("mongodb+srv://kindredadmin:kindredadmin30592@cluster0.lt6ndky.mongodb.net/kindred");
 initPassport();
 serverState.init();
 

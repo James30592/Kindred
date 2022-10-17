@@ -21,7 +21,6 @@ loginRouter.post('/',
         res.json({status: "fail", errDetails: "err"});
       }
       else {
-        console.log("success");
         req.logIn(user, function() {
           res.json({status: "success", redirectTo: "/profile"})
         });
