@@ -20,10 +20,10 @@ export default {
     questions: "./src/js/pages/questions.js",
     recommendations: "./src/js/pages/recommendations.js",
     loggedInPage: "./src/js/pages/loggedInPage.js",
-    loggedOutPage: "./src/js/pages/loggedOutPage.js"
+    regLogin: "./src/js/modules/regLogin.mjs"
   },
 
-  // devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
 
   mode: "development",
 

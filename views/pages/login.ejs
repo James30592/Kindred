@@ -13,7 +13,7 @@
         <main class="border-box-content">
   
           <!-- Makes POST request to /login route -->
-          <form action="/login" method="POST">
+          <form class="reg-login-form" action="/login" method="POST">
             <div class="form-group">
               <label for="email">Email</label>
               <input id="email" type="email" class="form-input" name="email">
@@ -47,6 +47,19 @@
       <a class="grey-btn" href="/">Back to home</a>
     </div>
   </div>
+  
+  <div class="centre-modal-wrapper fade-trans fully-hidden transparent">
+      <div class="centre-modal-background"></div>
+      <div class="centre-modal">
+          <!-- Error message -->
+          <div class="answer-panel">
+              <p>Invalid login details, please try again.</p>
+          </div>
+          <button class="close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+  </div>
+
+  <script type="module" src="/bundles/regLogin.bundle.js"></script>
 
 </body>
 </html>

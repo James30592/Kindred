@@ -33,20 +33,17 @@ registerRouter.post("/",
 
       function(err, user){
         if (err) {
-          console.log(err);
-          res.redirect("/register");
+          res.json({status: "fail", errDetails: err});
         }
         else {
-          passport.authenticate("local")(req, res, function(){
-            console.log("going to profile");
-            res.redirect("/profile");
+          passport.authenticate("local")(req, res, function() {
+            res.json({status: "success", redirectTo: "/profile"});
           });
         };
       }
     );
   }
 );
-
 
 // Creates an address object ready for the database, from the registration page 
 // form data.

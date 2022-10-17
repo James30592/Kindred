@@ -13,7 +13,7 @@
         <div class="border-box-content">
   
             <!-- Makes POST request to /register route -->
-          <form class="reg-form" action="/register" method="POST">
+          <form class="reg-login-form" action="/register" method="POST">
   
             <div class="form-group">
               <label for="email">Email</label>
@@ -81,6 +81,17 @@
       <a class="white-btn" href="/login">Log In</a>
       <a class="grey-btn" href="/">Back to home</a>
     </div>
+  </div>
+
+  <div class="centre-modal-wrapper fade-trans fully-hidden transparent">
+      <div class="centre-modal-background"></div>
+      <div class="centre-modal">
+          <!-- Error message -->
+          <div class="answer-panel">
+              <p>A user is already registered with that email address, please login instead.</p>
+          </div>
+          <button class="close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
   </div>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBupuPl_TCETkPatiOhkFxBV53iCO72IHY&libraries=places"></script>

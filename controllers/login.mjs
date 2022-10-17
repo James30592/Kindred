@@ -15,9 +15,17 @@ loginRouter.post('/',
     logoutIfAlreadyLoggedIn(req, res, next);
   },
 
-  passport.authenticate('local', {failureRedirect: '/login', failureMessage: true}),
-
-  function(req, res) {
-    res.redirect("/profile");
+  function (req, res, next) {
+    passport.authenticate("local", function(err, user, info) {
+      if (!user) {
+        res.json({status: "fail", errDetails: "err"});
+      }
+      else {
+        console.log("success");
+        req.logIn(user, function() {
+          res.json({status: "success", redirectTo: "/profile"})
+        });
+      };
+    })(req, res, next)
   }
 );

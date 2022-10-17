@@ -1,4 +1,5 @@
 import { getPlaceDetails } from "../../sharedJs/getPlaceDetails.mjs";
+import "../modules/regLogin.mjs";
 
 
 
