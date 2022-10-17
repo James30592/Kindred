@@ -6,6 +6,7 @@ import passport from "passport";
 import * as dotenv from 'dotenv';
 import { serverState } from './lib/serverState/serverState.mjs';
 import { initPassport } from './lib/initPassport.mjs';
+import { MemoryStore } from "memorystore";
 
 
  
@@ -19,10 +20,20 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use(session({
+  cookie: {maxAge: 86400000},
+  store: new MemoryStore({
+    checkPeriod: 86400000
+  }),
   secret: process.env.EXPRESS_SESSION,
   resave: false,
   saveUninitialized: false
 }));
+
+// app.use(session({
+//   secret: process.env.EXPRESS_SESSION,
+//   resave: false,
+//   saveUninitialized: false
+// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
