@@ -29,7 +29,7 @@ export default {
 
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(__dirname, 'dist/bundles'),
+    path: path.resolve(__dirname, 'public/bundles'),
     clean: true
   },
 
