@@ -33,4 +33,9 @@ mongoose.connect("mongodb+srv://kindredadmin:kindredadmin30592@cluster0.lt6ndky.
 initPassport();
 serverState.init();
 
-app.listen(3000, () => {console.log("Server running on port 3000.")});
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
+app.listen(port, () => {console.log(`Server running on port ${port}.`)});

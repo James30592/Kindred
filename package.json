@@ -12,6 +12,9 @@
   },
   "author": "James Everett",
   "license": "ISC",
+  "engines": {
+    "node": "18.2.0"
+  },
   "dependencies": {
     "@yaireo/ui-range": "^2.1.15",
     "dotenv": "^16.0.3",
