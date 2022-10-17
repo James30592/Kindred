@@ -1,3 +1,6 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 import { router } from "./controllers/controllers.mjs";
 import express from "express";
 import session from "express-session";
@@ -6,8 +9,7 @@ import passport from "passport";
 import * as dotenv from 'dotenv';
 import { serverState } from './lib/serverState/serverState.mjs';
 import { initPassport } from './lib/initPassport.mjs';
-import { MemoryStore } from "memorystore";
-
+const MemoryStore = require("memorystore")(session);
 
  
 dotenv.config()
@@ -28,12 +30,6 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-
-// app.use(session({
-//   secret: process.env.EXPRESS_SESSION,
-//   resave: false,
-//   saveUninitialized: false
-// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
