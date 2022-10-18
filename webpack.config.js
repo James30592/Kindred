@@ -20,7 +20,8 @@ export default {
     questions: "./src/js/pages/questions.js",
     recommendations: "./src/js/pages/recommendations.js",
     loggedInPage: "./src/js/pages/loggedInPage.js",
-    regLogin: "./src/js/modules/regLogin.mjs"
+    regLogin: "./src/js/modules/regLogin.mjs",
+    loggedOutPage: "./src/js/pages/loggedOutPage.js"
   },
 
   // devtool: 'inline-source-map',
@@ -35,19 +36,19 @@ export default {
 
   // plugins: [new MiniCssExtractPlugin()],
 
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.css$/i,
-  //       // use: ['style-loader', 'css-loader']
-  //       use: [
-  //         // {loader: "style-loader", options: {injectType: "linkTag"}},
-  //         MiniCssExtractPlugin.loader,
-  //         'css-loader'
-  //       ]
-  //     }
-  //   ]
-  // }
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+        // use: [
+        //   // {loader: "style-loader", options: {injectType: "linkTag"}},
+        //   MiniCssExtractPlugin.loader,
+        //   'css-loader'
+        // ]
+      }
+    ]
+  }
 
   // optimization: {
   //   splitChunks: {

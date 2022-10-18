@@ -1,4 +1,5 @@
 import { CentreModal } from "./centreModal.mjs";
+import "../../css/styles.css";
 
 
 
