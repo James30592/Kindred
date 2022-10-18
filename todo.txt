@@ -1,11 +1,10 @@
 To do:
 
 
--	check pages in google Lighthouse
-
--	set up with pm2 and test by temporarily uninstalling express-async-errors
+-	add users to db
 -	restrict google API key useage
 -	change urls in google oauth once hosted
+-	set up with pm2 and test by temporarily uninstalling express-async-errors (https://pm2.io/docs/runtime/integration/heroku/)
 
 
 
@@ -14,6 +13,10 @@ To do:
 
 
 
+
+
+
+-	use pm2 for auto server restarting
 
 -	add svg background to a few pages (make it fade out and re-draw too).
 
