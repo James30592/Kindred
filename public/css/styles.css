@@ -791,6 +791,7 @@ input {
 }
 .queue-imgs > div img {
   width: 100%;
+  height: auto;
   object-fit: contain;
 }
 .queue-imgs > div audio {

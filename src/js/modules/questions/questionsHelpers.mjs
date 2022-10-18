@@ -83,7 +83,8 @@ export function createQDomItem(q, catTypeName, catName, lazyLoad = true) {
   if (imgPath) {
     const domImg = document.createElement("img");
     domImg.setAttribute("src", imgPath);
-    if (lazyLoad) domImg.setAttribute("loading", "lazy");    
+    if (lazyLoad) domImg.setAttribute("loading", "lazy");
+
     domImg.setAttribute("alt", q?.title);
     newDomQ.appendChild(domImg);
   }

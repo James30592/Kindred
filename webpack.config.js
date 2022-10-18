@@ -26,6 +26,7 @@ export default {
   // devtool: 'inline-source-map',
 
   mode: "production",
+  // mode: "development",
 
   output: {
     filename: "[name].bundle.js",

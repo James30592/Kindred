@@ -10,6 +10,8 @@ export class DomQueue {
   #categoryTypeName;
   #categoryName;
 
+  static LAZY_LOAD_START_IDX = 4;
+
   constructor(qModeMainDiv, categoryType, category) {
     this._queue = qModeMainDiv.querySelector(".queue-imgs");
     this.#categoryTypeName = categoryType;
@@ -43,7 +45,7 @@ export class DomQueue {
       const [catTypeName, catName] = getQCategory(q, 
         this.#categoryTypeName, this.#categoryName);
       
-      const lazyLoad = this._queue.childElementCount >= 4;
+      const lazyLoad = this._queue.childElementCount >= DomQueue.LAZY_LOAD_START_IDX;
 
       const newDomQ = createQDomItem(q, catTypeName, catName, lazyLoad);
       newDomQ.setAttribute("data-id", q._id);
