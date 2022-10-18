@@ -6,6 +6,7 @@
 // Elements
 * {
   font-family: vars.$sansSerif;
+  font-display: swap;
 }
 
 html {
@@ -29,6 +30,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: vars.$cursive;
+  font-display: swap;
   color: vars.$primary-grey;
   margin-top: 0;
   margin-bottom: 0.5rem;

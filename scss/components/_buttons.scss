@@ -24,6 +24,7 @@
     @extend .anchor-btn;
     cursor: pointer;
     font: vars.$fontSize7 vars.$sansSerif;
+    font-display: swap;
     display: inline-block;
     transition: background-color 0.3s, opacity 0.3s, filter 0.3s;
     padding: 0.5em 1em;
@@ -79,6 +80,7 @@
 .lg-cursive-btn {
     @extend .base-btn;
     font: vars.$fontSize5 vars.$cursive;
+    font-display: swap;
     background-color: vars.$navy-blue;
     color: white;
     opacity: 0.8;
