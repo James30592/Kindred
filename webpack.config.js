@@ -20,7 +20,9 @@ export default {
     questions: "./src/js/pages/questions.js",
     recommendations: "./src/js/pages/recommendations.js",
     loggedInPage: "./src/js/pages/loggedInPage.js",
-    regLogin: "./src/js/modules/regLogin.mjs"
+    regLoginErrors: "./src/js/modules/regLoginErrors.mjs",
+    registerPlaceFinder: "./src/js/modules/registerPlaceFinder.mjs",
+    register: "./src/js/pages/register.js"
   },
 
   devtool: 'inline-source-map',
