@@ -31,11 +31,11 @@ defaultRouter.get("*", function(req, res, next) {
     const userSetupComplete = req.user.setupComplete;
     
     // if (userSetupComplete) {
-    if (userSetupComplete || req.originalUrl === "/completeOAuthAccount") {
+    if (userSetupComplete || req.originalUrl === "/completeOAuthAcct") {
       next();
     }
     else {
-      res.redirect("/completeOAuthAccount");
+      res.redirect("/completeOAuthAcct");
     };
   }
 
