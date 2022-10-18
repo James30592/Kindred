@@ -43,7 +43,9 @@ export class DomQueue {
       const [catTypeName, catName] = getQCategory(q, 
         this.#categoryTypeName, this.#categoryName);
       
-      const newDomQ = createQDomItem(q, catTypeName, catName);
+      const lazyLoad = this._queue.childElementCount >= 4;
+
+      const newDomQ = createQDomItem(q, catTypeName, catName, lazyLoad);
       newDomQ.setAttribute("data-id", q._id);
       this._queue.appendChild(newDomQ);
     };

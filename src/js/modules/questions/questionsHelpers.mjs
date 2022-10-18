@@ -75,7 +75,7 @@ function getDisplayReleaseDate(releaseDate) {
 
 // Used in the dom queue for answering questions (search and auto) and also in 
 // prev answers and recommendations pages.
-export function createQDomItem(q, catTypeName, catName) {
+export function createQDomItem(q, catTypeName, catName, lazyLoad = true) {
   const newDomQ = document.createElement("div");;
 
   const imgPath = getQInfo(q, "imgPath", catTypeName, catName);
@@ -83,7 +83,7 @@ export function createQDomItem(q, catTypeName, catName) {
   if (imgPath) {
     const domImg = document.createElement("img");
     domImg.setAttribute("src", imgPath);
-    domImg.setAttribute("loading", "lazy");
+    if (lazyLoad) domImg.setAttribute("loading", "lazy");    
     domImg.setAttribute("alt", q?.title);
     newDomQ.appendChild(domImg);
   }
