@@ -34,7 +34,7 @@ defaultRouter.get("*", function(req, res, next) {
       next();
     }
     else {
-      res.redirect("/auth/completeAccount");
+      res.redirect("/completeOAuthAccount");
     };
   }
 

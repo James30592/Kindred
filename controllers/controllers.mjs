@@ -15,6 +15,7 @@ import { questionsRouter } from "./questions/questions.mjs";
 import { pageNotFoundRouter } from "./pageNotFound.mjs";
 import { errHandler } from "./errorHandler.mjs";
 import { authRouter } from "./oAuth/oAuth.mjs";
+import { completeOAuthAcctRouter } from "./oAuth/completeOAuthAcct.mjs";
 
 
 
@@ -25,6 +26,7 @@ router.use("/", homeRouter);
 router.use("/register", registerRouter);
 router.use("/login", loginRouter);
 router.use("/auth", authRouter);
+router.use("/completeOAuthAcct", completeOAuthAcctRouter);
 router.use("/profile", profileRouter);
 router.use("/logout", logoutRouter);
 router.use("/find-kindred", findKindredRouter);
