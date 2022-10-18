@@ -30,7 +30,8 @@ defaultRouter.get("*", function(req, res, next) {
     res.locals.user = req.user;
     const userSetupComplete = req.user.setupComplete;
     
-    if (userSetupComplete) {
+    // if (userSetupComplete) {
+    if (userSetupComplete || req.originalUrl === "/completeOAuthAccount") {
       next();
     }
     else {
