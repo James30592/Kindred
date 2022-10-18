@@ -23,7 +23,7 @@ export default {
     regLogin: "./src/js/modules/regLogin.mjs"
   },
 
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
 
   mode: "production",
 
