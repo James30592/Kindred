@@ -6,7 +6,6 @@ To do:
 -	set up with pm2 and test by temporarily uninstalling express-async-errors
 -	restrict google API key useage
 -	change urls in google oauth once hosted
--	swap kindredadmin30592 password in app.js for env / config var
 
 
 
