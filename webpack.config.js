@@ -23,10 +23,10 @@ export default {
     regLogin: "./src/js/modules/regLogin.mjs"
   },
 
-  // devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
 
-  mode: "production",
-  // mode: "development",
+  // mode: "production",
+  mode: "development",
 
   output: {
     filename: "[name].bundle.js",
