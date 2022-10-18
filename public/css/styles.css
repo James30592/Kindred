@@ -393,7 +393,6 @@ input {
 .base-btn, .skip-btn, .rate-btn, .centre-modal > .close, .social-btn, .lg-cursive-btn, .pink-btn, .blue-btn, .white-btn, .grey-btn, .search-btn {
   cursor: pointer;
   font: calc(0.5rem + 0.375vw) "Catamaran", sans-serif;
-  font-display: swap;
   display: inline-block;
   transition: background-color 0.3s, opacity 0.3s, filter 0.3s;
   padding: 0.5em 1em;
@@ -440,7 +439,6 @@ input {
 
 .lg-cursive-btn {
   font: calc(0.7rem + 0.5vw) "Merienda", cursive;
-  font-display: swap;
   background-color: hsl(230deg, 49%, 29%);
   color: white;
   opacity: 0.8;
@@ -1265,7 +1263,6 @@ nav .logo-container {
 }
 .cat-checks-header {
   font-family: "Catamaran", sans-serif;
-  font-display: swap;
 }
 
 .category-type-group > label {
@@ -1316,7 +1313,6 @@ nav .logo-container {
 
 .page-sub-heading {
   font-family: "Catamaran", sans-serif;
-  font-display: swap;
   color: hsl(222deg, 22%, 60%);
 }
 
@@ -1531,7 +1527,6 @@ nav .logo-container {
 .recs-input-heading {
   font-size: calc(0.8rem + 0.6vw);
   font-family: "Catamaran", sans-serif;
-  font-display: swap;
   text-align: center;
   margin-bottom: 3%;
   color: hsl(0deg, 0%, 21%);
