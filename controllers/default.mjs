@@ -29,9 +29,9 @@ defaultRouter.get("*", function(req, res, next) {
   else if (userIsAuthenticated) {
     res.locals.user = req.user;
     const userSetupComplete = req.user.setupComplete;
+    const userCompletingAcct = req.originalUrl === "/completeOAuthAcct";
     
-    // if (userSetupComplete) {
-    if (userSetupComplete || req.originalUrl === "/completeOAuthAcct") {
+    if (userSetupComplete || userCompletingAcct) {
       next();
     }
     else {

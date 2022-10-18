@@ -1,7 +1,6 @@
 To do:
 
 
--	change urls in google oauth once hosted
 -	restrict google API key useage
 -	add users to db
 -	set up with pm2 and test by temporarily uninstalling express-async-errors (https://pm2.io/docs/runtime/integration/heroku/)
