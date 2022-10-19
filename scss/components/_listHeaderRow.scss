@@ -11,7 +11,8 @@
   }
 
   > span, > div > span {
-    font-size: vars.$fontSize7;
+    // font-size: vars.$fontSize7;
+    font-size: vars.$fontSize6;
     font-weight: 700;
     color: vars.$secondary-grey;
   }

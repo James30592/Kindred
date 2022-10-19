@@ -38,7 +38,8 @@
 
 .search-btn {
     @extend .grey-btn;
-    font-size: vars.$fontSize7;
+    // font-size: vars.$fontSize7;
+    font-size: vars.$fontSize6;
     padding: 0.35em 1em;
 
 }

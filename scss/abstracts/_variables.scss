@@ -26,15 +26,25 @@ $diag-white-fade: linear-gradient(
 $cursive: 'Merienda', cursive;
 $sansSerif: 'Catamaran', sans-serif;
 
-$fontSize9: calc(0.3rem + 0.225vw);
-$fontSize8: calc(0.4rem + 0.3vw);
-$fontSize7: calc(0.5rem + 0.375vw);
-$fontSize6: calc(0.6rem + 0.45vw);
-$fontSize5: calc(0.7rem + 0.5vw);
-$fontSize4: calc(0.8rem + 0.6vw);
-$fontSize3: calc(1.2rem + 0.9vw);
-$fontSize2: calc(1.6rem + 1.2vw);
-$fontSize1: calc(2rem + 1.5vw);
+// $fontSize9: calc(0.3rem + 0.225vw);
+// $fontSize8: calc(0.4rem + 0.3vw);
+// $fontSize7: calc(0.5rem + 0.375vw);
+// $fontSize6: calc(0.6rem + 0.45vw);
+// $fontSize5: calc(0.7rem + 0.5vw);
+// $fontSize4: calc(0.8rem + 0.6vw);
+// $fontSize3: calc(1.2rem + 0.9vw);
+// $fontSize2: calc(1.6rem + 1.2vw);
+// $fontSize1: calc(2rem + 1.5vw);
+
+$fontSize9: calc(0.4rem + 0.2vw);
+$fontSize8: calc(0.5rem + 0.25vw);
+$fontSize7: calc(0.6rem + 0.3vw);
+$fontSize6: calc(0.7rem + 0.35vw);
+$fontSize5: calc(0.8rem + 0.4vw);
+$fontSize4: calc(0.9rem + 0.45vw);
+$fontSize3: calc(1.4rem + 0.7vw);
+$fontSize2: calc(1.8rem + 0.9vw);
+$fontSize1: calc(2.2rem + 1.1vw);
 
 // Drawing SVG connections
 $svgAnimDrawTime: 0.75s linear;

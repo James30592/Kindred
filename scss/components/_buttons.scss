@@ -23,7 +23,8 @@
 .base-btn {
     @extend .anchor-btn;
     cursor: pointer;
-    font: vars.$fontSize7 vars.$sansSerif;
+    // font: vars.$fontSize7 vars.$sansSerif;
+    font: vars.$fontSize6 vars.$sansSerif;
     display: inline-block;
     transition: background-color 0.3s, opacity 0.3s, filter 0.3s;
     padding: 0.5em 1em;

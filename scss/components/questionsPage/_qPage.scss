@@ -14,7 +14,8 @@
     margin: 0;
     padding: 0.6em 1.5em;
     border: none;
-    font-size: vars.$fontSize7;
+    // font-size: vars.$fontSize7;
+    font-size: vars.$fontSize6;
     background-image: linear-gradient(to bottom, hsl(222, 22%, 70%), hsl(222, 22%, 70%) 50%, hsl(222, 22%, 95%));
     transition: color 0.3s, background-image 0.3s;
 
