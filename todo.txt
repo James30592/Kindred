@@ -1,19 +1,17 @@
 To do:
 
 
--	restrict google API key useage
 -	add users to db
+
+
+
+
+
+
+
+
+
 -	set up with pm2 and test by temporarily uninstalling express-async-errors (https://pm2.io/docs/runtime/integration/heroku/)
-
-
-
-
-
-
-
-
-
-
 
 -	use pm2 for auto server restarting
 
