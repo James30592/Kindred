@@ -1,7 +1,12 @@
 To do:
 
 
--	add users to db
+
+-	find a more efficient way on back end for find kindred (and find kindred within recommendations) rather than searching through all answers for everyone each time
+
+-	find kindred on a map instead of list
+
+-	validation on data that can be sent to server.
 
 
 
@@ -21,19 +26,13 @@ To do:
 
 -	add rate limiting per IP for each request, so as not to use up API keys
 
--	find a more efficient way on back end for find kindred (and find kindred within recommendations) rather than searching through all answers for everyone each time
-
 -	think about how to do findKindred algorithm. at the moment the more answers everyone has the lower the similarity ratings become. think about this.
-
--	find kindred on a map instead of list
 
 -	change front end code of findKindred and recommendations pages to grey out the "find kindred" and "get recommendations" buttons when checkboxes haven't changed since it was last clicked (and when no new answers have been done in recommendations page). need to be able to compare categoryCheckboxes objects, save copy of one when button was last clicked and compare current to this.
 
 -	edit account settings (email, password, location) feature.
 
 -	"forgot your password" feature.
-
--	validation on data that can be sent to server.
 
 -	make it give error message when registering with email that already exists - prompt for "forgot your password". also messages for incorrect password etc.
 
