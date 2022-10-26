@@ -31,6 +31,7 @@ export class QuestionsQueue extends BaseQuestionsQueue {
       // Queue needs to and can be extended.
       const numNewQs = QuestionsQueue.#QUEUE_REFRESH_AMOUNT;
       const currQueueIds = this.queue.map(q => q._id);
+      const allRecentQIds = this.allRecentAnswers.map(ans => ans.questionId);
 
       let startApiPage = 1;
       if (!isNewQueue) {
@@ -40,7 +41,7 @@ export class QuestionsQueue extends BaseQuestionsQueue {
 
       // POST request to server for new questions for the queue.
       const newQuestionsObj = await this.#postNewQsRequest(numNewQs, 
-        currQueueIds, startApiPage);
+        currQueueIds, allRecentQIds, startApiPage);
 
       this._endOfQSource = newQuestionsObj.endOfQSource;
 
@@ -107,10 +108,10 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   }
 
   // Gets more items to the questions queue, when it's running low.
-  async #postNewQsRequest(numQuestions, currQueueIds, startApiPage) {
+  async #postNewQsRequest(numQuestions, currQueueIds, allRecentQIds, startApiPage) {
     this._currentlyUpdating = true;
     
-    const postObj = this._getPostObj(numQuestions, currQueueIds, startApiPage);
+    const postObj = this._getPostObj(numQuestions, currQueueIds, allRecentQIds, startApiPage);
 
     const fetchResponse = await fetch(`/questions/${this._categoryTypeName}/${this._categoryName}`, {
       method: "POST",
@@ -126,13 +127,14 @@ export class QuestionsQueue extends BaseQuestionsQueue {
   }
 
   // Makes the object to POST for updating the queue.
-  _getPostObj(numQuestions, currQueueIds, startApiPage) {
+  _getPostObj(numQuestions, currQueueIds, allRecentQIds, startApiPage) {
     return {
       type: "updateQueue",
       data: {
         queueType: this.queueType,
         numQs: numQuestions,
         currQueueIds: currQueueIds,
+        recentAnswerQIds: allRecentQIds,
         startApiPage: startApiPage,
         filters: {}
       }

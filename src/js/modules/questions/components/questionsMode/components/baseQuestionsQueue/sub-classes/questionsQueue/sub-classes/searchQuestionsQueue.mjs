@@ -34,8 +34,8 @@ export class SearchQuestionsQueue extends QuestionsQueue {
   // Search queue version of the making the post object for updating the queue, 
   // also includes the search query and whether previously answered questions 
   // should be included.
-  _getPostObj(numQuestions, currQueueIds, startApiPage) {
-    const postObj = super._getPostObj(numQuestions, currQueueIds, 
+  _getPostObj(numQuestions, currQueueIds, allRecentQIds, startApiPage) {
+    const postObj = super._getPostObj(numQuestions, currQueueIds, allRecentQIds, 
       startApiPage);
 
     postObj.data.searchQuery = this.searchQuery;

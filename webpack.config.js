@@ -25,10 +25,10 @@ export default {
     register: "./src/js/pages/register.js"
   },
 
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
 
-  // mode: "production",
-  mode: "development",
+  mode: "production",
+  // mode: "development",
 
   output: {
     filename: "[name].bundle.js",
