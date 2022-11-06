@@ -9,6 +9,8 @@
     }
 }
 
+$navbarHeight: 62px;
+
 nav {
     position: sticky;
     z-index: 2;
@@ -17,7 +19,7 @@ nav {
     justify-content: end;
     align-items: center;
     background-color: vars.$primary-grey;
-    height: 60px;
+    height: $navbarHeight;
 
     .logo-container {
         display: flex;
@@ -59,7 +61,7 @@ nav {
 
 .dropdown-menu {
     position: absolute;
-    top: 60px;
+    top: $navbarHeight;
     right: 0;
     background-color: white;
     padding: 20px;

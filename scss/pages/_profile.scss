@@ -1,11 +1,12 @@
 @use "../components/svgConnections" as svgConnects;
 @use "../abstracts/variables" as vars;
+@use "../components/navbar" as nav;
 
 
 
 .profile-svg-connects {
     width: 100%;
-    height: calc(100vh - 60px);
+    height: calc(100vh - nav.$navbarHeight);
 }
 
 .qs-btn {

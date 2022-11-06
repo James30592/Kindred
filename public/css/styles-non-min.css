@@ -1113,7 +1113,7 @@ nav {
   justify-content: end;
   align-items: center;
   background-color: hsl(0deg, 0%, 21%);
-  height: 60px;
+  height: 62px;
 }
 nav .logo-container {
   display: flex;
@@ -1154,7 +1154,7 @@ nav .logo-container {
 
 .dropdown-menu {
   position: absolute;
-  top: 60px;
+  top: 62px;
   right: 0;
   background-color: white;
   padding: 20px;
@@ -1389,7 +1389,7 @@ nav .logo-container {
 
 .profile-svg-connects {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 62px);
 }
 
 .qs-btn {

@@ -26,7 +26,6 @@ async function handleRegLoginClick(evt) {
   const userRegLoginResponse = await fetchResponse.json();
 
   if (userRegLoginResponse.status === "success") {
-    console.log(`redirecting to ${userRegLoginResponse.redirectTo}`);
     window.location.assign(userRegLoginResponse.redirectTo)
   }
   else {
